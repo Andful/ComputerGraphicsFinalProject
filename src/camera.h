@@ -15,6 +15,7 @@ DISABLE_WARNINGS_PUSH()
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 DISABLE_WARNINGS_POP()
 
 class Camera
@@ -29,19 +30,18 @@ public:
 	void setCenter(glm::vec3);
 	void setUp(glm::vec3);
 
-	void startRotate();
-	void endRotate();
-	void mouseRotate(float, float);
+	void mouseRotate(double, double);
 	//void rotateCamera(glm::vec3 &axis, float rotation_deg);
 
 
-	glm::mat4 m_viewMatrix = glm::lookAt(eye, center, up);
+	glm::mat4 m_viewMatrix = glm::lookAt(glm::vec3(-1, 1, -1), glm::vec3(0), glm::vec3(0, 1, 0));
+	double sensitivity = 0.05;
 private:
-	glm::vec3 moveEye;
-	bool canRotate = false;
-	glm::vec3 eye = glm::vec3(-1, 1, -1);
-	glm::vec3 center = glm::vec3(0);
+	glm::vec3 eye = glm::vec3(0.f);
+	glm::vec3 center = glm::vec3(-1, 1, -1);
 	glm::vec3 up = glm::vec3(0, 1, 0);
+	double pitch = 0.0;
+	double yaw = glm::radians(-90.0);
 };
 
 

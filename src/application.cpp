@@ -41,7 +41,6 @@ public:
                 onMouseReleased(button, mods);
         });
         camera = Camera();
-
         try {
             ShaderBuilder defaultBuilder;
             defaultBuilder.addStage(GL_VERTEX_SHADER, "shaders/shader_vert.glsl");
@@ -107,6 +106,7 @@ public:
     {
     	switch (key) {
     		case GLFW_KEY_ESCAPE:
+    			mouse_movement = !mouse_movement;
     			m_window.setMouseCapture();
     			break;
     	}
@@ -124,10 +124,13 @@ public:
     // If the mouse is moved this function will be called with the x, y screen-coordinates of the mouse
     void onMouseMove(const glm::dvec2& cursorPos)
     {
-    	glm::dvec2 delta = cursorPos - oldCPos;
-		oldCPos = cursorPos;
-		camera.mouseRotate(delta.x * (80.f / 1024.f), delta.y * (80.f/1024.f));
-        std::cout << "Mouse at position: " << delta.x << " " << delta.y << std::endl;
+		if(mouse_movement)
+		{
+			glm::dvec2 delta = cursorPos - oldCPos;
+			oldCPos = cursorPos;
+			camera.mouseRotate(delta.x, -delta.y);
+			std::cout << "Mouse at position: " << delta.x << " " << delta.y << std::endl;
+		}
     }
 
     // If one of the mouse buttons is pressed this function will be called
@@ -155,10 +158,12 @@ private:
 	glm::dvec2 oldCPos;
     Mesh m_mesh;
     Texture m_texture;
+	bool mouse_movement = false;
 
-    // Projection and view matrices for you to fill in and use
+
+	// Projection and view matrices for you to fill in and use
     glm::mat4 m_projectionMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
-    glm::mat4 m_modelMatrix { 1.0f };
+    glm::mat4 m_modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(-1, 1, -1));
 };
 
 int main()
