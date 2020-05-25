@@ -6,6 +6,7 @@
 #include "mesh.h"
 #include "shader.h"
 #include "texture.h"
+#include "camera.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -39,6 +40,7 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
+        camera = Camera();
 
         try {
             ShaderBuilder defaultBuilder;
@@ -74,7 +76,7 @@ public:
             // ...
             glEnable(GL_DEPTH_TEST);
 
-            const glm::mat4 mvpMatrix = m_projectionMatrix * m_viewMatrix * m_modelMatrix;
+            const glm::mat4 mvpMatrix = m_projectionMatrix * camera.m_viewMatrix * m_modelMatrix;
             // Normals should be transformed differently than positions (ignoring translations + dealing with scaling):
             // https://paroj.github.io/gltut/Illumination/Tut09%20Normal%20Transformation.html
             const glm::mat3 normalModelMatrix = glm::inverseTranspose(glm::mat3(m_modelMatrix));
@@ -103,6 +105,11 @@ public:
     // mods - Any modifier keys pressed, like shift or control
     void onKeyPressed(int key, int mods)
     {
+    	switch (key) {
+    		case GLFW_KEY_ESCAPE:
+    			m_window.setMouseCapture();
+    			break;
+    	}
         std::cout << "Key pressed: " << key << std::endl;
     }
 
@@ -117,7 +124,10 @@ public:
     // If the mouse is moved this function will be called with the x, y screen-coordinates of the mouse
     void onMouseMove(const glm::dvec2& cursorPos)
     {
-        std::cout << "Mouse at position: " << cursorPos.x << " " << cursorPos.y << std::endl;
+    	glm::dvec2 delta = cursorPos - oldCPos;
+		oldCPos = cursorPos;
+		camera.mouseRotate(delta.x * (80.f / 1024.f), delta.y * (80.f/1024.f));
+        std::cout << "Mouse at position: " << delta.x << " " << delta.y << std::endl;
     }
 
     // If one of the mouse buttons is pressed this function will be called
@@ -138,17 +148,16 @@ public:
 
 private:
     Window m_window;
-
+	Camera camera;
     // Shader for default rendering and for depth rendering
     Shader m_defaultShader;
     Shader m_shadowShader;
-
+	glm::dvec2 oldCPos;
     Mesh m_mesh;
     Texture m_texture;
 
     // Projection and view matrices for you to fill in and use
     glm::mat4 m_projectionMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
-    glm::mat4 m_viewMatrix = glm::lookAt(glm::vec3(-1, 1, -1), glm::vec3(0), glm::vec3(0, 1, 0));
     glm::mat4 m_modelMatrix { 1.0f };
 };
 

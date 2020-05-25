@@ -166,6 +166,7 @@ void Window::windowSizeCallback(GLFWwindow* window, int width, int height)
         callback(glm::ivec2(width, height));
 }
 
+
 bool Window::isKeyPressed(int key) const
 {
     return glfwGetKey(m_pWindow, key) == GLFW_PRESS;
@@ -211,13 +212,14 @@ glm::ivec2 Window::getResolution() const
     return m_resolution;
 }
 
-void Window::setMouseCapture(bool capture)
+void Window::setMouseCapture()
 {
     if (capture) {
         glfwSetInputMode(m_pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     } else {
         glfwSetInputMode(m_pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
+    capture = !capture;
 
     glfwPollEvents();
 }

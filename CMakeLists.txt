@@ -41,6 +41,7 @@ if (UNIX)
 endif()
 
 add_executable(FinalProject
+		"src/camera.cpp"
     "src/application.cpp"
     "src/mesh.cpp"
     "src/texture.cpp"
