@@ -1,0 +1,4 @@
+*.pdf
+*.html
+.idea/
+cmake-build-debug/
