@@ -30,8 +30,8 @@ public:
         , oldCPos(0)
     {
         m_window.registerKeyCallback([this](int key, int scancode, int action, int mods) {
-            if (action == GLFW_PRESS)
-                onKeyPressed(key, mods);
+            if (action == GLFW_PRESS || action == GLFW_REPEAT)
+                onKeyPressed(key, mods, action);
             else if (action == GLFW_RELEASE)
                 onKeyReleased(key, mods);
         });
@@ -103,12 +103,27 @@ public:
     // In here you can handle key presses
     // key - Integer that corresponds to numbers in https://www.glfw.org/docs/latest/group__keys.html
     // mods - Any modifier keys pressed, like shift or control
-    void onKeyPressed(int key, int mods)
+    void onKeyPressed(int key, int mods, int action)
     {
     	switch (key) {
     		case GLFW_KEY_ESCAPE:
-    			mouse_movement = mouse_movement == MOUSE_DISABLED ? MOUSE_REENABLED : MOUSE_DISABLED;
-    			m_window.setMouseCapture();
+    			if(action == GLFW_PRESS)
+			    {
+				    mouse_movement = mouse_movement == MOUSE_DISABLED ? MOUSE_REENABLED : MOUSE_DISABLED;
+				    m_window.setMouseCapture();
+			    }
+    			break;
+    		case GLFW_KEY_W:
+    			camera.move(Camera::CAM_F);
+    			break;
+    		case GLFW_KEY_D:
+    			camera.move(Camera::CAM_R);
+    			break;
+    		case GLFW_KEY_A:
+    			camera.move(Camera::CAM_L);
+    			break;
+    		case GLFW_KEY_S:
+    			camera.move(Camera::CAM_B);
     			break;
     	}
         //std::cout << "Key pressed: " << key << std::endl;

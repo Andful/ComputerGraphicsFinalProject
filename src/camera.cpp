@@ -17,13 +17,33 @@ Camera::Camera(glm::vec3 pos, glm::vec3 upwards, double _pitch, double _yaw) :
 Camera::~Camera() = default;
 
 void Camera::updateViewMatrix() {
-	m_viewMatrix = glm::lookAt(eye, center, up);
+	m_viewMatrix = glm::lookAt(eye, center + eye, up);
 }
 
 void Camera::setEye(glm::vec3 newEye) { eye = newEye; updateViewMatrix();}
 void Camera::setCenter(glm::vec3 newCenter) { center = newCenter; updateViewMatrix(); }
 void Camera::setUp(glm::vec3 newUp) { up = newUp; updateViewMatrix(); }
 
+void Camera::move(CAM_DIR dir)
+{
+	glm::vec3 direction = normalize(glm::vec3(center.x, 0, center.z));
+	switch (dir){
+		case CAM_F:
+			break;
+		case CAM_B:
+			direction = -direction;
+			break;
+		case CAM_L:
+			direction = rotate(direction, glm::radians(90.f), glm::vec3(0, 1, 0));
+			break;
+		case CAM_R:
+			direction = rotate(direction, glm::radians(-90.f), glm::vec3(0, 1, 0));
+			break;
+
+	}
+	setEye(eye + direction * movementMul);
+
+}
 
 
 void Camera::mouseRotate(double degx, double degy)
@@ -33,5 +53,5 @@ void Camera::mouseRotate(double degx, double degy)
 	pitch = glm::clamp(pitch + glm::radians(degy * sensitivity), -1.57078, 1.57078);
 	yaw += glm::radians(degx * sensitivity);
 	std::cout << pitch << std::endl;
-	setCenter( calculateDir(pitch, yaw)+ eye);
+	setCenter( calculateDir(pitch, yaw));
 }
