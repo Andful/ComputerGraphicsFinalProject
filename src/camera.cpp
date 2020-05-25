@@ -4,7 +4,15 @@
 
 #include "camera.h"
 #include <iostream>
-Camera::Camera() =default;
+Camera::Camera(glm::vec3 pos, glm::vec3 upwards, double _pitch, double _yaw) :
+		m_viewMatrix(0.f),
+		eye(pos), up(upwards),
+		center(0.f)
+{
+	pitch = glm::radians(_pitch);
+	yaw = glm::radians(_yaw);
+	m_viewMatrix = glm::lookAt(eye, calculateDir(pitch, yaw) + eye, up);
+}
 
 Camera::~Camera() = default;
 
@@ -25,9 +33,5 @@ void Camera::mouseRotate(double degx, double degy)
 	pitch = glm::clamp(pitch + glm::radians(degy * sensitivity), -1.57078, 1.57078);
 	yaw += glm::radians(degx * sensitivity);
 	std::cout << pitch << std::endl;
-	setCenter(normalize(glm::vec3(
-				cos(yaw) * cos(pitch),
-			    sin(pitch),
-			    sin(yaw) * cos(pitch)
-	)));
+	setCenter( calculateDir(pitch, yaw)+ eye);
 }

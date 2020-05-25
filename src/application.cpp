@@ -26,6 +26,8 @@ public:
         : m_window(glm::ivec2(1024, 1024), "Final Project", false)
         , m_mesh("resources/dragon.obj")
         , m_texture("resources/checkerboard.png")
+        , camera(glm::vec3(1, 1, 1), glm::vec3(0, 1, 0),-38.8, -135.75)
+        , oldCPos(0)
     {
         m_window.registerKeyCallback([this](int key, int scancode, int action, int mods) {
             if (action == GLFW_PRESS)
@@ -40,7 +42,6 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
-        camera = Camera();
         try {
             ShaderBuilder defaultBuilder;
             defaultBuilder.addStage(GL_VERTEX_SHADER, "shaders/shader_vert.glsl");
@@ -106,11 +107,11 @@ public:
     {
     	switch (key) {
     		case GLFW_KEY_ESCAPE:
-    			mouse_movement = !mouse_movement;
+    			mouse_movement = mouse_movement == MOUSE_DISABLED ? MOUSE_REENABLED : MOUSE_DISABLED;
     			m_window.setMouseCapture();
     			break;
     	}
-        std::cout << "Key pressed: " << key << std::endl;
+        //std::cout << "Key pressed: " << key << std::endl;
     }
 
     // In here you can handle key releases
@@ -118,18 +119,25 @@ public:
     // mods - Any modifier keys pressed, like shift or control
     void onKeyReleased(int key, int mods)
     {
-        std::cout << "Key released: " << key << std::endl;
+        //std::cout << "Key released: " << key << std::endl;
     }
 
     // If the mouse is moved this function will be called with the x, y screen-coordinates of the mouse
     void onMouseMove(const glm::dvec2& cursorPos)
     {
-		if(mouse_movement)
+		if(mouse_movement == MOUSE_DISABLED) return;
+		else if(mouse_movement == MOUSE_REENABLED)
+		{
+			mouse_movement = MOUSE_ACTIVE;
+			oldCPos = cursorPos;
+			return;
+		}
+		else
 		{
 			glm::dvec2 delta = cursorPos - oldCPos;
 			oldCPos = cursorPos;
 			camera.mouseRotate(delta.x, -delta.y);
-			std::cout << "Mouse at position: " << delta.x << " " << delta.y << std::endl;
+			//std::cout << "Mouse at position: " << delta.x << " " << delta.y << std::endl;
 		}
     }
 
@@ -138,7 +146,7 @@ public:
     // mods - Any modifier buttons pressed
     void onMouseClicked(int button, int mods)
     {
-        std::cout << "Pressed mouse button: " << button << std::endl;
+       // std::cout << "Pressed mouse button: " << button << std::endl;
     }
 
     // If one of the mouse buttons is released this function will be called
@@ -146,25 +154,27 @@ public:
     // mods - Any modifier buttons pressed
     void onMouseReleased(int button, int mods)
     {
-        std::cout << "Released mouse button: " << button << std::endl;
+       // std::cout << "Released mouse button: " << button << std::endl;
     }
 
 private:
     Window m_window;
-	Camera camera;
     // Shader for default rendering and for depth rendering
     Shader m_defaultShader;
     Shader m_shadowShader;
-	glm::dvec2 oldCPos;
     Mesh m_mesh;
     Texture m_texture;
-	bool mouse_movement = false;
+	Camera camera;
+	glm::dvec2 oldCPos;
+	enum mouse_status {MOUSE_DISABLED, MOUSE_REENABLED, MOUSE_ACTIVE};
+	mouse_status mouse_movement = MOUSE_DISABLED;
 
 
 	// Projection and view matrices for you to fill in and use
     glm::mat4 m_projectionMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
-    glm::mat4 m_modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(-1, 1, -1));
+    glm::mat4 m_modelMatrix = glm::mat4(1.f);
 };
+
 
 int main()
 {
