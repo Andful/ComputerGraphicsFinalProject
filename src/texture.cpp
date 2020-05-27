@@ -19,29 +19,27 @@ Texture::Texture(std::filesystem::path filePath)
     assert(width > 0 && height > 0);
 
     // Create a texture on the GPU with 3 channels with 8 bits each.
-    glCreateTextures(GL_TEXTURE_2D, 1, &m_texture);
-    glTextureStorage2D(m_texture, 1, GL_RGB8, width, height);
+    m_texture = std::shared_ptr<GLuint>(new GLuint(),[](GLuint *p){
+        glDeleteTextures(1, p);
+        delete p;
+    });
+    glCreateTextures(GL_TEXTURE_2D, 1, m_texture.get());
+    glTextureStorage2D(*m_texture, 1, GL_RGB8, width, height);
 
     // Upload pixels into the GPU texture.
-    glTextureSubImage2D(m_texture, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+    glTextureSubImage2D(*m_texture, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
     // Set behaviour for when texture coordinates are outside the [0, 1] range.
-    glTextureParameteri(m_texture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTextureParameteri(m_texture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(*m_texture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(*m_texture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     // Set interpolation for texture sampling (GL_NEAREST for no interpolation).
-    glTextureParameteri(m_texture, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(m_texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-}
-
-Texture::~Texture()
-{
-    if (m_texture != 0xFFFFFFFF)
-        glDeleteTextures(1, &m_texture);
+    glTextureParameteri(*m_texture, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(*m_texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 void Texture::bind(GLint textureSlot)
 {
-    glActiveTexture(textureSlot);
-    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glActiveTexture(GL_TEXTURE0 + textureSlot);
+    glBindTexture(GL_TEXTURE_2D, *m_texture);
 }

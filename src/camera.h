@@ -10,7 +10,7 @@
 DISABLE_WARNINGS_PUSH()
 
 #include <GL/glew.h>
-#include<glm/glm.hpp>
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/mat3x3.hpp>

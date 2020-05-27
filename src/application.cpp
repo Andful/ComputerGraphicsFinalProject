@@ -86,7 +86,7 @@ public:
             glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
             glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
             if (m_mesh.hasTextureCoords()) {
-                m_texture.bind(GL_TEXTURE0);
+                m_texture.bind(0);
                 glUniform1i(3, 0);
                 glUniform1i(4, GL_TRUE);
             } else {

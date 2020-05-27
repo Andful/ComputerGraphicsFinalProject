@@ -19,11 +19,6 @@ struct ShaderLoadingException : public std::runtime_error {
 class Shader {
 public:
     Shader();
-    Shader(const Shader&) = delete;
-    Shader(Shader&&);
-    ~Shader();
-
-    Shader& operator=(Shader&&);
 
     // ... Feel free to add more methods here (e.g. for setting uniforms or keeping track of texture units) ...
 
@@ -31,25 +26,17 @@ public:
 
 private:
     friend class ShaderBuilder;
-    Shader(GLuint program);
+    Shader(std::shared_ptr<GLuint> program);
 
 private:
-    GLuint m_program;
+    std::shared_ptr<GLuint> m_program;
 };
 
 class ShaderBuilder {
 public:
-    ShaderBuilder() = default;
-    ShaderBuilder(const ShaderBuilder&) = delete;
-    ShaderBuilder(ShaderBuilder&&) = default;
-    ~ShaderBuilder();
-
     ShaderBuilder& addStage(GLuint shaderStage, std::filesystem::path shaderFile);
     Shader build();
 
 private:
-    void freeShaders();
-
-private:
-    std::vector<GLuint> m_shaders;
+    std::vector<std::shared_ptr<GLuint>> m_shaders = {};
 };
