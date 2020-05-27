@@ -1,4 +1,5 @@
 #pragma once
+
 #include "drawable.h"
 #include "mesh.h"
 #include "shader.h"
@@ -17,6 +18,6 @@ public:
     }
 
     void draw(const glm::mat4& transform) {
-        
+
     }
 }
