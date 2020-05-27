@@ -7,6 +7,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "camera.h"
+#include "drawable.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -57,7 +58,7 @@ public:
             //     Visual Studio: PROJECT => Generate Cache for ComputerGraphics
             //     VS Code: ctrl + shift + p => CMake: Configure => enter
             // ....
-        } catch (ShaderLoadingException e) {
+        } catch (ShaderLoadingException& e) {
             std::cerr << e.what() << std::endl;
         }
     }

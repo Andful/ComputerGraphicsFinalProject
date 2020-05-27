@@ -50,7 +50,9 @@ add_executable(FinalProject
     "src/shader.cpp"
     "src/texture.cpp"
     "src/window.cpp"
-    "src/stb_image.cpp"
+	"src/stb_image.cpp"
+	"src/drawable.cpp"
+	"src/group.cpp"
 )
 target_compile_features(FinalProject PRIVATE cxx_std_17)
 target_link_libraries(FinalProject PRIVATE
