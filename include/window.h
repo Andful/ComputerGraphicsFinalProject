@@ -40,7 +40,7 @@ public:
 
     // Hides mouse and prevents it from going out of the window.
     // Usefull for a first person camera.
-    void setMouseCapture(bool capture);
+    void setMouseCapture();
 
     glm::ivec2 getResolution() const;
 
@@ -53,6 +53,7 @@ private:
 private:
     glm::ivec2 m_resolution;
     GLFWwindow* m_pWindow { nullptr };
+    bool capture = true;
 
     std::vector<KeyCallback> m_keyCallbacks;
     std::vector<MouseButtonCallback> m_mouseButtonCallbacks;
