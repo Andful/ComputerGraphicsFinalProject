@@ -40,6 +40,8 @@ if (UNIX)
 	set(PLATFORM_SPECIFIC_PACKAGES std::filesystem ${ASSIMP_ZLIB_LIBRARY} ${ASSIMP_IRRXML_LIBRARY})
 endif()
 
+include_directories("include/")
+
 add_executable(FinalProject
     "src/application.cpp"
     "src/mesh.cpp"
