@@ -1,4 +1,6 @@
-#version 450
+#version 420
+#extension GL_ARB_explicit_uniform_location : require
+
 layout(location = 3) uniform sampler2D colorMap;
 layout(location = 4) uniform bool hasTexCoords;
 
