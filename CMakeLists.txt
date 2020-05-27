@@ -48,7 +48,6 @@ add_executable(FinalProject
     "src/texture.cpp"
     "src/window.cpp"
     "src/stb_image.cpp"
-    "src/tiny_obj.cpp"
 )
 target_compile_features(FinalProject PRIVATE cxx_std_17)
 target_link_libraries(FinalProject PRIVATE
