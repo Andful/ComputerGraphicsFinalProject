@@ -44,4 +44,4 @@ struct ShadingData {
 
 #endif 
 
-/*_SHADING_H compiles the cpp's and then link the object files together into a main program. To include headers in cpp's use (#include "header.h")
+/*_SHADING_H compiles the cpp's and then link the object files together into a main program. To include headers in cpp's use (#include "header.h") */
