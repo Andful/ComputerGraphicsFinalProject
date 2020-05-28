@@ -21,6 +21,7 @@ DISABLE_WARNINGS_POP()
 #include <iostream>
 #include <vector>
 
+
 class Application {
 public:
     Application()
@@ -191,8 +192,8 @@ private:
     glm::mat4 m_modelMatrix = glm::mat4(1.f);
 
 
-    
-
+    std::vector<Light> lights{ Light { glm::vec3(0, 0, 3), glm::vec3(1) } }; // create 1 default light
+    std::vector<ShadingData> shading_data{ ShadingData() }; // create with a default shading data struct
 
 };
 
