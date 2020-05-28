@@ -7,6 +7,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "camera.h"
+#include "shading.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -188,6 +189,11 @@ private:
 	// Projection and view matrices for you to fill in and use
     glm::mat4 m_projectionMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
     glm::mat4 m_modelMatrix = glm::mat4(1.f);
+
+
+    
+
+
 };
 
 
