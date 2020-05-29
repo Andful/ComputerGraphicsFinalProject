@@ -3,15 +3,17 @@
 
 // Global variables for lighting calculations
 //layout(location = 1) uniform vec3 viewPos;
+layout(location = 3) uniform sampler2D colorMap;
+layout(location = 4) uniform bool hasTexCoords;
 
 
+layout(location = 5) uniform vec3 ks;
+layout(location = 6 ) uniform vec3 light_pos;
+layout(location = 7) uniform vec3  light_color;
+layout(location = 8) uniform vec3 camera_pos;
+layout(location = 9) uniform float shininess;
+layout(location = 10) uniform vec3 kd;
 
-layout(location = 3) uniform vec3 ks;
-layout(location = 4 ) uniform vec3 light_pos;
-layout(location = 5) uniform vec3  light_color;
-layout(location = 6) uniform vec3 camera_pos;
-layout(location = 7) uniform float shininess;
-layout(location = 9) uniform vec3 kd;
 
 
 
@@ -48,4 +50,5 @@ void main()
 
     
     outColor = vec4(abs(spec_comp + lamb_comp), 1.0);
+
 }

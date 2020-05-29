@@ -27,7 +27,7 @@ public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false)
         , m_mesh("resources/dragon.obj")
-        , m_texture("resources/checkerboard.png")
+        , m_texture("resources/toon_map.png")
         , camera(glm::vec3(1, 1, 1), glm::vec3(0, 1, 0),-38.8, -135.75)
         , oldCPos(0)
     {
@@ -96,7 +96,7 @@ public:
             // https://paroj.github.io/gltut/Illumination/Tut09%20Normal%20Transformation.html
             const glm::mat3 normalModelMatrix = glm::inverseTranspose(glm::mat3(m_modelMatrix));
 
-           /* m_defaultShader.bind();
+            m_defaultShader.bind();
             glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
             glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
             glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
@@ -106,28 +106,69 @@ public:
                 glUniform1i(4, GL_TRUE);
             } else {
                 glUniform1i(4, GL_FALSE);
-            }*/
-            m_blinnPhongShader.bind();
-            glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
-            glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
-            // add kd to shader
-            glUniform3fv(3, 1, glm::value_ptr(shadingData[0].ks));
-            // add Light pos 
-            glUniform3fv(4, 1, glm::value_ptr(lights[0].position));
-            //Add light color
-            glUniform3fv(5, 1, glm::value_ptr(lights[0].color));
-            // add camera position
-            glUniform3fv(6, 1, glm::value_ptr(camera.getEye()) );
+            }
 
-            // add kd to shader
-            glUniform3fv(9, 1, glm::value_ptr(shadingData[0].kd));
-            //Add shininess
-            glUniform1f(7, shadingData[0].shininess);
 
-            std::cout << " All data is settled " << std::endl;
+            // blinn phong
+
+            //m_blinnPhongShader.bind();
+            //glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            //glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+            //glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
+            //if (m_mesh.hasTextureCoords()) {
+            //    m_texture.bind(GL_TEXTURE0);
+            //    glUniform1i(3, 0);
+            //    glUniform1i(4, GL_TRUE);
+            //}
+            //else {
+            //    glUniform1i(4, GL_FALSE);
+            //}
+
+            //// add kd to shader
+            //glUniform3fv(5, 1, glm::value_ptr(shadingData[0].ks));
+            //// add Light pos 
+            //glUniform3fv(6, 1, glm::value_ptr(lights[0].position));
+            ////Add light color
+            //glUniform3fv(7, 1, glm::value_ptr(lights[0].color));
+            //// add camera position
+            //glUniform3fv(8, 1, glm::value_ptr(camera.getEye()) );
+            //// add kd to shader
+            //glUniform3fv(10, 1, glm::value_ptr(shadingData[0].kd));
+            ////Add shininess
+            //glUniform1f(9, shadingData[0].shininess);
+
+
+            // xtoon 
+
+            //m_xtoonShader.bind();
+            //glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            //glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+            //glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
+            //if (m_mesh.hasTextureCoords()) {
+            //    m_texture.bind(GL_TEXTURE0);
+            //    glUniform1i(3, 0);
+            //    glUniform1i(4, GL_TRUE);
+            //}
+            //else {
+            //    glUniform1i(4, GL_FALSE);
+            //}
+
+            //// add kd to shader
+            //glUniform3fv(5, 1, glm::value_ptr(shadingData[0].ks));
+            //// add Light pos 
+            //glUniform3fv(6, 1, glm::value_ptr(lights[0].position));
+            ////Add light color
+            //glUniform3fv(7, 1, glm::value_ptr(lights[0].color));
+            //// add camera position
+            //glUniform3fv(8, 1, glm::value_ptr(camera.getEye()) );
+
+            //// add kd to shader
+            //glUniform3fv(11, 1, glm::value_ptr(shadingData[0].kd));
+            ////Add shininess
+            //glUniform1f(9, shadingData[0].shininess);
+
+
             m_mesh.draw();
-            std::cout << " Mesh has been drawn " << std::endl;
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
