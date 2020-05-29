@@ -96,17 +96,17 @@ public:
             // https://paroj.github.io/gltut/Illumination/Tut09%20Normal%20Transformation.html
             const glm::mat3 normalModelMatrix = glm::inverseTranspose(glm::mat3(m_modelMatrix));
 
-            m_defaultShader.bind();
-            glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
-            glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
-            if (m_mesh.hasTextureCoords()) {
-                m_texture.bind(GL_TEXTURE0);
-                glUniform1i(3, 0);
-                glUniform1i(4, GL_TRUE);
-            } else {
-                glUniform1i(4, GL_FALSE);
-            }
+            //m_defaultShader.bind();
+            //glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            //glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+            //glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
+            //if (m_mesh.hasTextureCoords()) {
+            //    m_texture.bind(GL_TEXTURE0);
+            //    glUniform1i(3, 0);
+            //    glUniform1i(4, GL_TRUE);
+            //} else {
+            //    glUniform1i(4, GL_FALSE);
+            //}
 
 
             // blinn phong
@@ -140,32 +140,32 @@ public:
 
             // xtoon 
 
-            //m_xtoonShader.bind();
-            //glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            //glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
-            //glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
-            //if (m_mesh.hasTextureCoords()) {
-            //    m_texture.bind(GL_TEXTURE0);
-            //    glUniform1i(3, 0);
-            //    glUniform1i(4, GL_TRUE);
-            //}
-            //else {
-            //    glUniform1i(4, GL_FALSE);
-            //}
+            m_xtoonShader.bind();
+            glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+            glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
+            if (m_mesh.hasTextureCoords()) {
+                m_texture.bind(GL_TEXTURE0);
+                glUniform1i(3, 0);
+                glUniform1i(4, GL_TRUE);
+            }
+            else {
+                glUniform1i(4, GL_FALSE);
+            }
 
-            //// add kd to shader
-            //glUniform3fv(5, 1, glm::value_ptr(shadingData[0].ks));
-            //// add Light pos 
-            //glUniform3fv(6, 1, glm::value_ptr(lights[0].position));
-            ////Add light color
-            //glUniform3fv(7, 1, glm::value_ptr(lights[0].color));
-            //// add camera position
-            //glUniform3fv(8, 1, glm::value_ptr(camera.getEye()) );
+            // add kd to shader
+            glUniform3fv(5, 1, glm::value_ptr(shadingData[0].ks));
+            // add Light pos 
+            glUniform3fv(6, 1, glm::value_ptr(lights[0].position));
+            //Add light color
+            glUniform3fv(7, 1, glm::value_ptr(lights[0].color));
+            // add camera position
+            glUniform3fv(8, 1, glm::value_ptr(camera.getEye()) );
 
-            //// add kd to shader
-            //glUniform3fv(11, 1, glm::value_ptr(shadingData[0].kd));
-            ////Add shininess
-            //glUniform1f(9, shadingData[0].shininess);
+            // add kd to shader
+            glUniform3fv(10, 1, glm::value_ptr(shadingData[0].kd));
+            //Add shininess
+            glUniform1f(9, shadingData[0].shininess);
 
 
             m_mesh.draw();
@@ -266,7 +266,6 @@ private:
 	// Projection and view matrices for you to fill in and use
     glm::mat4 m_projectionMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
     glm::mat4 m_modelMatrix = glm::mat4(1.f);
-
 
     std::vector<Light> lights{ Light { glm::vec3(0, 0, 3), glm::vec3(1) } }; // create 1 default light
     std::vector<ShadingData> shadingData{ ShadingData() }; // create with a default shading data struct
