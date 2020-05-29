@@ -59,6 +59,17 @@ public:
             //     Visual Studio: PROJECT => Generate Cache for ComputerGraphics
             //     VS Code: ctrl + shift + p => CMake: Configure => enter
             // ....
+
+            // Add xToon 
+            ShaderBuilder xtoonBuilder;
+            xtoonBuilder.addStage(GL_FRAGMENT_SHADER, "shaders/xtoon.glsl");
+            m_xtoonShader = xtoonBuilder.build();
+
+            // Add Blinn Phong
+            ShaderBuilder blinnPhongBuilder;
+            blinnPhongBuilder.addStage(GL_FRAGMENT_SHADER, "shaders/blinn_phong.glsl");
+            m_xtoonShader = blinnPhongBuilder.build();
+
         } catch (ShaderLoadingException e) {
             std::cerr << e.what() << std::endl;
         }
@@ -179,6 +190,8 @@ private:
     // Shader for default rendering and for depth rendering
     Shader m_defaultShader;
     Shader m_shadowShader;
+    Shader m_xtoonShader;
+    Shader m_blinnPhong;
     Mesh m_mesh;
     Texture m_texture;
 	Camera camera;
