@@ -62,13 +62,15 @@ public:
 
             // Add xToon 
             ShaderBuilder xtoonBuilder;
+            xtoonBuilder.addStage(GL_VERTEX_SHADER, "shaders/shader_vert.glsl");
             xtoonBuilder.addStage(GL_FRAGMENT_SHADER, "shaders/xtoon.glsl");
             m_xtoonShader = xtoonBuilder.build();
 
             // Add Blinn Phong
             ShaderBuilder blinnPhongBuilder;
+            blinnPhongBuilder.addStage(GL_VERTEX_SHADER, "shaders/shader_vert.glsl");
             blinnPhongBuilder.addStage(GL_FRAGMENT_SHADER, "shaders/blinn_phong.glsl");
-            m_xtoonShader = blinnPhongBuilder.build();
+            m_blinnPhongShader = blinnPhongBuilder.build();
 
         } catch (ShaderLoadingException e) {
             std::cerr << e.what() << std::endl;
@@ -191,7 +193,8 @@ private:
     Shader m_defaultShader;
     Shader m_shadowShader;
     Shader m_xtoonShader;
-    Shader m_blinnPhong;
+    Shader m_blinnPhongShader;
+
     Mesh m_mesh;
     Texture m_texture;
 	Camera camera;

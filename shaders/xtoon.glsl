@@ -1,4 +1,5 @@
 #version 420
+#extension GL_ARB_explicit_uniform_location : require
 
 // Global variables for lighting calculations
 //layout(location = 1) uniform vec3 viewPos;
