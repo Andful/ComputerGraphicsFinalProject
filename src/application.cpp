@@ -96,7 +96,7 @@ public:
             // https://paroj.github.io/gltut/Illumination/Tut09%20Normal%20Transformation.html
             const glm::mat3 normalModelMatrix = glm::inverseTranspose(glm::mat3(m_modelMatrix));
 
-            m_defaultShader.bind();
+           /* m_defaultShader.bind();
             glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
             glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
             glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
@@ -106,10 +106,29 @@ public:
                 glUniform1i(4, GL_TRUE);
             } else {
                 glUniform1i(4, GL_FALSE);
-            }
+            }*/
+            m_blinnPhongShader.bind();
+            glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+            glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
+            // add kd to shader
+            glUniform3fv(3, 1, glm::value_ptr(shadingData[0].ks));
+            // add Light pos 
+            glUniform3fv(4, 1, glm::value_ptr(lights[0].position));
+            //Add light color
+            glUniform3fv(5, 1, glm::value_ptr(lights[0].color));
+            // add camera position
+            glUniform3fv(6, 1, glm::value_ptr(camera.getEye()) );
 
+            // add kd to shader
+            glUniform3fv(9, 1, glm::value_ptr(shadingData[0].kd));
+            //Add shininess
+            glUniform1f(7, shadingData[0].shininess);
+
+            std::cout << " All data is settled " << std::endl;
             m_mesh.draw();
-
+            std::cout << " Mesh has been drawn " << std::endl;
+   
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
         }
@@ -209,7 +228,7 @@ private:
 
 
     std::vector<Light> lights{ Light { glm::vec3(0, 0, 3), glm::vec3(1) } }; // create 1 default light
-    std::vector<ShadingData> shading_data{ ShadingData() }; // create with a default shading data struct
+    std::vector<ShadingData> shadingData{ ShadingData() }; // create with a default shading data struct
 
 };
 
