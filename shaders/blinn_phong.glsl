@@ -34,6 +34,11 @@ void main()
     // compute lambertian surface color N.L* C* kd
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
 
+    // Clamping values so negative ones do not appear
+    if(lamb_comp.x < 0.0f){
+        lamb_comp = vec3(0.0f);
+    }
+
     // calculate specular component ( reflection vector, incident light vec points to surface)
     //vec3 R = reflect( normalize(fragPosition - light_pos) , normalize(fragNormal) );
     vec3 surf_to_camera = normalize(camera_pos - fragPosition);
