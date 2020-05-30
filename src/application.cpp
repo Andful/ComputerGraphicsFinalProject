@@ -144,14 +144,9 @@ public:
             glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
             glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
             glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
-            if (m_mesh.hasTextureCoords()) {
-                m_texture.bind(GL_TEXTURE0);
-                glUniform1i(3, 0);
-                glUniform1i(4, GL_TRUE);
-            }
-            else {
-                glUniform1i(4, GL_FALSE);
-            }
+            m_texture.bind(GL_TEXTURE0);
+            glUniform1i(3, 0);
+
 
             // add kd to shader
             glUniform3fv(5, 1, glm::value_ptr(shadingData[0].ks));
