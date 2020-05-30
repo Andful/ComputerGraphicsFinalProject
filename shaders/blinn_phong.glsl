@@ -29,7 +29,7 @@ in vec2 fragTexCoord; // text coord
 void main()
 {
       // get normalized light vector 
-    vec3 lamb_comp = normalize( fragPosition - light_pos);
+    vec3 lamb_comp = normalize( light_pos - fragPosition );
 
     // compute lambertian surface color N.L* C* kd
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
