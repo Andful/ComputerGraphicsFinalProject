@@ -30,7 +30,7 @@ void Drawable::setScale(const glm::vec3& scale)
     this->drawable->scale = scale;
 }
 
-void Drawable::render(const glm::mat4& transform) const
+void Drawable::render(const glm::mat4& transform)
 {
     glm::mat4 t = this->getTransform()*transform;
     this -> draw(t);
