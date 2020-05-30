@@ -19,7 +19,7 @@ public:
 class Drawable {
 private:
     std::shared_ptr<_Drawable> drawable;
-    void render(const glm::mat4& transform) const;
+    void render(const glm::mat4& transform);
 public:
     void translate(const glm::vec3& translation);
     void rotate(const glm::vec3& rotation);
@@ -32,7 +32,7 @@ public:
     {
         this->drawable->children.push_back(std::shared_ptr<Drawable>(new DRAWABLE(child)));
     }
-    virtual void draw(const glm::mat4& transform) const = 0;
+    virtual void draw(const glm::mat4& transform) = 0;
     glm::mat4 getTransform() const;
     virtual ~Drawable();
 };

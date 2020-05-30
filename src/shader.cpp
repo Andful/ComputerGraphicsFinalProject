@@ -9,26 +9,23 @@ DISABLE_WARNINGS_POP()
 #include <sstream>
 #include <string>
 
-static bool checkShaderErrors(GLuint shader);
-static bool checkProgramErrors(GLuint program);
-static std::string readFile(std::filesystem::path filePath);
-
 Shader::Shader()
 {
-    m_program = std::shared_ptr<GLuint>(new GLuint(), [](GLuint *p) {
+    program = std::shared_ptr<GLuint>(new GLuint(), [](GLuint *p) {
         glDeleteProgram(*p);
         delete p;
     });
+    *program = glCreateProgram();
 }
 
-Shader::Shader(std::shared_ptr<GLuint> program)
-    : m_program(program)
+Shader::Shader(std::shared_ptr<GLuint> _program)
+    : program(_program)
 {
 }
 
 void Shader::bind() const
 {
-    glUseProgram(*m_program);
+    glUseProgram(*program);
 }
 
 ShaderBuilder& ShaderBuilder::addStage(GLuint shaderStage, std::filesystem::path shaderFile)
@@ -74,16 +71,7 @@ Shader ShaderBuilder::build()
     return Shader(program);
 }
 
-static std::string readFile(std::filesystem::path filePath)
-{
-    std::ifstream file(filePath, std::ios::binary);
-
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
-}
-
-static bool checkShaderErrors(GLuint shader)
+bool checkShaderErrors(GLuint shader)
 {
     // Check if the shader compiled successfully.
     GLint compileSuccessful;
@@ -105,7 +93,7 @@ static bool checkShaderErrors(GLuint shader)
     }
 }
 
-static bool checkProgramErrors(GLuint program)
+bool checkProgramErrors(GLuint program)
 {
     // Check if the program linked successfully
     GLint linkSuccessful;
@@ -125,4 +113,13 @@ static bool checkProgramErrors(GLuint program)
     } else {
         return true;
     }
+}
+
+std::string readFile(std::filesystem::path filePath)
+{
+    std::ifstream file(filePath, std::ios::binary);
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
 }

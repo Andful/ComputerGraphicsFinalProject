@@ -1,4 +1,3 @@
-#pragma once
 #include "disable_all_warnings.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
@@ -7,29 +6,75 @@ DISABLE_WARNINGS_PUSH()
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
+#include <fmt/format.h>
 DISABLE_WARNINGS_POP()
 #include <exception>
 #include <filesystem>
 #include <vector>
+#include <iostream>
+#include <fstream>
+
+bool checkShaderErrors(GLuint shader);
+bool checkProgramErrors(GLuint program);
+std::string readFile(std::filesystem::path filePath);
+
 
 struct ShaderLoadingException : public std::runtime_error {
     using std::runtime_error::runtime_error;
 };
 
 class Shader {
-public:
-    Shader();
-
-    // ... Feel free to add more methods here (e.g. for setting uniforms or keeping track of texture units) ...
-
-    void bind() const;
-
 private:
     friend class ShaderBuilder;
     Shader(std::shared_ptr<GLuint> program);
 
 private:
-    std::shared_ptr<GLuint> m_program;
+    std::shared_ptr<GLuint> program;
+public:
+    Shader();
+    void load(){}
+    template<class ...Args>
+    void load(std::filesystem::path shaderFile, Args... args) {
+        if (!std::filesystem::exists(shaderFile)) {
+            throw ShaderLoadingException(fmt::format("File {} does not exist", shaderFile.string().c_str()));
+        }
+
+        GLuint shaderStage;
+        if (shaderFile.filename().string().find(".vert")!= std::string::npos) {
+            shaderStage = GL_VERTEX_SHADER;
+        } else if (shaderFile.filename().string().find(".geom")!= std::string::npos) {
+            shaderStage = GL_GEOMETRY_SHADER;
+        } else if (shaderFile.filename().string().find(".frag")!= std::string::npos) {
+            shaderStage = GL_FRAGMENT_SHADER;
+        } else if (shaderFile.filename().string().find(".comp")!= std::string::npos) {
+            shaderStage = GL_COMPUTE_SHADER;
+        } else {
+            throw ShaderLoadingException(fmt::format("Shader file should contain estension \".vert\" \".geom\" \".frag\" or \".comp\""));
+        }
+
+        const std::string shaderSource = readFile(shaderFile);
+        GLuint shader = glCreateShader(shaderStage);
+        const char* shaderSourcePtr = shaderSource.c_str();
+        glShaderSource(shader, 1, &shaderSourcePtr, nullptr);
+        glCompileShader(shader);
+        if (!checkShaderErrors(shader)) {
+            throw ShaderLoadingException(fmt::format("Failed to compile shader {}", shaderFile.string().c_str()));
+        }
+        glAttachShader(*program, shader);
+        glDeleteShader(shader);
+        load(args...);
+    }
+
+    template<class ...Args>
+    Shader(Args... args) : Shader() {
+        load(args...);
+        glLinkProgram(*program);
+
+        if (!checkProgramErrors(*program)) {
+            throw ShaderLoadingException("Shader program failed to link");
+        }
+    }
+    void bind() const;
 };
 
 class ShaderBuilder {
