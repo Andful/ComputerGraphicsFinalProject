@@ -21,6 +21,12 @@ void Camera::updateViewMatrix() {
 }
 
 void Camera::setEye(glm::vec3 newEye) { eye = newEye; updateViewMatrix();}
+
+glm::vec3 Camera::getEye()
+{
+	return eye;
+}
+
 void Camera::setCenter(glm::vec3 newCenter) { center = newCenter; updateViewMatrix(); }
 void Camera::setUp(glm::vec3 newUp) { up = newUp; updateViewMatrix(); }
 

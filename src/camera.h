@@ -36,6 +36,8 @@ public:
 
 	void setEye(glm::vec3);
 
+	glm::vec3 getEye(); 
+
 	void setCenter(glm::vec3);
 
 	void setUp(glm::vec3);
