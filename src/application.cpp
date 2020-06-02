@@ -7,9 +7,13 @@
 #include "shader.h"
 #include "texture.h"
 #include "camera.h"
+<<<<<<< HEAD
 #include "drawable.h"
 #include "scene.h"
 #include "drawable_mesh.h"
+=======
+#include "shading.h"
+>>>>>>> 93081352dcdfa8b647da179b1fe2b76ee7db202b
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -24,6 +28,7 @@ DISABLE_WARNINGS_POP()
 #include <iostream>
 #include <vector>
 
+
 class Application {
 private:
     Window m_window;
@@ -36,8 +41,16 @@ private:
     std::shared_ptr<Drawable> group;
 public:
     Application()
+<<<<<<< HEAD
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
         oldCPos(0)
+=======
+        : m_window(glm::ivec2(1024, 1024), "Final Project", false)
+        , m_mesh("resources/dragon.obj")
+        , m_texture("resources/toon_map.png")
+        , camera(glm::vec3(1, 1, 1), glm::vec3(0, 1, 0),-38.8, -135.75)
+        , oldCPos(0)
+>>>>>>> 93081352dcdfa8b647da179b1fe2b76ee7db202b
     {
         m_window.registerKeyCallback([this](int key, int scancode, int action, int mods) {
             if (action == GLFW_PRESS || action == GLFW_REPEAT)
@@ -61,7 +74,24 @@ public:
             //     Visual Studio: PROJECT => Generate Cache for ComputerGraphics
             //     VS Code: ctrl + shift + p => CMake: Configure => enter
             // ....
+<<<<<<< HEAD
         } catch (ShaderLoadingException& e) {
+=======
+
+            // Add xToon 
+            ShaderBuilder xtoonBuilder;
+            xtoonBuilder.addStage(GL_VERTEX_SHADER, "shaders/shader_vert.glsl");
+            xtoonBuilder.addStage(GL_FRAGMENT_SHADER, "shaders/xtoon.glsl");
+            m_xtoonShader = xtoonBuilder.build();
+
+            // Add Blinn Phong
+            ShaderBuilder blinnPhongBuilder;
+            blinnPhongBuilder.addStage(GL_VERTEX_SHADER, "shaders/shader_vert.glsl");
+            blinnPhongBuilder.addStage(GL_FRAGMENT_SHADER, "shaders/blinn_phong.glsl");
+            m_blinnPhongShader = blinnPhongBuilder.build();
+
+        } catch (ShaderLoadingException e) {
+>>>>>>> 93081352dcdfa8b647da179b1fe2b76ee7db202b
             std::cerr << e.what() << std::endl;
         }
         std::shared_ptr<DrawableMesh> dragon =  scene.create<DrawableMesh>(
@@ -87,9 +117,93 @@ public:
         // Put your real-time logic and rendering in here
         while (!m_window.shouldClose()) {
             m_window.updateInput();
+<<<<<<< HEAD
             group -> rotate(glm::vec3(0,0,0.01));
             camera -> render();
+=======
 
+            // Clear the screen
+            glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // ...
+            glEnable(GL_DEPTH_TEST);
+
+            const glm::mat4 mvpMatrix = m_projectionMatrix * camera.m_viewMatrix * m_modelMatrix;
+            // Normals should be transformed differently than positions (ignoring translations + dealing with scaling):
+            // https://paroj.github.io/gltut/Illumination/Tut09%20Normal%20Transformation.html
+            const glm::mat3 normalModelMatrix = glm::inverseTranspose(glm::mat3(m_modelMatrix));
+
+            //m_defaultShader.bind();
+            //glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            //glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+            //glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
+            //if (m_mesh.hasTextureCoords()) {
+            //    m_texture.bind(GL_TEXTURE0);
+            //    glUniform1i(3, 0);
+            //    glUniform1i(4, GL_TRUE);
+            //} else {
+            //    glUniform1i(4, GL_FALSE);
+            //}
+
+
+            // blinn phong
+
+            //m_blinnPhongShader.bind();
+            //glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            //glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+            //glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
+            //if (m_mesh.hasTextureCoords()) {
+            //    m_texture.bind(GL_TEXTURE0);
+            //    glUniform1i(3, 0);
+            //    glUniform1i(4, GL_TRUE);
+            //}
+            //else {
+            //    glUniform1i(4, GL_FALSE);
+            //}
+
+            //// add kd to shader
+            //glUniform3fv(5, 1, glm::value_ptr(shadingData[0].ks));
+            //// add Light pos 
+            //glUniform3fv(6, 1, glm::value_ptr(lights[0].position));
+            ////Add light color
+            //glUniform3fv(7, 1, glm::value_ptr(lights[0].color));
+            //// add camera position
+            //glUniform3fv(8, 1, glm::value_ptr(camera.getEye()) );
+            //// add kd to shader
+            //glUniform3fv(10, 1, glm::value_ptr(shadingData[0].kd));
+            ////Add shininess
+            //glUniform1f(9, shadingData[0].shininess);
+
+
+            // xtoon 
+
+            m_xtoonShader.bind();
+            glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
+            glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
+            m_texture.bind(GL_TEXTURE0);
+            glUniform1i(3, 0);
+
+
+            // add kd to shader
+            glUniform3fv(5, 1, glm::value_ptr(shadingData[0].ks));
+            // add Light pos 
+            glUniform3fv(6, 1, glm::value_ptr(lights[0].position));
+            //Add light color
+            glUniform3fv(7, 1, glm::value_ptr(lights[0].color));
+            // add camera position
+            glUniform3fv(8, 1, glm::value_ptr(camera.getEye()) );
+
+            // add kd to shader
+            glUniform3fv(10, 1, glm::value_ptr(shadingData[0].kd));
+            //Add shininess
+            glUniform1f(9, shadingData[0].shininess);
+
+>>>>>>> 93081352dcdfa8b647da179b1fe2b76ee7db202b
+
+            m_mesh.draw();
+   
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
         }
@@ -171,6 +285,33 @@ public:
     {
        // std::cout << "Released mouse button: " << button << std::endl;
     }
+<<<<<<< HEAD
+=======
+
+private:
+    Window m_window;
+    // Shader for default rendering and for depth rendering
+    Shader m_defaultShader;
+    Shader m_shadowShader;
+    Shader m_xtoonShader;
+    Shader m_blinnPhongShader;
+
+    Mesh m_mesh;
+    Texture m_texture;
+	Camera camera;
+	glm::dvec2 oldCPos;
+	enum mouse_status {MOUSE_DISABLED, MOUSE_REENABLED, MOUSE_ACTIVE};
+	mouse_status mouse_movement = MOUSE_DISABLED;
+
+
+	// Projection and view matrices for you to fill in and use
+    glm::mat4 m_projectionMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
+    glm::mat4 m_modelMatrix = glm::mat4(1.f);
+
+    std::vector<Light> lights{ Light { glm::vec3(0, 0, 3), glm::vec3(1) } }; // create 1 default light
+    std::vector<ShadingData> shadingData{ ShadingData() }; // create with a default shading data struct
+
+>>>>>>> 93081352dcdfa8b647da179b1fe2b76ee7db202b
 };
 
 
