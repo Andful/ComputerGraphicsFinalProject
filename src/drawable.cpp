@@ -1,5 +1,4 @@
 #include "drawable.h"
-<<<<<<< HEAD
 #include "scene.h"
 
 Drawable::Drawable()
@@ -73,52 +72,11 @@ void Drawable::render(const glm::mat4& projection, const glm::mat4& transform)
     for (const std::weak_ptr<Drawable>& child: this->children)
     {
         child.lock()->render(projection, t);
-=======
-
-void Drawable::rotate(const glm::vec3& rotation)
-{
-    this->drawable->rotation += rotation;
-}
-
-void Drawable::translate(const glm::vec3& translation)
-{
-    this->drawable->translation += translation;
-}
-
-void Drawable::scale(const glm::vec3& scale)
-{
-    this->drawable->scale *= scale;
-}
-
-void Drawable::setTranslation(const glm::vec3& translation)
-{
-    this->drawable->translation = translation;
-}
-
-void Drawable::setRotation(const glm::vec3& rotation)
-{
-    this->drawable->rotation = rotation;
-}
-
-void Drawable::setScale(const glm::vec3& scale)
-{
-    this->drawable->scale = scale;
-}
-
-void Drawable::render(const glm::mat4& transform)
-{
-    glm::mat4 t = this->getTransform()*transform;
-    this -> draw(t);
-    for (const std::shared_ptr<Drawable>& child:drawable->children)
-    {
-        child->render(t);
->>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
     }
 }
 
 glm::mat4 Drawable::getTransform() const
 {
-<<<<<<< HEAD
     return 
         glm::translate(glm::mat4(1.0f), this->translation)*
         glm::orientate4(this->rotation)*
@@ -133,11 +91,6 @@ glm::mat4 Drawable::getInverseTransform() const
 const Scene& Drawable::getScene() const
 {
     return *scene;
-=======
-    return glm::translate(glm::mat4(1.0f), drawable->translation)*
-        glm::orientate4(drawable->rotation)*
-        glm::scale(glm::mat4(1.0f), drawable->scale);
->>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
 }
 
 Drawable::~Drawable() {}

@@ -6,14 +6,10 @@
 #include "mesh.h"
 #include "shader.h"
 #include "texture.h"
-<<<<<<< HEAD
 #include "camera.h"
 #include "drawable.h"
 #include "scene.h"
 #include "drawable_mesh.h"
-=======
-#include "drawable.h"
->>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -57,13 +53,8 @@ public:
                 onMouseReleased(button, mods);
         });
         try {
-<<<<<<< HEAD
             //m_defaultShader = Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl");
             //m_shadowShader = Shader("shaders/shadow.vert.glsl");
-=======
-            m_defaultShader = Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl");
-            m_shadowShader = Shader("shaders/shadow.vert.glsl");
->>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
 
             // Any new shaders can be added below in similar fashion.
             // ==> Don't forget to reconfigure CMake when you do!
@@ -96,37 +87,8 @@ public:
         // Put your real-time logic and rendering in here
         while (!m_window.shouldClose()) {
             m_window.updateInput();
-<<<<<<< HEAD
             group -> rotate(glm::vec3(0,0,0.01));
             camera -> render();
-=======
-
-            // Clear the screen
-            glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // ...
-            glEnable(GL_DEPTH_TEST);
-
-            const glm::mat4 mvpMatrix = m_projectionMatrix * m_viewMatrix * m_modelMatrix;
-            // Normals should be transformed differently than positions (ignoring translations + dealing with scaling):
-            // https://paroj.github.io/gltut/Illumination/Tut09%20Normal%20Transformation.html
-            const glm::mat3 normalModelMatrix = glm::inverseTranspose(glm::mat3(m_modelMatrix));
-
-            m_defaultShader.bind();
-            glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
-            glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
-            if (m_mesh.hasTextureCoords()) {
-                m_texture.bind(0);
-                glUniform1i(3, 0);
-                glUniform1i(4, GL_TRUE);
-            } else {
-                glUniform1i(4, GL_FALSE);
-            }
-
-            m_mesh.draw();
->>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
 
             // Processes input and swaps the window buffer
             m_window.swapBuffers();

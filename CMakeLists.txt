@@ -55,10 +55,7 @@ add_executable(FinalProject
 	"src/stb_image.cpp"
 	"src/drawable.cpp"
 	"src/group.cpp"
-<<<<<<< HEAD
 	"src/scene.cpp"
-=======
->>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
 )
 target_compile_features(FinalProject PRIVATE cxx_std_17)
 target_link_libraries(FinalProject PRIVATE
