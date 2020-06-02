@@ -9,56 +9,23 @@ DISABLE_WARNINGS_POP()
 #include <sstream>
 #include <string>
 
-static constexpr GLuint invalid = 0xFFFFFFFF;
-
-static bool checkShaderErrors(GLuint shader);
-static bool checkProgramErrors(GLuint program);
-static std::string readFile(std::filesystem::path filePath);
-
-Shader::Shader(GLuint program)
-    : m_program(program)
-{
-}
-
 Shader::Shader()
-    : m_program(invalid)
 {
+    program = std::shared_ptr<GLuint>(new GLuint(), [](GLuint *p) {
+        glDeleteProgram(*p);
+        delete p;
+    });
+    *program = glCreateProgram();
 }
 
-Shader::Shader(Shader&& other)
+Shader::Shader(std::shared_ptr<GLuint> _program)
+    : program(_program)
 {
-    if (m_program != invalid)
-        glDeleteProgram(m_program);
-
-    m_program = other.m_program;
-    other.m_program = invalid;
-}
-
-Shader::~Shader()
-{
-    if (m_program != invalid)
-        glDeleteProgram(m_program);
-}
-
-Shader& Shader::operator=(Shader&& other)
-{
-    if (m_program != invalid)
-        glDeleteProgram(m_program);
-
-    m_program = other.m_program;
-    other.m_program = invalid;
-    return *this;
 }
 
 void Shader::bind() const
 {
-    assert(m_program != invalid);
-    glUseProgram(m_program);
-}
-
-ShaderBuilder::~ShaderBuilder()
-{
-    freeShaders();
+    glUseProgram(*program);
 }
 
 ShaderBuilder& ShaderBuilder::addStage(GLuint shaderStage, std::filesystem::path shaderFile)
@@ -68,12 +35,16 @@ ShaderBuilder& ShaderBuilder::addStage(GLuint shaderStage, std::filesystem::path
     }
 
     const std::string shaderSource = readFile(shaderFile);
-    const GLuint shader = glCreateShader(shaderStage);
+    std::shared_ptr<GLuint> shader(new GLuint(), [](GLuint* p){
+        glDeleteShader(*p);
+        delete p;
+    });
+    *shader = glCreateShader(shaderStage);
     const char* shaderSourcePtr = shaderSource.c_str();
-    glShaderSource(shader, 1, &shaderSourcePtr, nullptr);
-    glCompileShader(shader);
-    if (!checkShaderErrors(shader)) {
-        glDeleteShader(shader);
+    glShaderSource(*shader, 1, &shaderSourcePtr, nullptr);
+    glCompileShader(*shader);
+    if (!checkShaderErrors(*shader)) {
+        shader = nullptr;
         throw ShaderLoadingException(fmt::format("Failed to compile shader {}", shaderFile.string().c_str()));
     }
 
@@ -84,35 +55,23 @@ ShaderBuilder& ShaderBuilder::addStage(GLuint shaderStage, std::filesystem::path
 Shader ShaderBuilder::build()
 {
     // Combine vertex and fragment shaders into a single shader program.
-    GLuint program = glCreateProgram();
-    for (GLuint shader : m_shaders)
-        glAttachShader(program, shader);
-    glLinkProgram(program);
-    freeShaders();
+    std::shared_ptr<GLuint> program(new GLuint(), [](GLuint *p) {
+        glDeleteProgram(*p);
+        delete p;
+    });
+    *program = glCreateProgram();
+    for (const std::shared_ptr<GLuint>& shader : m_shaders)
+        glAttachShader(*program, *shader);
+    glLinkProgram(*program);
 
-    if (!checkProgramErrors(program)) {
+    if (!checkProgramErrors(*program)) {
         throw ShaderLoadingException("Shader program failed to link");
     }
 
     return Shader(program);
 }
 
-void ShaderBuilder::freeShaders()
-{
-    for (GLuint shader : m_shaders)
-        glDeleteShader(shader);
-}
-
-static std::string readFile(std::filesystem::path filePath)
-{
-    std::ifstream file(filePath, std::ios::binary);
-
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
-}
-
-static bool checkShaderErrors(GLuint shader)
+bool checkShaderErrors(GLuint shader)
 {
     // Check if the shader compiled successfully.
     GLint compileSuccessful;
@@ -134,7 +93,7 @@ static bool checkShaderErrors(GLuint shader)
     }
 }
 
-static bool checkProgramErrors(GLuint program)
+bool checkProgramErrors(GLuint program)
 {
     // Check if the program linked successfully
     GLint linkSuccessful;
@@ -154,4 +113,13 @@ static bool checkProgramErrors(GLuint program)
     } else {
         return true;
     }
+}
+
+std::string readFile(std::filesystem::path filePath)
+{
+    std::ifstream file(filePath, std::ios::binary);
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
 }

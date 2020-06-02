@@ -7,6 +7,9 @@
 #include "shader.h"
 #include "texture.h"
 #include "camera.h"
+#include "drawable.h"
+#include "scene.h"
+#include "drawable_mesh.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -15,19 +18,26 @@ DISABLE_WARNINGS_PUSH()
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/gtx/string_cast.hpp>
 DISABLE_WARNINGS_POP()
 #include <functional>
 #include <iostream>
 #include <vector>
 
 class Application {
+private:
+    Window m_window;
+    // Shader for default rendering and for depth rendering
+	enum mouse_status {MOUSE_DISABLED, MOUSE_REENABLED, MOUSE_ACTIVE};
+	mouse_status mouse_movement = MOUSE_DISABLED;
+    glm::dvec2 oldCPos;
+    Scene scene;
+    std::shared_ptr<Camera> camera;
+    std::shared_ptr<Drawable> group;
 public:
     Application()
-        : m_window(glm::ivec2(1024, 1024), "Final Project", false)
-        , m_mesh("resources/dragon.obj")
-        , m_texture("resources/checkerboard.png")
-        , camera(glm::vec3(1, 1, 1), glm::vec3(0, 1, 0),-38.8, -135.75)
-        , oldCPos(0)
+        : m_window(glm::ivec2(1024, 1024), "Final Project", false),
+        oldCPos(0)
     {
         m_window.registerKeyCallback([this](int key, int scancode, int action, int mods) {
             if (action == GLFW_PRESS || action == GLFW_REPEAT)
@@ -43,23 +53,32 @@ public:
                 onMouseReleased(button, mods);
         });
         try {
-            ShaderBuilder defaultBuilder;
-            defaultBuilder.addStage(GL_VERTEX_SHADER, "shaders/shader_vert.glsl");
-            defaultBuilder.addStage(GL_FRAGMENT_SHADER, "shaders/shader_frag.glsl");
-            m_defaultShader = defaultBuilder.build();
-
-            ShaderBuilder shadowBuilder;
-            shadowBuilder.addStage(GL_VERTEX_SHADER, "shaders/shadow_vert.glsl");
-            m_shadowShader = shadowBuilder.build();
+            //m_defaultShader = Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl");
+            //m_shadowShader = Shader("shaders/shadow.vert.glsl");
 
             // Any new shaders can be added below in similar fashion.
             // ==> Don't forget to reconfigure CMake when you do!
             //     Visual Studio: PROJECT => Generate Cache for ComputerGraphics
             //     VS Code: ctrl + shift + p => CMake: Configure => enter
             // ....
-        } catch (ShaderLoadingException e) {
+        } catch (ShaderLoadingException& e) {
             std::cerr << e.what() << std::endl;
         }
+        std::shared_ptr<DrawableMesh> dragon =  scene.create<DrawableMesh>(
+            Mesh("resources/dragon.obj"),
+            Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl"),
+            Texture("resources/checkerboard.png")
+        ); 
+
+        camera = scene.create<Camera>();
+        group = scene.create<Group>();
+        std::shared_ptr<Group> subgroup = scene.create<Group>();
+        subgroup -> add(dragon);
+        subgroup -> translate(glm::vec3(1, 0, 0));
+        group -> add(subgroup);
+        scene.add(group);
+        scene.add(dragon);
+        scene.add(camera);
     }
 
     void update()
@@ -68,32 +87,8 @@ public:
         // Put your real-time logic and rendering in here
         while (!m_window.shouldClose()) {
             m_window.updateInput();
-
-            // Clear the screen
-            glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // ...
-            glEnable(GL_DEPTH_TEST);
-
-            const glm::mat4 mvpMatrix = m_projectionMatrix * camera.m_viewMatrix * m_modelMatrix;
-            // Normals should be transformed differently than positions (ignoring translations + dealing with scaling):
-            // https://paroj.github.io/gltut/Illumination/Tut09%20Normal%20Transformation.html
-            const glm::mat3 normalModelMatrix = glm::inverseTranspose(glm::mat3(m_modelMatrix));
-
-            m_defaultShader.bind();
-            glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(m_modelMatrix));
-            glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(normalModelMatrix));
-            if (m_mesh.hasTextureCoords()) {
-                m_texture.bind(GL_TEXTURE0);
-                glUniform1i(3, 0);
-                glUniform1i(4, GL_TRUE);
-            } else {
-                glUniform1i(4, GL_FALSE);
-            }
-
-            m_mesh.draw();
+            group -> rotate(glm::vec3(0,0,0.01));
+            camera -> render();
 
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
@@ -114,16 +109,22 @@ public:
 			    }
     			break;
     		case GLFW_KEY_W:
-    			camera.move(Camera::CAM_F);
+    			camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(0,0,-1));
     			break;
     		case GLFW_KEY_D:
-    			camera.move(Camera::CAM_R);
+    			camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(1,0,0));
     			break;
     		case GLFW_KEY_A:
-    			camera.move(Camera::CAM_L);
+    			camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(-1,0,0));
     			break;
     		case GLFW_KEY_S:
-    			camera.move(Camera::CAM_B);
+    			camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(0,0,1));
+    			break;
+            case GLFW_KEY_Q:
+    			camera -> translate(glm::vec3(0,1,0));
+    			break;
+            case GLFW_KEY_Z:
+    			camera -> translate(glm::vec3(0,-1,0));
     			break;
     	}
         //std::cout << "Key pressed: " << key << std::endl;
@@ -151,8 +152,7 @@ public:
 		{
 			glm::dvec2 delta = cursorPos - oldCPos;
 			oldCPos = cursorPos;
-			camera.mouseRotate(delta.x, -delta.y);
-			//std::cout << "Mouse at position: " << delta.x << " " << delta.y << std::endl;
+			camera -> mouseRotate(delta.x, delta.y);
 		}
     }
 
@@ -171,23 +171,6 @@ public:
     {
        // std::cout << "Released mouse button: " << button << std::endl;
     }
-
-private:
-    Window m_window;
-    // Shader for default rendering and for depth rendering
-    Shader m_defaultShader;
-    Shader m_shadowShader;
-    Mesh m_mesh;
-    Texture m_texture;
-	Camera camera;
-	glm::dvec2 oldCPos;
-	enum mouse_status {MOUSE_DISABLED, MOUSE_REENABLED, MOUSE_ACTIVE};
-	mouse_status mouse_movement = MOUSE_DISABLED;
-
-
-	// Projection and view matrices for you to fill in and use
-    glm::mat4 m_projectionMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
-    glm::mat4 m_modelMatrix = glm::mat4(1.f);
 };
 
 

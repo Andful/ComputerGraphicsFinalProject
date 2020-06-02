@@ -5,6 +5,7 @@ DISABLE_WARNINGS_PUSH()
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 DISABLE_WARNINGS_POP()
+#include <memory>
 #include <exception>
 #include <filesystem>
 
@@ -19,29 +20,19 @@ struct Vertex {
 };
 class Mesh {
 public:
+    Mesh() = default;
+    Mesh(const Mesh&) = default;
     Mesh(std::filesystem::path filePath);
-    Mesh(const Mesh&) = delete;
-    Mesh(Mesh&&);
-    ~Mesh();
-
-    Mesh& operator=(const Mesh&) = delete;
-    Mesh& operator=(Mesh&&);
-
     bool hasTextureCoords() const;
 
     // Bind VAO and call glDrawElements.
     void draw();
 
 private:
-    void moveInto(Mesh&&);
-    void freeGpuMemory();
-
-private:
-    static constexpr GLuint INVALID = 0xFFFFFFFF;
 
     GLsizei m_numIndices { 0 };
     bool m_hasTextureCoords { false };
-    GLuint m_ibo { INVALID };
-    GLuint m_vbo { INVALID };
-    GLuint m_vao { INVALID };
+    std::shared_ptr<GLuint> m_ibo = nullptr;
+    std::shared_ptr<GLuint> m_vbo = nullptr;
+    std::shared_ptr<GLuint> m_vao = nullptr;
 };

@@ -6,6 +6,7 @@ DISABLE_WARNINGS_PUSH()
 DISABLE_WARNINGS_POP()
 #include <exception>
 #include <filesystem>
+#include <memory>
 
 struct ImageLoadingException : public std::runtime_error {
     using std::runtime_error::runtime_error;
@@ -13,17 +14,11 @@ struct ImageLoadingException : public std::runtime_error {
 
 class Texture {
 public:
+    Texture() = default;
+    Texture(const Texture&) = default;
     Texture(std::filesystem::path filePath);
-    Texture(const Texture&) = delete;
-    Texture(Texture&&) = default;
-    ~Texture();
-
-    Texture& operator=(const Texture&) = delete;
-    Texture& operator=(Texture&&) = default;
-
     void bind(GLint textureSlot);
 
 private:
-    static constexpr GLuint INVALID = 0xFFFFFFFF;
-    GLuint m_texture { 0xFFFFFFFF };
+    std::shared_ptr<GLuint> m_texture = nullptr;
 };
