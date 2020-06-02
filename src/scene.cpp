@@ -1,5 +1,6 @@
 #include "scene.h"
 
+<<<<<<< HEAD
 Scene::Scene()
 {
     objects = {};
@@ -14,4 +15,9 @@ size_t Scene::size() const
 void Scene::add(const std::shared_ptr<Drawable>& drawable)
 {
     root -> add(drawable);
+=======
+Scene::render()
+{
+    //TODO
+>>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
 }

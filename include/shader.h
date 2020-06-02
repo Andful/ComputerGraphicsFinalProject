@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 #pragma once
 
+=======
+>>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
 #include "disable_all_warnings.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
@@ -66,12 +69,21 @@ public:
         glDeleteShader(shader);
         load(args...);
     }
+<<<<<<< HEAD
 
     template<class ...Args>
     Shader(Args... args) : Shader() {
         load(args...);
         glLinkProgram(*program);
 
+=======
+
+    template<class ...Args>
+    Shader(Args... args) : Shader() {
+        load(args...);
+        glLinkProgram(*program);
+
+>>>>>>> fa1109b6f083e67db6402c2f6b6f46510036cf78
         if (!checkProgramErrors(*program)) {
             throw ShaderLoadingException("Shader program failed to link");
         }
