@@ -1,3 +1,5 @@
+#pragma once
+
 #include "disable_all_warnings.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>

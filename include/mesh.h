@@ -20,6 +20,8 @@ struct Vertex {
 };
 class Mesh {
 public:
+    Mesh() = default;
+    Mesh(const Mesh&) = default;
     Mesh(std::filesystem::path filePath);
     bool hasTextureCoords() const;
 

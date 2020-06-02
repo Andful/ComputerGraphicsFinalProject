@@ -40,6 +40,6 @@ Texture::Texture(std::filesystem::path filePath)
 
 void Texture::bind(GLint textureSlot)
 {
-    glActiveTexture(GL_TEXTURE0 + textureSlot);
+    glActiveTexture(GL_TEXTURE0 + GLenum(textureSlot));
     glBindTexture(GL_TEXTURE_2D, *m_texture);
 }

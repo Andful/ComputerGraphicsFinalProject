@@ -43,6 +43,8 @@ endif()
 include_directories("include/")
 
 add_executable(FinalProject
+	"src/drawable_mesh.cpp"
+	"src/icamera.cpp"
 	"src/camera.cpp"
     "src/application.cpp"
     "src/mesh.cpp"
@@ -53,6 +55,7 @@ add_executable(FinalProject
 	"src/stb_image.cpp"
 	"src/drawable.cpp"
 	"src/group.cpp"
+	"src/scene.cpp"
 )
 target_compile_features(FinalProject PRIVATE cxx_std_17)
 target_link_libraries(FinalProject PRIVATE

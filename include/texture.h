@@ -14,6 +14,8 @@ struct ImageLoadingException : public std::runtime_error {
 
 class Texture {
 public:
+    Texture() = default;
+    Texture(const Texture&) = default;
     Texture(std::filesystem::path filePath);
     void bind(GLint textureSlot);
 
