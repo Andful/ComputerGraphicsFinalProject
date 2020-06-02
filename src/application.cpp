@@ -90,8 +90,6 @@ public:
             m_window.updateInput();
             group -> rotate(glm::vec3(0,0,0.01));
             camera -> render();
-
-            m_mesh.draw();
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
