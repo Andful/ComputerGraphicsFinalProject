@@ -12,7 +12,7 @@ void ICamera::render()
 
         std::shared_ptr<Drawable> node = parents[0].lock();
         transformation = node->getInverseTransform()*transformation;
-        while(node -> parents.size() > 0)
+        while(!node -> parents.empty())
         {   
             if (node -> parents.size() == 1 && !node -> parents[0].expired())
             {

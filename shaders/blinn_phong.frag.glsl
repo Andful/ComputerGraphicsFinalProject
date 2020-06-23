@@ -28,7 +28,7 @@ in vec2 fragTexCoord; // text coord
 
 void main()
 {
-      // get normalized light vector 
+      // get normalized light vector
     vec3 lamb_comp = normalize( light_pos - fragPosition );
 
 
@@ -46,7 +46,7 @@ void main()
     // calculate halfway vector between viewer and light pos
     vec3 H = normalize( (normalize(light_pos - fragPosition)) + (surf_to_camera) );
     // fix for light behind surf
-    float dot_p = pow( dot(H, normalize(fragNormal)) , shininess );
+    float dot_p = pow( dot(H, normalize(fragNormal)) , shininess);
     if( dot_p < 0){
             dot_p = 0;
     }
@@ -54,7 +54,7 @@ void main()
     vec3 spec_comp = dot_p * ks;
 
 
-    
     outColor = vec4(abs(spec_comp + lamb_comp), 1.0);
+    //outColor = vec4(fragPosition, 1.0);
 
 }

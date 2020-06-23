@@ -55,17 +55,19 @@ public:
         });
         std::shared_ptr<DrawableMesh> dragon =  scene.create<DrawableMesh>(
             Mesh("resources/dragon.obj"),
-            Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl"),
+            Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
             Texture("resources/checkerboard.png")
         );
         std::shared_ptr<DrawableMesh> platform = scene.create<DrawableMesh>(
         		Mesh("resources/platform.obj"),
-        		Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl"),
+        		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
         		Texture("resources/checkerboard.png")
         		);
 
         camera = scene.create<Camera>();
         group = scene.create<Group>();
+        auto light = scene.create<DrawableLight>(glm::vec3(1, 1, 1), glm::vec3(1, 1, 1));
+        light->translate(glm::vec3(1, 1, 1));
         std::shared_ptr<Group> subgroup = scene.create<Group>();
         subgroup -> add(dragon);
         subgroup -> translate(glm::vec3(1, 0, 0));
@@ -76,7 +78,8 @@ public:
         scene.add(platgroup);
         scene.add(group);
         scene.add(dragon);
-        scene.add(camera);
+        scene.addCamera(camera);
+        scene.addLight(light);
     }
 
     void update()

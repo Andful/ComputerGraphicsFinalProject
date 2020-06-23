@@ -9,6 +9,7 @@
 #include "mesh.h"
 #include "shader.h"
 #include "texture.h"
+#include "camera.h"
 
 class DrawableMesh : public Drawable {
 private:

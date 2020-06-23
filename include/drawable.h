@@ -9,6 +9,7 @@
 
 class ICamera;
 class Scene;
+class DrawableLight;
 
 class Drawable {
 private:

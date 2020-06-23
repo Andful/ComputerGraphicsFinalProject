@@ -8,6 +8,7 @@ public:
     virtual void prerender() = 0;
     void render();
     virtual void postrender();
-    void draw(const glm::mat4& projection, const glm::mat4& transform);
+	void draw(const glm::mat4 &projection, const glm::mat4 &transform);
     virtual ~ICamera();
+
 };
