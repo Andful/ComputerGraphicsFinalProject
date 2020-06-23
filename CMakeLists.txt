@@ -56,7 +56,7 @@ add_executable(FinalProject
 	"src/drawable.cpp"
 	"src/group.cpp"
 	"src/scene.cpp"
-)
+		src/drawable_light.cpp src/drawable_light.h)
 target_compile_features(FinalProject PRIVATE cxx_std_17)
 target_link_libraries(FinalProject PRIVATE
 	OpenGL::GL GLEW::GLEW

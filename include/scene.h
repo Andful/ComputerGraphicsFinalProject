@@ -10,6 +10,7 @@ class Scene
 private:
     std::vector<std::shared_ptr<Drawable>> objects;
     std::shared_ptr<Drawable> root;
+    std::vector<std::shared_ptr <Drawable_Light>> lights;
 
 public:
     Scene();

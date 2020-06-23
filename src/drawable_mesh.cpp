@@ -6,7 +6,8 @@ DrawableMesh::DrawableMesh(const Mesh& _mesh, const Shader& _shader, const Textu
     texture = _texture;
 }
 
-void DrawableMesh::draw(const glm::mat4& projectionMatrix, const glm::mat4& transform) {
+void DrawableMesh::draw(const glm::mat4& projectionMatrix, const glm::mat4& transform,
+		                const glm::vec3& camera_pos, const Light& light) {
     shader.bind();
     glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(projectionMatrix*transform));
     glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(transform));

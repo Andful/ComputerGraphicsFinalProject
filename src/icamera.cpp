@@ -1,5 +1,6 @@
 #include <memory>
 #include <exception>
+#include <stdexcept>
 #include "icamera.h"
 
 void ICamera::render()

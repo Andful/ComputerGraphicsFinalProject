@@ -53,23 +53,16 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
-        try {
-            //m_defaultShader = Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl");
-            //m_shadowShader = Shader("shaders/shadow.vert.glsl");
-
-            // Any new shaders can be added below in similar fashion.
-            // ==> Don't forget to reconfigure CMake when you do!
-            //     Visual Studio: PROJECT => Generate Cache for ComputerGraphics
-            //     VS Code: ctrl + shift + p => CMake: Configure => enter
-            // ....
-        } catch (ShaderLoadingException& e) {
-            std::cerr << e.what() << std::endl;
-        }
         std::shared_ptr<DrawableMesh> dragon =  scene.create<DrawableMesh>(
             Mesh("resources/dragon.obj"),
             Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl"),
             Texture("resources/checkerboard.png")
-        ); 
+        );
+        std::shared_ptr<DrawableMesh> platform = scene.create<DrawableMesh>(
+        		Mesh("resources/platform.obj"),
+        		Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl"),
+        		Texture("resources/checkerboard.png")
+        		);
 
         camera = scene.create<Camera>();
         group = scene.create<Group>();
@@ -77,6 +70,10 @@ public:
         subgroup -> add(dragon);
         subgroup -> translate(glm::vec3(1, 0, 0));
         group -> add(subgroup);
+        std::shared_ptr<Group> platgroup = scene.create<Group>();
+        platgroup -> add(platform);
+        platgroup -> translate(glm::vec3(0, -1.5, 0));
+        scene.add(platgroup);
         scene.add(group);
         scene.add(dragon);
         scene.add(camera);

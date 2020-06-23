@@ -2,6 +2,7 @@
 
 Scene::Scene()
 {
+	lights = {};
     objects = {};
     root = create<Group>();
 }
