@@ -72,19 +72,17 @@ public:
         camera = std::make_shared<Camera>();
         group = std::make_shared<Group>();
         auto light = std::make_shared<DrawableLight>(glm::vec3(0, .2, .3), glm::vec3(0, 0, 0));
-        auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(-1, 1, 1));
+        auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(1, 2, 1));
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
-        subgroup -> add(light);
-        light->rotate(glm::vec3(0, 0, 1.5));
+        subgroup -> add(light2);
+        light2->rotate(glm::vec3(0, 0, 1.5));
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
-        scene.addLight(light2);
         scene.addLight(light);
-        light2->rotate(glm::vec3(.5, .5, .5));
-        scene.add(light2);
-        scene.add(group);
-
+	    scene.addLight(light2);
+	    scene.add(group);
+		camera->add(light);
         scene.add(camera);
         scene.add(platform);
 

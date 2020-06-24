@@ -12,19 +12,17 @@ private:
 	LightCamera lightCamera;
 	GLuint texShadow, framebuffer;
 public:
-	//explicit DrawableLight(glm::vec3 color);
 	DrawableLight(glm::vec3 color, const glm::vec3& baseTrans);
 	const glm::vec3& getColor() const;
 	void draw(const ICamera& camera, const Scene& scene, const DrawableLight &light) const;
 	void update(const glm::mat4& transform, Scene& scene) override;
 	void drawDepth(const ICamera &projection, const Scene &scene) const;
-	//void drawShadowMap(const Scene &scene, const DrawableLight &light) const;
 
 	GLuint getFrameBuffer() const;
 	GLuint getTexShadow() const;
 
-	const int TEX_WIDTH = 1024;
-	const int TEX_HEIGHT = 1024;
+	const int TEX_WIDTH = 4096;
+	const int TEX_HEIGHT = 4096;
 
 	glm::mat4 getCameraMVP() const;
 };

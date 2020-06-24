@@ -10,8 +10,7 @@ DrawableMesh::DrawableMesh(const Mesh& _mesh, const Shader& _shader, const Shade
 void DrawableMesh::drawShadowMap(const Scene &scene, const DrawableLight &light) const
 {
 	vertexShader.bind();
-	glViewport(0, 0, light.TEX_WIDTH, light.TEX_HEIGHT);
-	glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(light.getCameraMVP()));
+	glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(light.getCameraMVP() * world_transform));
 	glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(world_transform));
 	glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(world_transform))));
 	mesh.draw();
@@ -32,7 +31,7 @@ void DrawableMesh::draw(const ICamera& camera, const Scene& scene, const Drawabl
 	shader.bind();
 
 	glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(
-			camera.getProjectionMatrix() * camera.getInverseWorldTransform() * world_transform));
+			        camera.getProjectionMatrix() * camera.getInverseWorldTransform() * world_transform));
 	glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(world_transform));
 	glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(world_transform))));
 	if (mesh.hasTextureCoords())

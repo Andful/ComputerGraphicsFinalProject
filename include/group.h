@@ -9,5 +9,4 @@ public:
     void draw(const ICamera&, const Scene& scene, const DrawableLight &light) const;
 
 	void drawDepth(const ICamera &projection, const Scene &scene) const;
-	void addToScene(Scene &scene, std::shared_ptr<Group> thisptr);
 };

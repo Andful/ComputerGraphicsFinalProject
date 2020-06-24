@@ -29,9 +29,11 @@ void Scene::render(ICamera &camera) const
 		glClearDepth(1.0);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
+		glViewport(0, 0, light->TEX_WIDTH, light->TEX_HEIGHT);
 		Drawable::renderShadow(*this, *light);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+		glViewport(0, 0, 1024, 1024);
 		//call parent function to start the render chain
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Enable color writes.
 		glDepthMask(GL_FALSE); // Disable depth writes.
@@ -60,7 +62,7 @@ const std::vector<std::shared_ptr<DrawableLight>>& Scene::getLightData() const
 		return lightData;
 }
 
-void Scene::update() {
-	//lightData.clear();
+void Scene::update()
+{
 	Drawable::update(getTransform(), *this);
 }

@@ -4,7 +4,6 @@
 
 #include "drawable_light.h"
 
-
 //NOLINTNEXTLINE
 DrawableLight::DrawableLight(glm::vec3 color, const glm::vec3& baseTrans = glm::vec3(0,0,0)) : lightCamera()
 {
@@ -38,7 +37,7 @@ GLuint DrawableLight::getFrameBuffer() const {return framebuffer;}
 
 glm::mat4 DrawableLight::getCameraMVP() const
 {
-	return lightCamera.getProjectionMatrix() * lightCamera.getInverseWorldTransform() * world_transform;
+	return lightCamera.getProjectionMatrix() * this->getInverseWorldTransform();
 }
 
 void DrawableLight::update(const glm::mat4& transform, Scene& scene)

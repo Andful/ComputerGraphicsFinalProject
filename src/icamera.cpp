@@ -5,9 +5,6 @@
 
 void ICamera::render(const Scene& scene)
 {
-   // this -> prerender();
-  //  scene.render(*this);
-   // this -> postrender();
 }
 
 void ICamera::draw(const ICamera& camera,const Scene& scene, const DrawableLight &light) const {}

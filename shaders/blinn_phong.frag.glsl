@@ -47,7 +47,7 @@ void main()
 
     float shadowMapDepth = texture(texShadow, shadowMapCoord).x;
 
-    if(abs(fragLightDepth - shadowMapDepth) > .01) outColor = vec4(.1, .1, .1, 1);
+    if(abs(fragLightDepth - shadowMapDepth) > .0001) outColor = vec4(0,0,0, 1);
     else
     {
 
@@ -72,9 +72,8 @@ void main()
 
         vec3 spec_comp = dot_p * ks;
 
-        outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1), 1.0);
+        float dist = pow(max(1 - 2 * length(shadowMapCoord - vec2(0.5)), 0.f), 0.5);
+        outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1) * dist, 1.0);
     }
-    //outColor = vec4(fragPosition, 1.0);
-    //outColor = vec4(1.0, 0, 0, 1.0);
 
 }

@@ -1,14 +1,11 @@
 #pragma once
-#include "icamera.h"
+#include "camera.h"
 #include <glm/glm.hpp>
 #include <GL/glew.h>
+#include <cstdio>
 
-class ICamera;
-class DrawableLight;
-
-class LightCamera : public ICamera
+class LightCamera : public Camera
 {
 public:
-	void prerender();
 	glm::mat4 getProjectionMatrix() const;
 };

@@ -90,7 +90,7 @@ void Drawable::renderShadow(const Scene &scene, const DrawableLight &light) cons
 
 void Drawable::update(const glm::mat4& transform, Scene& scene) {
     this -> world_transform = transform*this->getTransform();
-    for (const auto &child: this->children)
+    for (std::shared_ptr<Drawable> &child: this->children)
     {
         child->update(this -> world_transform, scene);
     }
