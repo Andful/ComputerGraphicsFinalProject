@@ -57,33 +57,30 @@ public:
         std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
             Mesh("resources/dragon.obj"),
             Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
+            Shader("shaders/shader.vert.glsl", "shaders/shadertest.frag.glsl"),
             Texture("resources/checkerboard.png")
         );
         
         std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
         		Mesh("resources/platform.obj"),
         		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
+        		Shader("shaders/shader.vert.glsl", "shaders/shadertest.frag.glsl"),
         		Texture("resources/checkerboard.png")
         		);
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
         scene.add(std::make_shared<DrawableMesh>(*dragon));
         camera = std::make_shared<Camera>();
         group = std::make_shared<Group>();
-        auto light = std::make_shared<DrawableLight>(glm::vec3(1, 1, 1), glm::vec3(1, 1, 1));
-        std::shared_ptr<Group> subgroup = std::make_shared<Group>();
+        auto light = std::make_shared<DrawableLight>(glm::vec3(0, .2, .3), glm::vec3(0, 0, 0));
+        auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(-1, 1, 1));
+	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
         subgroup -> add(light);
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
-        /*std::shared_ptr<Group> platgroup = scene.create<Group>();
-        platgroup -> add(platform);
-        platgroup -> translate(glm::vec3(0, -1.5, 0));
-        scene.add(platgroup);
-        scene.add(group);
-        scene.add(dragon);
+        scene.addLight(light2);
         scene.addLight(light);
-        */
-
+        scene.add(light2);
         scene.add(group);
         scene.add(camera);
         scene.add(platform);
@@ -99,7 +96,7 @@ public:
             m_window.updateInput();
             group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
-            camera -> render(scene);
+            scene.render(*camera);
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();

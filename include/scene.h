@@ -11,13 +11,16 @@ class Camera;
 class Scene: public Drawable 
 {
 private:
-    std::vector<glm::vec3> lightData;
+    std::vector<std::shared_ptr<DrawableLight>> lightData;
 
 public:
     Scene();
-    const std::vector<glm::vec3>& getLightData() const;
-    void addLight(const DrawableLight &light);
-    void draw(const ICamera& camera, const Scene& scene) const ;
+    const std::vector<std::shared_ptr<DrawableLight>>& getLightData() const;
+    void addLight(std::shared_ptr<DrawableLight> light);
+    void draw(const ICamera& camera, const Scene& scene, const DrawableLight& light) const;
+	void drawDepth(const ICamera& camera,const Scene& scene) const;
     using Drawable::update;
     void update();
+
+	void render(ICamera& camera) const;
 };

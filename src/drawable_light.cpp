@@ -16,8 +16,8 @@ DrawableLight::DrawableLight(glm::vec3 color, const glm::vec3& baseTrans)
 	this -> translate(baseTrans);
 }
 
-void DrawableLight::draw(const ICamera& camera, const Scene& scene) const {}
-
+void DrawableLight::draw(const ICamera& camera, const Scene& scene, const DrawableLight& light) const {}
+void DrawableLight::drawDepth(const ICamera &projection, const Scene &scene) const {}
 
 const glm::vec3& DrawableLight::getColor() const
 {
@@ -27,5 +27,4 @@ const glm::vec3& DrawableLight::getColor() const
 void DrawableLight::update(const glm::mat4& transform, Scene& scene)
 {
 	Drawable::update(transform, scene);
-	scene.addLight(*this);
 }

@@ -13,7 +13,6 @@ class DrawableLight;
 
 class Drawable {
 private:
-    std::vector<std::shared_ptr<Drawable>> children;
     glm::vec3 translation;
     glm::vec3 rotation;
     glm::vec3 scale;
@@ -21,6 +20,8 @@ private:
 
         const glm::mat4& transform
     );
+protected:
+	std::vector<std::shared_ptr<Drawable>> children;
 public:
     bool has_parent;
     glm::mat4 world_transform;
@@ -38,14 +39,17 @@ public:
     glm::vec3 getScale() const;
     glm::vec3 getWorldPosition() const;
     void add(std::shared_ptr<Drawable> child);
-    virtual void draw(const ICamera& projection, const Scene& scene) const = 0;
-    void render(const ICamera& camera, const Scene& scene) const;
+    virtual void draw(const ICamera& projection, const Scene& scene, const DrawableLight &light) const = 0;
+    virtual void drawDepth(const ICamera &projection, const Scene &scene) const = 0;
+    void render(const ICamera& camera, const Scene& scene, const DrawableLight &light) const;
     virtual void update(const glm::mat4& transform, Scene& scene);
     glm::mat4 getTransform() const;
     glm::mat4 getInverseTransform() const;
     glm::mat4 getInverseWorldTransform() const;
     virtual ~Drawable();
     friend ICamera;
+
+	void renderDepth(const ICamera &camera, const Scene &scene) const;
 };
 #include "icamera.h"
 #include "scene.h"

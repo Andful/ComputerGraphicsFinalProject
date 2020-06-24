@@ -65,18 +65,24 @@ glm::vec3 Drawable::getScale() const
     return this->scale;
 }
 
-void Drawable::render(const ICamera& camera, const Scene& scene) const
+void Drawable::render(const ICamera& camera, const Scene& scene, const DrawableLight &light) const
 {
-    this -> draw(camera, scene);
-    for (const std::shared_ptr<Drawable>& child: this->children)
+    this -> draw(camera, scene, light);
+    for (auto child: this->children)
     {
-        child->render(camera, scene);
+        child->render(camera, scene, light);
     }
+}
+
+void Drawable::renderDepth(const ICamera &camera, const Scene &scene) const
+{
+	this->drawDepth(camera, scene);
+	for(auto child : this->children) child->renderDepth(camera, scene);
 }
 
 void Drawable::update(const glm::mat4& transform, Scene& scene) {
     this -> world_transform = transform*this->getTransform();
-    for (const std::shared_ptr<Drawable>& child: this->children)
+    for (auto child: this->children)
     {
         child->update(this -> world_transform, scene);
     }
