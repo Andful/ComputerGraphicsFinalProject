@@ -21,7 +21,7 @@ void Camera::prerender()
             glEnable(GL_DEPTH_TEST);
 }
 
-glm::mat4 Camera::getProjectionMatrix()
+glm::mat4 Camera::getProjectionMatrix() const
 {
 	return glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
 }

@@ -16,10 +16,16 @@ DrawableLight::DrawableLight(glm::vec3 color, const glm::vec3& baseTrans)
 	this -> translate(baseTrans);
 }
 
-void DrawableLight::draw(const glm::mat4& projection, const glm::mat4& transform){}
+void DrawableLight::draw(const ICamera& camera, const Scene& scene) const {}
 
 
-const float *DrawableLight::getColor()
+const glm::vec3& DrawableLight::getColor() const
 {
-	return glm::value_ptr(lightColor);
+	return lightColor;
+}
+
+void DrawableLight::update(const glm::mat4& transform, Scene& scene)
+{
+	Drawable::update(transform, scene);
+	scene.addLight(*this);
 }

@@ -125,7 +125,7 @@ bool Mesh::hasTextureCoords() const
     return m_hasTextureCoords;
 }
 
-void Mesh::draw()
+void Mesh::draw() const
 {
     glBindVertexArray(*m_vao);
     glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, nullptr);

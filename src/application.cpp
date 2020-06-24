@@ -53,33 +53,42 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
-        std::shared_ptr<DrawableMesh> dragon =  scene.create<DrawableMesh>(
+
+        std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
             Mesh("resources/dragon.obj"),
             Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
             Texture("resources/checkerboard.png")
         );
-        std::shared_ptr<DrawableMesh> platform = scene.create<DrawableMesh>(
+        
+        std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
         		Mesh("resources/platform.obj"),
         		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
         		Texture("resources/checkerboard.png")
         		);
-
-        camera = scene.create<Camera>();
-        group = scene.create<Group>();
-        auto light = scene.create<DrawableLight>(glm::vec3(1, 1, 1), glm::vec3(1, 1, 1));
-        light->translate(glm::vec3(1, 1, 1));
-        std::shared_ptr<Group> subgroup = scene.create<Group>();
+        platform -> translate(glm::vec3(0.0, -1.5, 0.0));
+        scene.add(std::make_shared<DrawableMesh>(*dragon));
+        camera = std::make_shared<Camera>();
+        group = std::make_shared<Group>();
+        auto light = std::make_shared<DrawableLight>(glm::vec3(1, 1, 1), glm::vec3(1, 1, 1));
+        std::shared_ptr<Group> subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
-        subgroup -> translate(glm::vec3(1, 0, 0));
+        subgroup -> add(light);
+        subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
-        std::shared_ptr<Group> platgroup = scene.create<Group>();
+        /*std::shared_ptr<Group> platgroup = scene.create<Group>();
         platgroup -> add(platform);
         platgroup -> translate(glm::vec3(0, -1.5, 0));
         scene.add(platgroup);
         scene.add(group);
         scene.add(dragon);
-        scene.addCamera(camera);
         scene.addLight(light);
+        */
+
+        scene.add(group);
+        scene.add(camera);
+        scene.add(platform);
+
+        scene.update();
     }
 
     void update()
@@ -89,7 +98,8 @@ public:
         while (!m_window.shouldClose()) {
             m_window.updateInput();
             group -> rotate(glm::vec3(0,0,0.01));
-            camera -> render();
+            scene.update();
+            camera -> render(scene);
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();

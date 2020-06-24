@@ -18,5 +18,5 @@ private:
     Texture texture;
 public:
     DrawableMesh(const Mesh& _mesh, const Shader& _shader, const Texture& _texture);
-    void draw(const glm::mat4& projectionMatrix, const glm::mat4& transform);
+    void draw(const ICamera& camera, const Scene& scene) const;
 };

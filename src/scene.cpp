@@ -1,43 +1,26 @@
 #include "scene.h"
 #include "camera.h"
+
+void Scene::draw(const ICamera& camera,const Scene& scene) const {}
+
 Scene::Scene()
 {
-	lights = {};
-    objects = {};
-    root = create<Group>();
-    camera = nullptr;
+	has_parent = true;
+	lightData = {};
 }
 
-size_t Scene::size() const
+void Scene::addLight(const DrawableLight &light)
 {
-    return objects.size();
+	lightData.push_back(light.getWorldPosition());
+	lightData.push_back(light.getColor());
 }
 
-void Scene::add(const std::shared_ptr<Drawable>& drawable)
+const std::vector<glm::vec3>& Scene::getLightData() const
 {
-    root -> add(drawable);
-}
-void Scene::addCamera(const std::shared_ptr<Camera> &cam)
-{
-	camera = cam;
-	add(cam);
-}
-void Scene::addLight(const std::shared_ptr<DrawableLight> &light)
-{
-	lights.push_back(light);
+		return lightData;
 }
 
-std::vector<std::shared_ptr<DrawableLight>>& Scene::getLights()
-{
-		return lights;
-}
-
-std::shared_ptr<Camera> Scene::getCamera()
-{
-	return camera;
-}
-
-const float *Scene::getCameraPos()
-{
-	return glm::value_ptr(camera->getTranslation());
+void Scene::update() {
+	lightData.clear();
+	Drawable::update(getTransform(), *this);
 }

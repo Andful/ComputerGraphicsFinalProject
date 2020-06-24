@@ -53,8 +53,8 @@ void main()
 
     vec3 spec_comp = dot_p * ks;
 
-
-    outColor = vec4(abs(spec_comp + lamb_comp), 1.0);
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1), 1.0);
     //outColor = vec4(fragPosition, 1.0);
+    //outColor = vec4(1.0, 0, 0, 1.0);
 
 }

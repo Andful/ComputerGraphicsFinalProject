@@ -10,6 +10,7 @@ private:
 public:
 	explicit DrawableLight(glm::vec3 color);
 	DrawableLight(glm::vec3 color, const glm::vec3& baseTrans);
-	const float *getColor();
-	void draw(const glm::mat4& projection, const glm::mat4& transform);
+	const glm::vec3& getColor() const;
+	void draw(const ICamera& camera, const Scene& scene) const;
+	void update(const glm::mat4& transform, Scene& scene) override;
 };

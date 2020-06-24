@@ -4,11 +4,11 @@
 class ICamera : public Drawable
 {
 public:
-    virtual glm::mat4 getProjectionMatrix() = 0;
     virtual void prerender() = 0;
-    void render();
+    void render(const Scene&);
     virtual void postrender();
-	void draw(const glm::mat4 &projection, const glm::mat4 &transform);
+	void draw(const ICamera&, const Scene& scene) const;
+    virtual glm::mat4 getProjectionMatrix() const = 0;
     virtual ~ICamera();
 
 };

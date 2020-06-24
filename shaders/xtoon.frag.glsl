@@ -4,6 +4,7 @@
 // Global variables for lighting calculations
 //layout(location = 1) uniform vec3 viewPos;
 layout(location = 3) uniform sampler2D tex_toon;
+layout(location = 4) uniform bool hasTexCoords;
 
 
 layout(location = 5) uniform vec3 ks;
