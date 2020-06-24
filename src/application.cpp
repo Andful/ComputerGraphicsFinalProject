@@ -57,14 +57,14 @@ public:
         std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
             Mesh("resources/dragon.obj"),
             Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
-            Shader("shaders/shader.vert.glsl", "shaders/shadertest.frag.glsl"),
+            Shader("shaders/shader.vert.glsl"),
             Texture("resources/checkerboard.png")
         );
         
         std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
         		Mesh("resources/platform.obj"),
         		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
-        		Shader("shaders/shader.vert.glsl", "shaders/shadertest.frag.glsl"),
+        		Shader("shaders/shader.vert.glsl"),
         		Texture("resources/checkerboard.png")
         		);
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
@@ -76,12 +76,15 @@ public:
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
         subgroup -> add(light);
+        light->rotate(glm::vec3(0, 0, 1.5));
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
         scene.addLight(light2);
         scene.addLight(light);
+        light2->rotate(glm::vec3(.5, .5, .5));
         scene.add(light2);
         scene.add(group);
+
         scene.add(camera);
         scene.add(platform);
 

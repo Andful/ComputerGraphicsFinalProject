@@ -20,6 +20,8 @@ Drawable::Drawable(const Drawable& drawable) : children(), has_parent(false)
     this -> scale = drawable.scale;
 }
 
+void Drawable::drawShadowMap(const Scene &scene, const DrawableLight &light) const {}
+
 void Drawable::rotate(const glm::vec3& _rotation)
 {
     this->rotation += _rotation;
@@ -68,7 +70,7 @@ glm::vec3 Drawable::getScale() const
 void Drawable::render(const ICamera& camera, const Scene& scene, const DrawableLight &light) const
 {
     this -> draw(camera, scene, light);
-    for (auto child: this->children)
+    for (const auto &child: this->children)
     {
         child->render(camera, scene, light);
     }
@@ -77,12 +79,18 @@ void Drawable::render(const ICamera& camera, const Scene& scene, const DrawableL
 void Drawable::renderDepth(const ICamera &camera, const Scene &scene) const
 {
 	this->drawDepth(camera, scene);
-	for(auto child : this->children) child->renderDepth(camera, scene);
+	for(const auto &child : this->children) child->renderDepth(camera, scene);
+}
+
+void Drawable::renderShadow(const Scene &scene, const DrawableLight &light) const
+{
+	this->drawShadowMap(scene, light);
+	for(const auto &child : this->children) child->renderShadow(scene, light);
 }
 
 void Drawable::update(const glm::mat4& transform, Scene& scene) {
     this -> world_transform = transform*this->getTransform();
-    for (auto child: this->children)
+    for (const auto &child: this->children)
     {
         child->update(this -> world_transform, scene);
     }

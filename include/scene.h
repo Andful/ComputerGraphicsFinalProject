@@ -4,8 +4,8 @@
 #include <memory>
 #include "drawable.h"
 #include "group.h"
-#include "drawable_light.h"
 
+class DrawableLight;
 class Camera;
 
 class Scene: public Drawable 

@@ -41,7 +41,9 @@ public:
     void add(std::shared_ptr<Drawable> child);
     virtual void draw(const ICamera& projection, const Scene& scene, const DrawableLight &light) const = 0;
     virtual void drawDepth(const ICamera &projection, const Scene &scene) const = 0;
+	virtual void drawShadowMap(const Scene &scene, const DrawableLight &light) const;
     void render(const ICamera& camera, const Scene& scene, const DrawableLight &light) const;
+    void renderShadow(const Scene&, const DrawableLight&) const;
     virtual void update(const glm::mat4& transform, Scene& scene);
     glm::mat4 getTransform() const;
     glm::mat4 getInverseTransform() const;
