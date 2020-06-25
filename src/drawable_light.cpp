@@ -16,10 +16,12 @@ DrawableLight::DrawableLight(glm::vec3 color, const glm::vec3& baseTrans = glm::
 	// Set behaviour for when texture coordinates are outside the [0, 1] range.
 	glTextureParameteri(texShadow, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTextureParameteri(texShadow, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTextureParameteri(texShadow, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTextureParameteri(texShadow, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//enable depth compare mode and use GL_LEQUAL comparison
+	glTextureParameteri(texShadow, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+	glTextureParameteri(texShadow, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
-	// Set interpolation for texture sampling (GL_NEAREST for no interpolation).
-	glTextureParameteri(texShadow, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTextureParameteri(texShadow, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glCreateFramebuffers(1, &framebuffer);
 	glNamedFramebufferTexture(framebuffer, GL_DEPTH_ATTACHMENT, texShadow, 0);
 }
