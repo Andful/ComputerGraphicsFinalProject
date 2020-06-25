@@ -21,8 +21,8 @@ public:
 	GLuint getFrameBuffer() const;
 	GLuint getTexShadow() const;
 
-	const int TEX_WIDTH = 8192;
-	const int TEX_HEIGHT = 8192;
+	const int TEX_WIDTH = 4096;
+	const int TEX_HEIGHT = 4096;
 
 	glm::mat4 getCameraMVP() const;
 };

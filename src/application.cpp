@@ -95,7 +95,7 @@ public:
         // Put your real-time logic and rendering in here
         while (!m_window.shouldClose()) {
             m_window.updateInput();
-            //group -> rotate(glm::vec3(0,0,0.01));
+            group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
             scene.render(*camera);
    
