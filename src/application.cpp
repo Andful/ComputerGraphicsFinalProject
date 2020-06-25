@@ -58,14 +58,14 @@ public:
             Mesh("resources/dragon.obj"),
             Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
             Shader("shaders/shader.vert.glsl"),
-            Texture("resources/checkerboard.png")
+            Texture("resources/textures/checkerboard.png")
         );
         
         std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
         		Mesh("resources/platform.obj"),
         		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
         		Shader("shaders/shader.vert.glsl"),
-        		Texture("resources/checkerboard.png")
+        		Texture("resources/textures/checkerboard.png")
         		);
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
         scene.add(std::make_shared<DrawableMesh>(*dragon));
