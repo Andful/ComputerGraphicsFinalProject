@@ -5,9 +5,11 @@
 #include "drawable_light.h"
 
 //NOLINTNEXTLINE
-DrawableLight::DrawableLight(glm::vec3 color, const glm::vec3& baseTrans = glm::vec3(0,0,0)) : lightCamera()
+DrawableLight::DrawableLight(glm::vec3 color, const glm::vec3& baseTrans = glm::vec3(0,0,0))
 {
 	lightColor = color;
+	lightCamera.push_back(std::make_shared<LightCamera>());
+	this -> add(lightCamera[0]);
 	this -> translate(baseTrans);
 
 	//below here we will create the shadow map texture.
@@ -39,7 +41,7 @@ GLuint DrawableLight::getFrameBuffer() const {return framebuffer;}
 
 glm::mat4 DrawableLight::getCameraMVP() const
 {
-	return lightCamera.getProjectionMatrix() * this->getInverseWorldTransform();
+	return lightCamera[0]->getProjectionMatrix() * lightCamera[0]->getInverseWorldTransform();
 }
 
 void DrawableLight::update(const glm::mat4& transform, Scene& scene)

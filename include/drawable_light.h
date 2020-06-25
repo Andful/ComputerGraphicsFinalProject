@@ -9,7 +9,7 @@
 class DrawableLight : public Drawable {
 private:
 	glm::vec3 lightColor{};
-	LightCamera lightCamera;
+	std::vector<std::shared_ptr<LightCamera>> lightCamera;
 	GLuint texShadow, framebuffer;
 public:
 	DrawableLight(glm::vec3 color, const glm::vec3& baseTrans);
@@ -21,8 +21,8 @@ public:
 	GLuint getFrameBuffer() const;
 	GLuint getTexShadow() const;
 
-	const int TEX_WIDTH = 4096;
-	const int TEX_HEIGHT = 4096;
+	const int TEX_WIDTH = 8192;
+	const int TEX_HEIGHT = 8192;
 
 	glm::mat4 getCameraMVP() const;
 };
