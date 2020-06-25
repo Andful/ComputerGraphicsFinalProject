@@ -26,7 +26,7 @@ public:
     bool hasTextureCoords() const;
 
     // Bind VAO and call glDrawElements.
-    void draw();
+    void draw() const;
 
 private:
 

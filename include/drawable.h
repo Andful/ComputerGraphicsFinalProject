@@ -9,12 +9,10 @@
 
 class ICamera;
 class Scene;
+class DrawableLight;
 
 class Drawable {
 private:
-    std::weak_ptr<Drawable> self; 
-    std::vector<std::weak_ptr<Drawable>> parents;
-    std::vector<std::shared_ptr<Drawable>> children;
     glm::vec3 translation;
     glm::vec3 rotation;
     glm::vec3 scale;
@@ -22,10 +20,14 @@ private:
 
         const glm::mat4& transform
     );
+protected:
+	std::vector<std::shared_ptr<Drawable>> children;
 public:
+    bool has_parent;
+    glm::mat4 world_transform;
     int index;
-    Scene* scene;
     Drawable();
+    Drawable(const Drawable& drawable);
     void translate(const glm::vec3& translation);
     void rotate(const glm::vec3& rotation);
     void scaling(const glm::vec3& scale);
@@ -35,14 +37,21 @@ public:
     glm::vec3 getTranslation() const;
     glm::vec3 getRotation() const;
     glm::vec3 getScale() const;
+    glm::vec3 getWorldPosition() const;
     void add(std::shared_ptr<Drawable> child);
-    virtual void draw(const glm::mat4& projection, const glm::mat4& transform) = 0;
-    void render(const glm::mat4& projection, const glm::mat4& transform);
+    virtual void draw(const ICamera& projection, const Scene& scene, const DrawableLight &light) const = 0;
+    virtual void drawDepth(const ICamera &projection, const Scene &scene) const = 0;
+	virtual void drawShadowMap(const Scene &scene, const DrawableLight &light) const;
+    void render(const ICamera& camera, const Scene& scene, const DrawableLight &light) const;
+    void renderShadow(const Scene&, const DrawableLight&) const;
+    virtual void update(const glm::mat4& transform, Scene& scene);
     glm::mat4 getTransform() const;
     glm::mat4 getInverseTransform() const;
-    const Scene& getScene() const;
+    glm::mat4 getInverseWorldTransform() const;
     virtual ~Drawable();
     friend ICamera;
+
+	void renderDepth(const ICamera &camera, const Scene &scene) const;
 };
 #include "icamera.h"
 #include "scene.h"

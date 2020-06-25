@@ -53,33 +53,40 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
-        try {
-            //m_defaultShader = Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl");
-            //m_shadowShader = Shader("shaders/shadow.vert.glsl");
 
-            // Any new shaders can be added below in similar fashion.
-            // ==> Don't forget to reconfigure CMake when you do!
-            //     Visual Studio: PROJECT => Generate Cache for ComputerGraphics
-            //     VS Code: ctrl + shift + p => CMake: Configure => enter
-            // ....
-        } catch (ShaderLoadingException& e) {
-            std::cerr << e.what() << std::endl;
-        }
-        std::shared_ptr<DrawableMesh> dragon =  scene.create<DrawableMesh>(
+        std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
             Mesh("resources/dragon.obj"),
-            Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl"),
+            Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
+            Shader("shaders/shader.vert.glsl"),
             Texture("resources/checkerboard.png")
-        ); 
-
-        camera = scene.create<Camera>();
-        group = scene.create<Group>();
-        std::shared_ptr<Group> subgroup = scene.create<Group>();
+        );
+        
+        std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
+        		Mesh("resources/platform.obj"),
+        		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
+        		Shader("shaders/shader.vert.glsl"),
+        		Texture("resources/checkerboard.png")
+        		);
+        platform -> translate(glm::vec3(0.0, -1.5, 0.0));
+        scene.add(std::make_shared<DrawableMesh>(*dragon));
+        camera = std::make_shared<Camera>();
+        group = std::make_shared<Group>();
+        auto light = std::make_shared<DrawableLight>(glm::vec3(0, .2, .3), glm::vec3(0, 0, 0));
+        auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(1, 2, 1));
+	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
-        subgroup -> translate(glm::vec3(1, 0, 0));
+        subgroup -> add(light2);
+        light2->rotate(glm::vec3(0, 0, 1.5));
+        subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
-        scene.add(group);
-        scene.add(dragon);
+        scene.addLight(light);
+	    scene.addLight(light2);
+	    scene.add(group);
+		camera->add(light);
         scene.add(camera);
+        scene.add(platform);
+
+        scene.update();
     }
 
     void update()
@@ -89,7 +96,8 @@ public:
         while (!m_window.shouldClose()) {
             m_window.updateInput();
             group -> rotate(glm::vec3(0,0,0.01));
-            camera -> render();
+            scene.update();
+            scene.render(*camera);
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();

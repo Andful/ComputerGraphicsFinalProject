@@ -17,7 +17,7 @@ public:
     Texture() = default;
     Texture(const Texture&) = default;
     Texture(std::filesystem::path filePath);
-    void bind(GLint textureSlot);
+    void bind(GLint textureSlot) const;
 
 private:
     std::shared_ptr<GLuint> m_texture = nullptr;

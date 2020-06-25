@@ -38,7 +38,7 @@ Texture::Texture(std::filesystem::path filePath)
     glTextureParameteri(*m_texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Texture::bind(GLint textureSlot)
+void Texture::bind(GLint textureSlot) const
 {
     glActiveTexture(GL_TEXTURE0 + GLenum(textureSlot));
     glBindTexture(GL_TEXTURE_2D, *m_texture);

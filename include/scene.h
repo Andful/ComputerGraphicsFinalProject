@@ -5,26 +5,22 @@
 #include "drawable.h"
 #include "group.h"
 
-class Scene
+class DrawableLight;
+class Camera;
+
+class Scene: public Drawable 
 {
 private:
-    std::vector<std::shared_ptr<Drawable>> objects;
-    std::shared_ptr<Drawable> root;
+    std::vector<std::shared_ptr<DrawableLight>> lightData;
 
 public:
     Scene();
-    size_t size() const;
-    std::shared_ptr<Drawable> getRoot();
-    void add(const std::shared_ptr<Drawable>& drawable);
-    template<class DRAWABLE,class ...Args>
-    std::shared_ptr<DRAWABLE> create(Args... args)
-    {   
-        std::shared_ptr<DRAWABLE> result = std::make_shared<DRAWABLE>(args...);
-        result -> index = int(objects.size());
-        result -> scene = this;
-        objects.push_back(result);
-        return result;
-    }
+    const std::vector<std::shared_ptr<DrawableLight>>& getLightData() const;
+    void addLight(std::shared_ptr<DrawableLight> light);
+    void draw(const ICamera& camera, const Scene& scene, const DrawableLight& light) const;
+	void drawDepth(const ICamera& camera,const Scene& scene) const;
+    using Drawable::update;
+    void update();
 
-    friend Drawable;
+	void render(ICamera& camera) const;
 };

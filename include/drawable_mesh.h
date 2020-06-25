@@ -9,13 +9,18 @@
 #include "mesh.h"
 #include "shader.h"
 #include "texture.h"
+#include "camera.h"
+#include "drawable_light.h"
 
 class DrawableMesh : public Drawable {
 private:
     Mesh mesh;
     Shader shader;
     Texture texture;
+    Shader vertexShader;
 public:
-    DrawableMesh(const Mesh& _mesh, const Shader& _shader, const Texture& _texture);
-    void draw(const glm::mat4& projectionMatrix, const glm::mat4& transform);
+    DrawableMesh(const Mesh& _mesh, const Shader& _shader, const Shader& _vertexShader, const Texture& _texture);
+    void draw(const ICamera& camera, const Scene& scene, const DrawableLight &light) const;
+    void drawDepth(const ICamera &camera, const Scene &scene) const;
+	void drawShadowMap(const Scene &scene, const DrawableLight &light) const;
 };

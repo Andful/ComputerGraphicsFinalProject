@@ -34,9 +34,9 @@ private:
     std::shared_ptr<GLuint> program;
 public:
     Shader();
-    void load(){}
+    void load() const {}
     template<class ...Args>
-    void load(std::filesystem::path shaderFile, Args... args) {
+    void load(std::filesystem::path shaderFile, Args... args) const {
         if (!std::filesystem::exists(shaderFile)) {
             throw ShaderLoadingException(fmt::format("File {} does not exist", shaderFile.string().c_str()));
         }

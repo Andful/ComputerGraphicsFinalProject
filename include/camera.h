@@ -18,6 +18,6 @@ private:
 public:
 	void updateViewMatrix();
 	void mouseRotate(double, double);
-	glm::mat4 getProjectionMatrix();
+	glm::mat4 getProjectionMatrix() const;
 	void prerender();
 };
