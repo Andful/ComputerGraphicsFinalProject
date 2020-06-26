@@ -66,6 +66,6 @@ void main()
     // Output the color from texture
     float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
     float shadowMul = texture(texShadow, shadowMapCoord) * dist;
-    outColor = texture( tex_toon , vec2(final_brightness.x, abs(dist_to_frag - 0.2) ));
+    outColor = texture( tex_toon , vec2(final_brightness.x * shadowMul, abs(dist_to_frag - 0.2) ));
     //    outColor = vec4(abs(vec3(dist_to_frag - 0.2)), 1.0);
 }
