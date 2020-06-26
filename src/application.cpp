@@ -63,6 +63,15 @@ public:
             Texture("resources/toon_map.png"),
             Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
         );
+	    std::shared_ptr<DrawableMesh> dragon2 =  std::make_shared<DrawableMesh>(
+			    Mesh("resources/dragon.obj"),
+			    Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
+			    Shader("shaders/shader.vert.glsl"),
+			    Texture("resources/checkerboard.png"),
+			    Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
+			    Texture("resources/toon_map.png"),
+			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
+	    );
         
         std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
         		Mesh("resources/platform.obj"),
@@ -86,7 +95,7 @@ public:
         platformSideways->translate(glm::vec3(0, 0, 0));
         platformSideways->rotate(glm::vec3(1.5, 0, 0));
         platformSideways->scaling(glm::vec3(0.7, .7, .7));
-        scene.add(std::make_shared<DrawableMesh>(*dragon));
+        scene.add(dragon2);
         camera = std::make_shared<Camera>(1024,1024);
         group = std::make_shared<Group>();
         auto light = std::make_shared<DrawableLight>(glm::vec3(0, .2, .3), glm::vec3(0, 0, 0));

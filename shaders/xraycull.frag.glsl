@@ -2,12 +2,12 @@
 #extension GL_ARB_explicit_uniform_location : require
 
 layout(location = 3) uniform sampler2DShadow viewShadow;
-layout(location = 4) uniform mat4 viewMVP;
+layout (location = 4) uniform mat4 mvp;
 
 in vec3 fragPosition; // World-space position
 layout(location = 0) out vec4 outColor;
 void main() {
-    vec4 viewCoord = viewMVP * vec4(fragPosition, 1.0);
+    vec4 viewCoord = mvp * vec4(fragPosition, 1.0);
     viewCoord.xyz /= viewCoord.w;
     viewCoord.xyz = viewCoord.xyz *0.5 + 0.5;
     vec3 viewMapCoord = viewCoord.xyz;

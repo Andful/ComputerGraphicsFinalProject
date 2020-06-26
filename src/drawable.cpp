@@ -91,7 +91,7 @@ void Drawable::renderShadow(const Scene &scene, const DrawableLight &light) cons
 void Drawable::xRayCull(const Camera &camera, const Scene &scene) const
 {
 	this->drawXRayCull(camera, scene);
-	for(const auto &child : this->children) child->drawXRayCull(camera, scene);
+	for(const auto &child : this->children) child->xRayCull(camera, scene);
 }
 
 void Drawable::update(const glm::mat4& transform, Scene& scene) {

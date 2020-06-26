@@ -19,20 +19,21 @@ void Scene::render(Camera &camera) const
 	{
 		camera.prerender();
 		//render depth buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, camera.getFramebuffer());
 		glDepthMask(GL_TRUE);
 		glDepthFunc(GL_LEQUAL);
 		glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
-		glBindFramebuffer(GL_FRAMEBUFFER, camera.getFramebuffer());
 		glClearDepth(1.0);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		this->renderDepth(camera, *this);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClearDepth(1.0);
-		glClear(GL_DEPTH_BUFFER_BIT);
+
 		glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
 		glDepthMask(GL_TRUE);
 		glDepthFunc(GL_LEQUAL);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearDepth(1.0);
+		glClear(GL_DEPTH_BUFFER_BIT);
 		this->xRayCull(camera, *this);
 	}
 	else
