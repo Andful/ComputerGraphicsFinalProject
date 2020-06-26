@@ -6,7 +6,7 @@
 class Group : public Drawable
 {
 public:
-    void draw(const ICamera&, const Scene& scene, const DrawableLight &light) const;
+    void draw(const Camera&, const Scene& scene, const DrawableLight &light) const;
 
-	void drawDepth(const ICamera &projection, const Scene &scene) const;
+	void drawDepth(const Camera &projection, const Scene &scene) const;
 };

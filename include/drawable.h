@@ -7,7 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp> 
 
-class ICamera;
+class Camera;
 class Scene;
 class DrawableLight;
 
@@ -39,19 +39,18 @@ public:
     glm::vec3 getScale() const;
     glm::vec3 getWorldPosition() const;
     void add(std::shared_ptr<Drawable> child);
-    virtual void draw(const ICamera& projection, const Scene& scene, const DrawableLight &light) const = 0;
-    virtual void drawDepth(const ICamera &projection, const Scene &scene) const = 0;
+    virtual void draw(const Camera& projection, const Scene& scene, const DrawableLight &light) const = 0;
+    virtual void drawDepth(const Camera &projection, const Scene &scene) const = 0;
 	virtual void drawShadowMap(const Scene &scene, const DrawableLight &light) const;
-    void render(const ICamera& camera, const Scene& scene, const DrawableLight &light) const;
+    void render(const Camera &camera, const Scene& scene, const DrawableLight &light) const;
     void renderShadow(const Scene&, const DrawableLight&) const;
     virtual void update(const glm::mat4& transform, Scene& scene);
     glm::mat4 getTransform() const;
     glm::mat4 getInverseTransform() const;
     glm::mat4 getInverseWorldTransform() const;
     virtual ~Drawable();
-    friend ICamera;
+    friend Camera;
 
-	void renderDepth(const ICamera &camera, const Scene &scene) const;
+	void renderDepth(const Camera &camera, const Scene &scene) const;
 };
-#include "icamera.h"
 #include "scene.h"

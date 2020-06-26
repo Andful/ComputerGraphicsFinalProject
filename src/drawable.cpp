@@ -67,7 +67,7 @@ glm::vec3 Drawable::getScale() const
     return this->scale;
 }
 
-void Drawable::render(const ICamera& camera, const Scene& scene, const DrawableLight &light) const
+void Drawable::render(const Camera& camera, const Scene& scene, const DrawableLight &light) const
 {
     this -> draw(camera, scene, light);
     for (const auto &child: this->children)
@@ -76,7 +76,7 @@ void Drawable::render(const ICamera& camera, const Scene& scene, const DrawableL
     }
 }
 
-void Drawable::renderDepth(const ICamera &camera, const Scene &scene) const
+void Drawable::renderDepth(const Camera &camera, const Scene &scene) const
 {
 	this->drawDepth(camera, scene);
 	for(const auto &child : this->children) child->renderDepth(camera, scene);

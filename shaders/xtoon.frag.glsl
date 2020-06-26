@@ -16,6 +16,12 @@ layout(location = 10) uniform vec3 kd;
 
 
 
+layout(location = 11) uniform sampler2DShadow texShadow;
+layout(location = 12) uniform mat4 lightMVP;
+
+layout(location = 13) uniform sampler2DShadow viewShadow;
+layout(location = 14) uniform mat4 viewMVP;
+
 // Output for on-screen color
 layout(location = 0) out vec4 outColor;
 
@@ -27,9 +33,26 @@ in vec2 fragTexCoord; // text coord
 
 void main()
 {
-      // get normalized light vector 
-    vec3 lamb_comp = normalize( fragPosition - light_pos);
+    vec4 viewCoord = viewMVP * vec4(fragPosition, 1.0);
+    viewCoord.xyz /= viewCoord.w;
+    viewCoord.xyz = viewCoord.xyz *0.5 + 0.5;
+    vec3 viewMapCoord = viewCoord.xyz;
+    viewMapCoord.z -=.001;
+    float distView = pow(max(1 - 2 * length(viewCoord.xy - vec2(0.5)), 0.f), 0.5);
+    //here we check whether it's not occluded by the view.  if not, then we discard it.
+    //if (texture(viewShadow, viewMapCoord)  > 0 && distView > .5) discard;
 
+
+    vec4 fragLightCoord = lightMVP * vec4(fragPosition, 1.0);
+    fragLightCoord.xyz /= fragLightCoord.w;
+    fragLightCoord.xyz = fragLightCoord.xyz *0.5 + 0.5;
+    vec3 shadowMapCoord = fragLightCoord.xyz;
+    shadowMapCoord.z -=.01;
+
+
+
+    // get normalized light vector
+    vec3 lamb_comp = normalize( fragPosition - light_pos);
     // compute lambertian surface color N.L* C* kd
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
 
@@ -53,6 +76,8 @@ void main()
 
     float dist_to_frag =  distance(camera_pos , fragPosition)  / length(1.25 * camera_pos); 
     // Output the color from texture
+    float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
+    float shadowMul = texture(texShadow, shadowMapCoord) * dist;
     outColor = texture( tex_toon , vec2(final_brightness.x, abs(dist_to_frag - 0.2) ));
     //    outColor = vec4(abs(vec3(dist_to_frag - 0.2)), 1.0);
 }
