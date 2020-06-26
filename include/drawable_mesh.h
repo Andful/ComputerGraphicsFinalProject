@@ -27,4 +27,6 @@ public:
     void draw(const Camera& camera, const Scene& scene, const DrawableLight &light) const;
     void drawDepth(const Camera &camera, const Scene &scene) const;
 	void drawShadowMap(const Scene &scene, const DrawableLight &light) const;
+
+	void drawXRayCull(const Camera &camera, const Scene &scene) const;
 };

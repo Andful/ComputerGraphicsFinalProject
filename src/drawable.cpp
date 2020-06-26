@@ -88,6 +88,12 @@ void Drawable::renderShadow(const Scene &scene, const DrawableLight &light) cons
 	for(const auto &child : this->children) child->renderShadow(scene, light);
 }
 
+void Drawable::xRayCull(const Camera &camera, const Scene &scene) const
+{
+	this->drawXRayCull(camera, scene);
+	for(const auto &child : this->children) child->drawXRayCull(camera, scene);
+}
+
 void Drawable::update(const glm::mat4& transform, Scene& scene) {
     this -> world_transform = transform*this->getTransform();
     for (std::shared_ptr<Drawable> &child: this->children)
@@ -132,4 +138,8 @@ void Drawable::add(std::shared_ptr<Drawable> child)
 }
 
 Drawable::~Drawable() {}
+
+void Drawable::drawXRayCull(const Camera &camera, const Scene &scene) const
+{
+}
 

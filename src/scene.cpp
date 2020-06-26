@@ -15,16 +15,39 @@ Scene::Scene()
 
 void Scene::render(Camera &camera) const
 {
-	camera.prerender();
-	//render depth buffer
-	glDepthMask(GL_TRUE);
-	glDepthFunc(GL_LEQUAL);
-	glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
-	glBindFramebuffer(GL_FRAMEBUFFER, camera.getFramebuffer());
-	glClearDepth(1.0);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	this->renderDepth(camera, *this);
+	if(this->useXRay)
+	{
+		camera.prerender();
+		//render depth buffer
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);
+		glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
+		glBindFramebuffer(GL_FRAMEBUFFER, camera.getFramebuffer());
+		glClearDepth(1.0);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		this->renderDepth(camera, *this);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearDepth(1.0);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);
+		this->xRayCull(camera, *this);
+	}
+	else
+	{
+		camera.prerender();
+		//render depth buffer
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);
+		glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
+		glBindFramebuffer(GL_FRAMEBUFFER,0);
+		glClearDepth(1.0);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		this->renderDepth(camera, *this);
+	}
+
 	//this->renderShadow(*this, Camera)
 
 	//render each light in sequence.

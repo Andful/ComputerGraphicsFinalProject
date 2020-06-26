@@ -22,49 +22,36 @@ void DrawableMesh::drawShadowMap(const Scene &scene, const DrawableLight &light)
 
 void DrawableMesh::drawDepth(const Camera &camera, const Scene &scene) const
 {
-	//xray calculations need to be done when we generate depth info or else bad juju will occur.
-	if (scene.useXRay)
-	{
-		vertexShader.bind();
-		glBindFramebuffer(GL_FRAMEBUFFER, camera.getFramebuffer());
-		glEnable(GL_DEPTH_TEST);
-		glViewport(0, 0, camera.getWidth(), camera.getHeight());
-		mesh.draw();
-
-		//now we will make the actual depth buffer by removing stuff from the first round.
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		xRayCullShader.bind();
-		glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(
-				camera.getProjectionMatrix() * camera.getInverseWorldTransform() * world_transform));
-		glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(world_transform));
-		glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(world_transform))));
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, camera.getTexShadow());
-		glUniform1i(3, 1); //this is very bad please fix
-		mesh.draw();
-	}
-	else
-	{
 		vertexShader.bind();
 		glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(
 				camera.getProjectionMatrix() * camera.getInverseWorldTransform() * world_transform));
 		glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(world_transform));
 		glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(world_transform))));
 		mesh.draw();
-	}
-
-
 }
+
+void DrawableMesh::drawXRayCull(const Camera &camera, const Scene &scene) const
+{
+	//now we will make the actual depth buffer by removing stuff from the first round.
+	xRayCullShader.bind();
+	glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(
+			camera.getProjectionMatrix() * camera.getInverseWorldTransform() * world_transform));
+	glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(world_transform));
+	glUniformMatrix3fv(2, 1, GL_FALSE, glm::value_ptr(glm::inverseTranspose(glm::mat3(world_transform))));
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, camera.getTexShadow());
+	glUniform1i(3, 1); //this is very bad please fix
+	glUniformMatrix4fv(4, 1, GL_FALSE, glm::value_ptr(
+			camera.getProjectionMatrix() * camera.getInverseWorldTransform() * world_transform));
+	mesh.draw();
+}
+
 void DrawableMesh::draw(const Camera& camera, const Scene& scene, const DrawableLight &light) const
 {
 	//Decide whether or not to use the special xray shader.
 	if(scene.useXRay)
 	{
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D,  camera.getTexShadow());
 		xRayShader.bind();
-		glUniform1i(13, 2);
-		glUniformMatrix4fv(14, 1, GL_FALSE, glm::value_ptr(camera.getProjectionMatrix() * camera.getInverseWorldTransform() * world_transform));
 		xToonTex.bind(0);
 		glUniform1i(3, 0);
 	}
