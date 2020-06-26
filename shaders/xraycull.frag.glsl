@@ -16,6 +16,4 @@ void main() {
     //here we check whether it's not occluded by the view.  if not, then we discard it.
     if (texture(viewShadow, viewMapCoord) > 0) discard;
     //this is just for test purposes
-    outColor = vec4(1, 1, 1, 1);
-
 }

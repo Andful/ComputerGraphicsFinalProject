@@ -15,6 +15,8 @@ Scene::Scene()
 
 void Scene::render(Camera &camera) const
 {
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	if(this->useXRay)
 	{
 		camera.prerender();
@@ -62,7 +64,7 @@ void Scene::render(Camera &camera) const
 		Drawable::renderShadow(*this, *light);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		glViewport(0, 0, 1024, 1024);
+		glViewport(0, 0, camera.getWidth(), camera.getHeight());
 		//call parent function to start the render chain
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Enable color writes.
 		glDepthMask(GL_FALSE); // Disable depth writes.

@@ -27,7 +27,7 @@ void Camera::prerender()
 
 glm::mat4 Camera::getProjectionMatrix() const
 {
-	return glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
+	return glm::perspective(glm::radians(80.0f), 1.0f, 0.01f, 30.0f);
 }
 
 int Camera::getWidth() const
