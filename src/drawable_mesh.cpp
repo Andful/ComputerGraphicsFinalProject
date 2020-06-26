@@ -42,7 +42,7 @@ void DrawableMesh::drawXRayCull(const Camera &camera, const Scene &scene) const
 	glBindTexture(GL_TEXTURE_2D, camera.getTexShadow());
 	glUniform1i(3, 1); //this is very bad please fix
 	glUniformMatrix4fv(4, 1, GL_FALSE, glm::value_ptr(
-			camera.getProjectionMatrix() * camera.getInverseWorldTransform() * world_transform));
+			camera.getProjectionMatrix() * camera.getInverseWorldTransform()));
 	mesh.draw();
 }
 
