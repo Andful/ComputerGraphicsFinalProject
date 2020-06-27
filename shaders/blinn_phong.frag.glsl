@@ -44,7 +44,7 @@ void main()
     fragLightCoord.xyz = fragLightCoord.xyz *0.5 + 0.5;
     float fragLightDepth = fragLightCoord.z;
     vec3 shadowMapCoord = fragLightCoord.xyz;
-    shadowMapCoord.z -=.001;
+    shadowMapCoord.z -=.0002;
 
     //if(abs(fragLightDepth - shadowMapDepth) > .0001) outColor = vec4(0,0,0, 1);
 

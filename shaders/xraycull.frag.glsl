@@ -11,7 +11,7 @@ void main() {
     viewCoord.xyz /= viewCoord.w;
     viewCoord.xyz = viewCoord.xyz *0.5 + 0.5;
     vec3 viewMapCoord = viewCoord.xyz;
-    viewMapCoord.z -=.001;
+    viewMapCoord.z -=.0002;
     float distView = pow(max(1 - 2 * length(viewCoord.xy - vec2(0.5)), 0.f), 0.5);
     //here we check whether it's not occluded by the view.  if not, then we discard it.
     if (texture(viewShadow, viewMapCoord) > 0 && distView >.5) discard;
