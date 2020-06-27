@@ -58,21 +58,48 @@ public:
             Mesh("resources/dragon.obj"),
             Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
             Shader("shaders/shader.vert.glsl"),
-            Texture("resources/textures/checkerboard.png")
+            Texture("resources/checkerboard.png"),
+            Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
+            Texture("resources/toon_map.png"),
+            Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
         );
+	    std::shared_ptr<DrawableMesh> dragon2 =  std::make_shared<DrawableMesh>(
+			    Mesh("resources/dragon.obj"),
+			    Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
+			    Shader("shaders/shader.vert.glsl"),
+			    Texture("resources/checkerboard.png"),
+			    Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
+			    Texture("resources/toon_map.png"),
+			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
+	    );
         
         std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
         		Mesh("resources/platform.obj"),
         		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
         		Shader("shaders/shader.vert.glsl"),
-        		Texture("resources/textures/checkerboard.png")
+        		Texture("resources/checkerboard.png"),
+		        Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
+		        Texture("resources/toon_map.png"),
+		        Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
         		);
+	    std::shared_ptr<DrawableMesh> platformSideways = std::make_shared<DrawableMesh>(
+			    Mesh("resources/platform.obj"),
+			    Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
+			    Shader("shaders/shader.vert.glsl"),
+			    Texture("resources/checkerboard.png"),
+			    Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
+			    Texture("resources/toon_map.png"),
+			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
+	    );
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
-        scene.add(std::make_shared<DrawableMesh>(*dragon));
-        camera = std::make_shared<Camera>();
+        platformSideways->translate(glm::vec3(0, 0, 0));
+        platformSideways->rotate(glm::vec3(1.5, 0, 0));
+        platformSideways->scaling(glm::vec3(0.7, .7, .7));
+        scene.add(dragon2);
+        camera = std::make_shared<Camera>(1024,1024);
         group = std::make_shared<Group>();
         auto light = std::make_shared<DrawableLight>(glm::vec3(0, .2, .3), glm::vec3(0, 0, 0));
-        auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(1, 2, 1));
+        auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(0, 0, 0));
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
         subgroup -> add(light2);
@@ -80,9 +107,10 @@ public:
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
         scene.addLight(light);
-	    scene.addLight(light2);
+	   scene.addLight(light2);
 	    scene.add(group);
 		camera->add(light);
+		scene.add(platformSideways);
         scene.add(camera);
         scene.add(platform);
 
@@ -134,6 +162,9 @@ public:
     			break;
             case GLFW_KEY_Z:
     			camera -> translate(glm::vec3(0,-1,0));
+    			break;
+    		case GLFW_KEY_X:
+    			scene.toggleXRay();
     			break;
     	}
         //std::cout << "Key pressed: " << key << std::endl;

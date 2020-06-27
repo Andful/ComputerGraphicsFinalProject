@@ -9,8 +9,9 @@
 #include "mesh.h"
 #include "shader.h"
 #include "texture.h"
-#include "camera.h"
 #include "drawable_light.h"
+
+class Camera;
 
 class DrawableMesh : public Drawable {
 private:
@@ -18,9 +19,14 @@ private:
     Shader shader;
     Texture texture;
     Shader vertexShader;
+    Shader xRayShader;
+    Texture xToonTex;
+    Shader xRayCullShader;
 public:
-    DrawableMesh(const Mesh& _mesh, const Shader& _shader, const Shader& _vertexShader, const Texture& _texture);
-    void draw(const ICamera& camera, const Scene& scene, const DrawableLight &light) const;
-    void drawDepth(const ICamera &camera, const Scene &scene) const;
+    DrawableMesh(const Mesh& _mesh, const Shader& _shader, const Shader& _vertexShader, const Texture& _texture, const Shader& xRayShader, const Texture&, const Shader&);
+    void draw(const Camera& camera, const Scene& scene, const DrawableLight &light) const;
+    void drawDepth(const Camera &camera, const Scene &scene) const;
 	void drawShadowMap(const Scene &scene, const DrawableLight &light) const;
+
+	void drawXRayCull(const Camera &camera, const Scene &scene) const;
 };

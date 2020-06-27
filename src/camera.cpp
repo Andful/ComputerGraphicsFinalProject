@@ -9,6 +9,10 @@
 
 #include "camera.h"
 
+Camera::Camera(int x, int y) : LightCamera(x, y)
+{
+}
+
 void Camera::mouseRotate(double degx, double degy)
 {
 	rotate(glm::vec3(-sensitivity*degy , 0 ,-sensitivity*degx));
@@ -24,4 +28,14 @@ void Camera::prerender()
 glm::mat4 Camera::getProjectionMatrix() const
 {
 	return glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 30.0f);
+}
+
+int Camera::getWidth() const
+{
+	return TEX_WIDTH;
+}
+
+int Camera::getHeight() const
+{
+	return TEX_HEIGHT;
 }

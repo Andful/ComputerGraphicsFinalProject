@@ -4,8 +4,8 @@
 #include "drawable_light.h"
 
 
-void Scene::draw(const ICamera& camera,const Scene& scene, const DrawableLight& light) const {}
-void Scene::drawDepth(const ICamera& camera,const Scene& scene) const {}
+void Scene::draw(const Camera& camera,const Scene& scene, const DrawableLight& light) const {}
+void Scene::drawDepth(const Camera& camera,const Scene& scene) const {}
 
 Scene::Scene()
 {
@@ -13,14 +13,45 @@ Scene::Scene()
 	lightData = {};
 }
 
-void Scene::render(ICamera &camera) const
+void Scene::render(Camera &camera) const
 {
-	camera.prerender();
-	//render depth buffer
-	glDepthMask(GL_TRUE);
-	glDepthFunc(GL_LEQUAL);
-	glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
-	this->renderDepth(camera, *this);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	if(this->useXRay)
+	{
+		camera.prerender();
+		//render depth buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, camera.getFramebuffer());
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);
+		glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
+		glClearDepth(1.0);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		this->renderDepth(camera, *this);
+
+
+		glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearDepth(1.0);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		this->xRayCull(camera, *this);
+	}
+	else
+	{
+		camera.prerender();
+		//render depth buffer
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);
+		glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
+		glBindFramebuffer(GL_FRAMEBUFFER,0);
+		glClearDepth(1.0);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		this->renderDepth(camera, *this);
+	}
+
+	//this->renderShadow(*this, Camera)
 
 	//render each light in sequence.
 	for(const auto &light : lightData)
@@ -29,11 +60,11 @@ void Scene::render(ICamera &camera) const
 		glClearDepth(1.0);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
-		glViewport(0, 0, light->TEX_WIDTH, light->TEX_HEIGHT);
+		glViewport(0, 0, light->getWidth(), light->getHeight());
 		Drawable::renderShadow(*this, *light);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		glViewport(0, 0, 1024, 1024);
+		glViewport(0, 0, camera.getWidth(), camera.getHeight());
 		//call parent function to start the render chain
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Enable color writes.
 		glDepthMask(GL_FALSE); // Disable depth writes.
@@ -52,7 +83,7 @@ void Scene::render(ICamera &camera) const
  * This function just adds a light to the light vector, it still needs to be added normally too.
  * Should probably be improved at some point.
  */
-void Scene::addLight(std::shared_ptr<DrawableLight> light)
+void Scene::addLight(const std::shared_ptr<DrawableLight>& light)
 {
 	lightData.push_back(light);
 }
@@ -66,3 +97,5 @@ void Scene::update()
 {
 	Drawable::update(getTransform(), *this);
 }
+
+void Scene::toggleXRay() {useXRay = !useXRay;}
