@@ -23,13 +23,13 @@ private:
 	GLuint ibo, vbo, vao;
 
     std::vector<std::shared_ptr<DrawableLight>> lightData;
-    GLuint framebuffer, depthtexture, colortexture;
+    GLuint framebuffers[2], depthtextures[2], colortextures[2];
     int TEX_WIDTH, TEX_HEIGHT;
     std::vector<std::shared_ptr<Shader>> postShaders = {};
 
 public:
 	bool useXRay = true;
-
+	int samples = 0;
     Scene(int, int);
     const std::vector<std::shared_ptr<DrawableLight>>& getLightData() const;
     void addLight(const std::shared_ptr<DrawableLight>& light);

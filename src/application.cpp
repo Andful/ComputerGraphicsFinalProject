@@ -53,6 +53,7 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
+        scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxinverse.frag.glsl"));
         scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxtest.frag.glsl"));
 
         std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
@@ -167,6 +168,13 @@ public:
     		case GLFW_KEY_X:
     			scene.toggleXRay();
     			break;
+    		case GLFW_KEY_M:
+    			scene.samples++;
+    			break;
+    		case GLFW_KEY_N:
+    			if(scene.samples >0) scene.samples--;
+    			break;
+
     	}
         //std::cout << "Key pressed: " << key << std::endl;
     }
