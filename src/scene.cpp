@@ -128,7 +128,6 @@ void Scene::render(Camera &camera) const
 	glDisable(GL_CULL_FACE);
 	//postfx time!
 	glBindVertexArray(vao);
-	glActiveTexture(GL_TEXTURE1);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDisable(GL_DEPTH_TEST);
 	//these should all be screen sized so let's not change the viewport constantly.
@@ -138,8 +137,11 @@ void Scene::render(Camera &camera) const
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffers[(i+1)%2]);
 		postShaders[i]->bind();
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, colortextures[i%2]);
 		glUniform1i(0, 1);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, depthtextures[i%2]);
 		glUniform2fv(1, 1, glm::value_ptr(glm::vec2(TEX_WIDTH, TEX_HEIGHT)));
 		glUniform1i(2, samples);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -150,7 +152,10 @@ void Scene::render(Camera &camera) const
 	glBindTexture(GL_TEXTURE_2D, colortextures[i % 2]);
 	glUniform1i(0, 1);
 	glUniform2fv(1, 1, glm::value_ptr(glm::vec2(TEX_WIDTH, TEX_HEIGHT)));
-	glUniform1i(2, samples);
+	//glUniform1i(2, samples);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, depthtextures[i%2]);
+	glUniform1i(3, 2);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 

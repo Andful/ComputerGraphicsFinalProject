@@ -53,7 +53,7 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
-        scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxinverse.frag.glsl"));
+      //  scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxinverse.frag.glsl"));
         scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxtest.frag.glsl"));
 
         std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
