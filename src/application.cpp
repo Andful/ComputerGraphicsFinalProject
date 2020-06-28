@@ -38,7 +38,7 @@ private:
 public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
-        oldCPos(0)
+        oldCPos(0), scene(1024, 1024)
     {
         m_window.registerKeyCallback([this](int key, int scancode, int action, int mods) {
             if (action == GLFW_PRESS || action == GLFW_REPEAT)
@@ -53,6 +53,7 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
+        scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxtest.frag.glsl"));
 
         std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
             Mesh("resources/dragon.obj"),
