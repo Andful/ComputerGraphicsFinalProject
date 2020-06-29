@@ -16,9 +16,10 @@ class Texture {
 public:
     Texture() = default;
     Texture(const Texture&) = default;
-    Texture(std::filesystem::path filePath);
+    Texture(std::filesystem::path filePath, bool is_cubemap = false);
     void bind(GLint textureSlot) const;
 
 private:
     std::shared_ptr<GLuint> m_texture = nullptr;
+    bool is_cubemap = false;
 };
