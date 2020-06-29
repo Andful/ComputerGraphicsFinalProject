@@ -60,18 +60,18 @@ public:
             Mesh("resources/dragon.obj"),
             Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
             Shader("shaders/shader.vert.glsl"),
-            Texture("resources/checkerboard.png"),
+            Texture("resources/textures/checkerboard.png"),
             Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
-            Texture("resources/toon_map.png"),
+            Texture("resources/textures/toon_map.png"),
             Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
         );
 	    std::shared_ptr<DrawableMesh> dragon2 =  std::make_shared<DrawableMesh>(
 			    Mesh("resources/dragon.obj"),
 			    Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
 			    Shader("shaders/shader.vert.glsl"),
-			    Texture("resources/checkerboard.png"),
+			    Texture("resources/textures/checkerboard.png"),
 			    Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
-			    Texture("resources/toon_map.png"),
+			    Texture("resources/textures/toon_map.png"),
 			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
 	    );
         
@@ -79,18 +79,18 @@ public:
         		Mesh("resources/platform.obj"),
         		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
         		Shader("shaders/shader.vert.glsl"),
-        		Texture("resources/checkerboard.png"),
+        		Texture("resources/textures/checkerboard.png"),
 		        Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
-		        Texture("resources/toon_map.png"),
+		        Texture("resources/textures/toon_map.png"),
 		        Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
         		);
 	    std::shared_ptr<DrawableMesh> platformSideways = std::make_shared<DrawableMesh>(
 			    Mesh("resources/platform.obj"),
 			    Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
 			    Shader("shaders/shader.vert.glsl"),
-			    Texture("resources/checkerboard.png"),
+			    Texture("resources/textures/checkerboard.png"),
 			    Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
-			    Texture("resources/toon_map.png"),
+			    Texture("resources/textures/toon_map.png"),
 			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
 	    );
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));

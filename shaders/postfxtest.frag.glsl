@@ -13,13 +13,13 @@ void main() {
     int total = 0;
     float refDepth = texture(imageDepth, vec2(.5,.5)).x;
     float thisDepth = texture(imageDepth, fragTexCoord.xy).x;
-    int SAMPLES = int(floor(abs(refDepth-thisDepth) * 50));
+    int SAMPLES = int(floor(abs(refDepth-thisDepth) * 12));
     for(int i = -SAMPLES; i <= SAMPLES; i++)
     {
         for(int j = -SAMPLES; j <=SAMPLES; j++)
         {
             vec2 offset = vec2(i/imageSize.x, j/imageSize.y);
-            color += texture(imageTex, fragTexCoord.xy + offset).xyz;
+            color += texture(imageTex, fragTexCoord.xy + offset*4).xyz;
             total++;
         }
     }
