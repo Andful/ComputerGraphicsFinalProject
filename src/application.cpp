@@ -3,13 +3,16 @@
 // Always include window first (because it includes glfw, which includes GL which needs to be included AFTER glew).
 // Can't wait for modules to fix this stuff...
 #include "disable_all_warnings.h"
-#include "mesh.h"
-#include "shader.h"
-#include "texture.h"
-#include "camera.h"
-#include "drawable.h"
-#include "scene.h"
-#include "drawable_mesh.h"
+#include "gl/shader.h"
+#include "gl/texture.h"
+#include "prospective_camera.h"
+#include "util3D/geometry.h"
+#include "util3D/scene.h"
+#include "util3D/mesh.h"
+#include "util3D/group.h"
+#include "util3D/directional_light.h"
+#include "materials/solid_color_material.h"
+#include "materials/blinn_phong_material.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -33,8 +36,8 @@ private:
 	mouse_status mouse_movement = MOUSE_DISABLED;
     glm::dvec2 oldCPos;
     Scene scene;
-    std::shared_ptr<Camera> camera;
-    std::shared_ptr<Drawable> group;
+    std::shared_ptr<ProspectiveCamera> camera;
+    std::shared_ptr<Transformable> group;
 public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
@@ -54,35 +57,36 @@ public:
                 onMouseReleased(button, mods);
         });
 
-        std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
-            Mesh("resources/dragon.obj"),
-            Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
-            Shader("shaders/shader.vert.glsl"),
-            Texture("resources/checkerboard.png")
+
+        std::shared_ptr<Geometry> dragon_geometry = std::make_shared<Geometry>("resources/dragon.obj");
+        std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));
+        std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, glm::vec3(0.4, 0.4, 0.4));
+        std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
+            dragon_geometry,
+            solid_material
         );
         
-        std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
-        		Mesh("resources/platform.obj"),
-        		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
-        		Shader("shaders/shader.vert.glsl"),
-        		Texture("resources/checkerboard.png")
-        		);
+        std::shared_ptr<Mesh> platform = std::make_shared<Mesh>(
+        	std::make_shared<Geometry>("resources/platform.obj"),
+        	solid_material
+        );
+
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
-        scene.add(std::make_shared<DrawableMesh>(*dragon));
-        camera = std::make_shared<Camera>();
+        auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
+        scene.add(new_dragon);
+        camera = std::make_shared<ProspectiveCamera>();
         group = std::make_shared<Group>();
-        auto light = std::make_shared<DrawableLight>(glm::vec3(0, .2, .3), glm::vec3(0, 0, 0));
-        auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(1, 2, 1));
+        auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(1.0, 1.0, 1.0), glm::ivec2(500, 500));
+        //auto light2 = std::make_shared<SpotLight>(glm::vec3(.3, .1, 0));
+        camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
-        subgroup -> add(light2);
-        light2->rotate(glm::vec3(0, 0, 1.5));
+        //subgroup -> add(light2);
+        //light2->rotate(glm::vec3(0, 0, 1.5));
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
-        scene.addLight(light);
-	    scene.addLight(light2);
 	    scene.add(group);
-		camera->add(light);
+		//camera->add(light);
         scene.add(camera);
         scene.add(platform);
 
@@ -97,7 +101,7 @@ public:
             m_window.updateInput();
             group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
-            scene.render(*camera);
+            camera -> render();
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();

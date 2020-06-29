@@ -43,21 +43,25 @@ endif()
 include_directories("include/")
 
 add_executable(FinalProject
-	"src/drawable_mesh.cpp"
-	"src/icamera.cpp"
-	"src/camera.cpp"
-    "src/application.cpp"
-    "src/mesh.cpp"
-    "src/texture.cpp"
-    "src/shader.cpp"
-    "src/texture.cpp"
-    "src/window.cpp"
+	"src/prospective_camera.cpp"
+	"src/application.cpp"
+	"src/window.cpp"
 	"src/stb_image.cpp"
-	"src/drawable.cpp"
-	"src/group.cpp"
-	"src/scene.cpp"
-		"src/drawable_light.cpp"
-		"src/LightCamera.cpp")
+	"src/materials/solid_color_material.cpp"
+	"src/materials/blinn_phong_material.cpp"
+    "src/gl/texture.cpp"
+    "src/gl/shader.cpp"
+	"src/gl/framebuffer.cpp"
+	"src/gl/shader_stage.cpp"
+	"src/util3D/geometry.cpp"
+	"src/util3D/material.cpp"
+	"src/util3D/mesh.cpp"
+	"src/util3D/camera.cpp"
+	"src/util3D/transformable.cpp"
+	"src/util3D/light.cpp"
+	"src/util3D/point_light.cpp"
+	"src/util3D/directional_light.cpp"
+	"src/util3D/scene.cpp")
 target_compile_features(FinalProject PRIVATE cxx_std_17)
 target_link_libraries(FinalProject PRIVATE
 	OpenGL::GL GLEW::GLEW
