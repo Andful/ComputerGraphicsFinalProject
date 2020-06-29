@@ -48,7 +48,7 @@ Texture::Texture(std::filesystem::path filePath, bool is_cubemap)
         // this gives path for folder
 
         // Load images from disk to CPU memory.
-        std::string face[6] = {"right.png","left.png", "top.png","bottom.png","back.png", "front.png"};
+        std::string face[6] = {"right.jpg","left.jpg", "top.jpg","bottom.jpg","back.jpg", "front.jpg"};
 
 
 

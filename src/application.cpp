@@ -59,11 +59,11 @@ public:
         std::shared_ptr<DrawableMesh> skybox = std::make_shared<DrawableMesh>(
             Mesh("resources/skybox.obj"),
             Shader("shaders/skybox.vert.glsl", "shaders/skybox.frag.glsl"),
-            NULL,
-            Texture("resources/textures/skybox/"),
-            NULL,
-            NULL,
-            NULL
+            Shader("shaders/skybox.vert.glsl"),
+            Texture("resources/textures/skybox/", true),
+            Shader("shaders/skybox.vert.glsl", "shaders/skybox.frag.glsl"),
+            Texture("resources/textures/toon_map.png"),
+            Shader("shaders/shader.vert.glsl")
         );
 
         std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
