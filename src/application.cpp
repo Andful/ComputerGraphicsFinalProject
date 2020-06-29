@@ -54,6 +54,16 @@ public:
                 onMouseReleased(button, mods);
         });
 
+        std::shared_ptr<DrawableMesh> skybox = std::make_shared<DrawableMesh>(
+            Mesh("resources/skybox.obj"),
+            Shader("shaders/skybox.vert.glsl", "shaders/skybox.frag.glsl"),
+            NULL,
+            Texture("resources/textures/skybox/"),
+            NULL,
+            NULL,
+            NULL
+        );
+
         std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
             Mesh("resources/dragon.obj"),
             Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
@@ -91,6 +101,8 @@ public:
 			    Texture("resources/textures/toon_map.png"),
 			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
 	    );
+
+
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
         platformSideways->translate(glm::vec3(0, 0, 0));
         platformSideways->rotate(glm::vec3(1.5, 0, 0));
