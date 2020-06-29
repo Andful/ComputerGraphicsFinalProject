@@ -38,7 +38,7 @@ private:
 public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
-        oldCPos(0)
+        oldCPos(0), scene(1024, 1024)
     {
         m_window.registerKeyCallback([this](int key, int scancode, int action, int mods) {
             if (action == GLFW_PRESS || action == GLFW_REPEAT)
@@ -53,6 +53,8 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
+      //  scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxinverse.frag.glsl"));
+        scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxtest.frag.glsl"));
 
         std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
             Mesh("resources/dragon.obj"),
@@ -100,15 +102,19 @@ public:
         group = std::make_shared<Group>();
         auto light = std::make_shared<DrawableLight>(glm::vec3(0, .2, .3), glm::vec3(0, 0, 0));
         auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(0, 0, 0));
+        auto light3 = std::make_shared<DrawableLight>(glm::vec3(.8, .8,.8), glm::vec3(-1, 10, 1));
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
         subgroup -> add(light2);
         light2->rotate(glm::vec3(0, 0, 1.5));
+        light3->rotate(glm::vec3(-1.5, 0, 0));
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
         scene.addLight(light);
 	    scene.addLight(light2);
 	    scene.add(group);
+        scene.add(light3);
+        scene.addLight(light3);
 		camera->add(light);
 		scene.add(platformSideways);
         scene.add(camera);
@@ -166,6 +172,13 @@ public:
     		case GLFW_KEY_X:
     			scene.toggleXRay();
     			break;
+    		case GLFW_KEY_M:
+    			scene.samples++;
+    			break;
+    		case GLFW_KEY_N:
+    			if(scene.samples >0) scene.samples--;
+    			break;
+
     	}
         //std::cout << "Key pressed: " << key << std::endl;
     }
