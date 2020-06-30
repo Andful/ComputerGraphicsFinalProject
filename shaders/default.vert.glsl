@@ -13,8 +13,8 @@ layout(std140, binding = 1) uniform WorldTransformationMatrix {
 
 layout(std140, binding = 2) uniform LightInformation {
     mat4 light_mvp;
-    vec3 light_position;
     vec3 light_color;
+    vec3 light_position;
     uint casts_shadow;
 };
 
