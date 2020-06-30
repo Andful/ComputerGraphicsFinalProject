@@ -57,9 +57,7 @@ void main()
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
 
     // Clamping values so negative ones do not appear
-    if (lamb_comp.x < 0.0f){
-        lamb_comp = vec3(0.0f);
-    }
+    clamp(lamb_comp, 0, 1);
 
     // calculate specular component ( reflection vector, incident light vec points to surface)
     //vec3 R = reflect( normalize(fragPosition - light_pos) , normalize(fragNormal) );
@@ -68,9 +66,7 @@ void main()
     vec3 H = normalize((normalize(light_position - fragPosition)) + (surf_to_camera));
     // fix for light behind surf
     float dot_p = pow(dot(H, normalize(fragNormal)), shininess);
-    if (dot_p < 0){
-        dot_p = 0;
-    }
+    max(dot_p, 0);
 
     vec3 spec_comp = dot_p * ks;
 
