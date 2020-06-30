@@ -19,6 +19,7 @@ protected:
     LightUniformData data;
 public:
     Light();
+    void updateUniformData() const;
     virtual void bind();
     virtual ~Light() = default;
 };

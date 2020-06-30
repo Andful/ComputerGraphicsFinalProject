@@ -78,7 +78,7 @@ public:
         auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(1.0, 1.0, 1.0), glm::ivec2(500, 500));
         light->rotate(glm::vec3(0, 0, 1.5));
         //auto light2 = std::make_shared<SpotLight>(glm::vec3(.3, .1, 0));
-        //camera -> add(light);
+        camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
         subgroup -> add(light);

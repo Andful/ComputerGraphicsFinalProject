@@ -7,6 +7,9 @@ Light::Light() {
         delete p;
     });
     glCreateBuffers(1, ubo.get());
+}
+
+void Light::updateUniformData() const {
     glBindBuffer(GL_UNIFORM_BUFFER, *ubo);
 	glBufferData(GL_UNIFORM_BUFFER,sizeof(LightUniformData), &data, GL_DYNAMIC_DRAW); 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
