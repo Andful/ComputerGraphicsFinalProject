@@ -13,12 +13,11 @@ class Transformable {
 private:
     glm::vec3 translation;
     glm::vec3 rotation;
+    glm::quat quaternion;
     glm::vec3 scale;
-    void render(std::vector<bool> visited,
-
-        const glm::mat4& transform
-    );
     Scene* scene;
+    void updateRotation();
+    void updateQuaternion();
 protected:
 	std::vector<std::shared_ptr<Transformable>> children;
     glm::mat4 world_transform;
@@ -30,9 +29,11 @@ public:
     void scaling(const glm::vec3& scale);
     virtual void setTranslation(const glm::vec3& translation);
     virtual void setRotation(const glm::vec3& rotation);
+    virtual void setQuaternion(const glm::quat& quaternion);
     virtual void setScale(const glm::vec3& scale);
     glm::vec3 getTranslation() const;
     glm::vec3 getRotation() const;
+    glm::quat getQuaternion() const;
     glm::vec3 getScale() const;
     glm::vec3 getWorldPosition() const;
     void add(std::shared_ptr<Transformable> child);

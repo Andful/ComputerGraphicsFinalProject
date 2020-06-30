@@ -9,6 +9,10 @@ DirectionalLight::DirectionalLight(const glm::mat4& _projectionMatrix, const glm
     dimensions = _dimensions;
 
     texture = Texture(dimensions.x, dimensions.y, GL_DEPTH_COMPONENT32F);
+    texture.set(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    texture.set(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	texture.set(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	texture.set(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     framebuffer = Framebuffer(texture, GL_DEPTH_ATTACHMENT);
 }
 
@@ -33,7 +37,7 @@ void DirectionalLight::addedToScene(Scene& _scene, std::shared_ptr<Transformable
 }
 
 void DirectionalLight::renderMesh(const Scene& _scene, const Mesh& mesh) const {
-    mesh.getShadowShader().bind();
+    mesh.getDepthShader().bind();
     mesh.bind();
     mesh.getGeometry().bind();
     mesh.getGeometry().draw();
@@ -41,12 +45,10 @@ void DirectionalLight::renderMesh(const Scene& _scene, const Mesh& mesh) const {
 
 void DirectionalLight::prerender() {
     framebuffer.bind();
-    glViewport(0, 0, dimensions.x, dimensions.y);
-    glDepthMask(GL_TRUE);
-	glDepthFunc(GL_LEQUAL);
-	glColorMask(GL_FALSE,GL_FALSE, GL_FALSE, GL_FALSE);
-	glClearDepth(1.0);
+    glClearDepth(1.0);
 	glClear(GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	glViewport(0, 0, dimensions.x, dimensions.y);
 }
 
 void DirectionalLight::postrender() {

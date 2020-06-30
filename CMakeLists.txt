@@ -58,6 +58,7 @@ add_executable(FinalProject
 	"src/util3D/mesh.cpp"
 	"src/util3D/camera.cpp"
 	"src/util3D/transformable.cpp"
+	"src/util3D/animator.cpp"
 	"src/util3D/light.cpp"
 	"src/util3D/point_light.cpp"
 	"src/util3D/directional_light.cpp"
@@ -75,9 +76,9 @@ enable_sanitizers(FinalProject)
 set_project_warnings(FinalProject)
 
 # Copy all files in the resources folder to the build directory after every successful build.
-#add_custom_command(TARGET FinalProject POST_BUILD
-#	COMMAND ${CMAKE_COMMAND} -E copy_directory
-#	"${CMAKE_CURRENT_LIST_DIR}/resources/" "$<TARGET_FILE_DIR:FinalProject>/resources/")
+add_custom_command(TARGET FinalProject POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	"${CMAKE_CURRENT_LIST_DIR}/resources/" "$<TARGET_FILE_DIR:FinalProject>/resources/")
 
 # We would like to copy the files when they changed. Even if no *.cpp files were modified (and
 # thus no build is triggered). We tell CMake that the executable depends on the shader files in

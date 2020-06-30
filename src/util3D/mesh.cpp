@@ -9,7 +9,7 @@ Mesh::Mesh(const Mesh& mesh) : Transformable(mesh) {
 	geometry = mesh.geometry;
 	material = mesh.material;
 	shader = mesh.shader;
-	shadowShader = mesh.shadowShader;
+	depthShader = mesh.depthShader;
 	data = mesh.data;
 	ubo = std::unique_ptr<GLuint, std::function<void(GLuint*)>>(new GLuint(), [](GLuint* p){
         glDeleteBuffers(1, p);
@@ -34,7 +34,7 @@ Mesh::Mesh(const std::shared_ptr<Geometry>& _geometry,const std::shared_ptr<Mate
     geometry = _geometry;
 	material = _material;
 	shader = Shader(geometry->getVertexShader(), material -> getFragmentShader());
-	shadowShader = Shader(geometry->getVertexShader());
+	depthShader = Shader(geometry->getVertexShader());
 }
 
 const Geometry& Mesh::getGeometry() const {
@@ -49,8 +49,8 @@ const Shader& Mesh::getShader() const {
 	return shader;
 }
 
-const Shader& Mesh::getShadowShader() const {
-	return shadowShader;
+const Shader& Mesh::getDepthShader() const {
+	return depthShader;
 }
 
 void Mesh::addedToScene(Scene& _scene, std::shared_ptr<Transformable>& self) {

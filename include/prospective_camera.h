@@ -7,6 +7,8 @@
 
 #include<glm/glm.hpp>
 #include "util3D/camera.h"
+#include "gl/framebuffer.h"
+#include "gl/texture.h"
 
 class Camera;
 
@@ -16,6 +18,8 @@ private:
 	double sensitivity = 0.005;
 	float movementMul = 0.1f;
 	glm::mat4 prospectiveMatrix;
+	Framebuffer framebuffer;
+	Texture texture;
 public:
 	ProspectiveCamera();
 	void updateViewMatrix();
@@ -23,4 +27,5 @@ public:
 	const glm::mat4& getProjectionMatrix() const;
 	void prerender();
 	void renderMesh(const Scene& scene, const Mesh& mesh) const override;
+	void postrender() override;
 };

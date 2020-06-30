@@ -32,7 +32,7 @@ layout(std140, binding = 4) uniform MaterialParameters {
     3...
 };
 
-layout(location = 0) uniform sampler2D colorMap;
+layout(location = 0) uniform sampler2D textureColor;
 layout(location = 1) uniform sampler2DShadow texShadow;
 
 out vec3 fragPosition;

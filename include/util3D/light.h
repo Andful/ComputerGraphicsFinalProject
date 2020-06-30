@@ -4,8 +4,8 @@
 #include <functional>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-
 #include "util3D/transformable.h"
+
 typedef struct alignas(16) _LightUniformData {
     glm::vec3 light_position;
     glm::vec3 light_color;

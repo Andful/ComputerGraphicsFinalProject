@@ -21,9 +21,18 @@ Transformable::Transformable(const Transformable& transformable) : scene(nullptr
     this -> scale = transformable.scale;
 }
 
+void Transformable::updateRotation() {
+    rotation  = glm::eulerAngles(quaternion); 	
+}
+
+void Transformable::updateQuaternion() {
+    quaternion = glm::quat(rotation);
+}
+
 void Transformable::rotate(const glm::vec3& _rotation)
 {
-    this->rotation += _rotation;
+    rotation += _rotation;
+    updateQuaternion();
 }
 
 void Transformable::translate(const glm::vec3& _translation)
@@ -44,6 +53,12 @@ void Transformable::setTranslation(const glm::vec3& _translation)
 void Transformable::setRotation(const glm::vec3& _rotation)
 {
     this->rotation = _rotation;
+    updateQuaternion();
+}
+
+void Transformable::setQuaternion(const glm::quat& _quaternion) {
+    quaternion = _quaternion;
+    updateRotation();
 }
 
 void Transformable::setScale(const glm::vec3& _scale)

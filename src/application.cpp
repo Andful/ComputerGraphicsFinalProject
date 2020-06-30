@@ -57,7 +57,6 @@ public:
                 onMouseReleased(button, mods);
         });
 
-
         std::shared_ptr<Geometry> dragon_geometry = std::make_shared<Geometry>("resources/dragon.obj");
         std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));
         std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, glm::vec3(0.4, 0.4, 0.4));
@@ -77,10 +76,12 @@ public:
         camera = std::make_shared<ProspectiveCamera>();
         group = std::make_shared<Group>();
         auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(1.0, 1.0, 1.0), glm::ivec2(500, 500));
+        light->rotate(glm::vec3(0, 0, 1.5));
         //auto light2 = std::make_shared<SpotLight>(glm::vec3(.3, .1, 0));
-        camera -> add(light);
+        //camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
+        subgroup -> add(light);
         //subgroup -> add(light2);
         //light2->rotate(glm::vec3(0, 0, 1.5));
         subgroup -> translate(glm::vec3(2, 0, 0));

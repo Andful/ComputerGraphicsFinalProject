@@ -20,14 +20,14 @@ private:
     std::shared_ptr<Geometry> geometry;
     std::shared_ptr<Material> material;
     Shader shader;
-    Shader shadowShader;
+    Shader depthShader;
 public:
     Mesh(const Mesh& mesh);
     Mesh(const std::shared_ptr<Geometry>& _geometry,const std::shared_ptr<Material>& material);
     const Geometry& getGeometry() const;
     const Material& getMaterial() const;
     const Shader& getShader() const;
-    const Shader& getShadowShader() const;
+    const Shader& getDepthShader() const;
     void addedToScene(Scene& _scene, std::shared_ptr<Transformable>& self) override;
     void update(const glm::mat4& transform) override;
     void bind() const;
