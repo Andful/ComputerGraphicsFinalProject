@@ -58,7 +58,7 @@ add_executable(FinalProject
 	"src/util3D/mesh.cpp"
 	"src/util3D/camera.cpp"
 	"src/util3D/transformable.cpp"
-	"src/util3D/animator.cpp"
+	#"src/util3D/animator.cpp"
 	"src/util3D/light.cpp"
 	"src/util3D/point_light.cpp"
 	"src/util3D/directional_light.cpp"

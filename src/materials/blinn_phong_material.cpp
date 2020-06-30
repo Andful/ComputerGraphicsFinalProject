@@ -24,6 +24,7 @@ GLsizeiptr BlinnPhongMaterial::getUniformDataSize() const {
 void BlinnPhongMaterial::draw(const Scene& scene, const Geometry& geometry) const {
     //glViewport(0, 0, 1024, 500);
 	//call parent function to start the render chain
+    glUniform1i(1, 1);
     for(std::shared_ptr<Light> light : scene.getLights()) {
         light -> bind();
         geometry.draw();

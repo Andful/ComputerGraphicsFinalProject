@@ -19,9 +19,9 @@ void Camera::render() {
     prerender();
     bindCamera();
     const Scene& _scene = getScene();
-    for(const std::shared_ptr<Mesh> mesh : _scene.getMeshes()) {
-        renderMesh(_scene, *mesh);
-    }
+        for (const std::shared_ptr<Mesh> mesh : _scene.getMeshes()) {
+            renderMesh(_scene, *mesh);
+        }
     postrender();
 }
 

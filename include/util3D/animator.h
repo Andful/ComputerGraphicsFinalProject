@@ -9,9 +9,9 @@
 #include "util3D/transformable.h"
 
 typedef struct _TransformSettings {
-    std::optional<std::pait<glm::vec3, glm::vec3>> translatrion;
-    std::optional<std::pait<glm::quat, glm::quat>> rotation;
-    std::optional<std::pait<glm::vec3, glm::vec3>> scaling;
+    std::optional<std::pair<glm::vec3, glm::vec3>> translatrion;
+    std::optional<std::pair<glm::quat, glm::quat>> rotation;
+    std::optional<std::pair<glm::vec3, glm::vec3>> scaling;
 } TransformSettings;
 
 
