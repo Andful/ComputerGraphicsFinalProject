@@ -10,7 +10,7 @@ class Geometry;
 
 typedef struct alignas(16) _WorldTransformationUniformData {
     glm::mat4 world_transform;
-    glm::mat3 normal_transform;
+    glm::mat3x4 normal_transform;
 } WorldTransformationUniformData;
 
 class Mesh : public Transformable {
