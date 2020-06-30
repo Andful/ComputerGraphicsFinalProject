@@ -8,6 +8,8 @@ DirectionalLight::DirectionalLight(const glm::mat4& _projectionMatrix, const glm
     Light::data.light_color = _color;
     dimensions = _dimensions;
 
+    Light::updateUniformData();
+
     texture = Texture(dimensions.x, dimensions.y, GL_DEPTH_COMPONENT32F);
     texture.set(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     texture.set(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -20,9 +22,7 @@ void DirectionalLight::update(const glm::mat4& transform) {
     Camera::update(transform);
     Light::data.light_position = getWorldPosition();
     Light::data.light_mvp = getProjectionMatrix() * getInverseWorldTransform();
-    glBindBuffer(GL_UNIFORM_BUFFER, *(Light::ubo));
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(LightUniformData), static_cast<const void*>(&(Light::data)));
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    Light::updateUniformData();
 }
 
 const glm::mat4& DirectionalLight::getProjectionMatrix() const {

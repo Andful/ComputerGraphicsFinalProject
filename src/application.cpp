@@ -81,6 +81,7 @@ public:
        // light->translate(glm::vec3(1, 1, 0));
         //auto light2 = std::make_shared<SpotLight>(glm::vec3(.3, .1, 0));
        // camera -> add(light2);
+        camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
        // subgroup -> add(light);

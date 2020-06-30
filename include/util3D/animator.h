@@ -1,4 +1,4 @@
-#include <memory>
+/*#include <memory>
 #include <vector>
 #include <map>
 #include <utility>
@@ -19,4 +19,4 @@ class Animator {
     std::vector<std::pair<std::weak_ptr<Transformable>, std::map<float, TransformSettings>>> data;
     void setTime(float time);
     void add(std::weak_ptr<Transfirmable> transformable, std::map<float, TransformSettings> movement);
-}
+}*/
