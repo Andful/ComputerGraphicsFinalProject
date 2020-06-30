@@ -5,7 +5,7 @@
 
 DirectionalLight::DirectionalLight(const glm::mat4& _projectionMatrix, const glm::vec3& _color, const glm::ivec2& _dimensions) {
     projectionMatrix = _projectionMatrix;
-    Light::data.light_color = _color;
+    Light::data.light_color = glm::vec4(_color, 0.5);
     dimensions = _dimensions;
 
     Light::updateUniformData();

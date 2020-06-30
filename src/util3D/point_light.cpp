@@ -5,7 +5,7 @@ PointLight::PointLight() : PointLight(glm::vec3(1.0, 1.0, 1.0)) {}
 
 PointLight::PointLight(const glm::vec3& color) {
     data.casts_shadow = false;
-    data.light_color = color;
+    data.light_color = glm::vec4(color, 0.5);
     Light::updateUniformData();
 }
 

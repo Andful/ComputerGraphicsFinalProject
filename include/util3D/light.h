@@ -8,8 +8,9 @@
 
 typedef struct alignas(16) _LightUniformData {
     glm::mat4 light_mvp;
-    glm::vec3 light_position;
     glm::vec3 light_color;
+    float __pad__;
+    glm::vec3 light_position;
     uint32_t casts_shadow;
 } LightUniformData;
 
