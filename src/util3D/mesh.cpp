@@ -58,11 +58,14 @@ void Mesh::addedToScene(Scene& _scene, std::shared_ptr<Transformable>& self) {
 	_scene.meshes.push_back(std::dynamic_pointer_cast<Mesh>(self));
 }
 
+//#include <iostream>
+//#include <glm/gtx/string_cast.hpp>
 
 void Mesh::update(const glm::mat4& transform) {
 	Transformable::update(transform);
 	data.world_transform = getWorldTransform();
-	data.normal_transform = glm::inverseTranspose(glm::mat3(data.world_transform));
+	data.normal_transform = glm::mat3x4(glm::inverseTranspose(glm::mat3(data.world_transform)));
+	//std::cout << glm::to_string(data.normal_transform) << std::endl;
 	glBindBuffer(GL_UNIFORM_BUFFER, *ubo);
     glBufferSubData(
         GL_UNIFORM_BUFFER,

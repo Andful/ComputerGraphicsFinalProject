@@ -29,7 +29,7 @@ out vec2 fragTexCoord;
 void main()
 {
     gl_Position = mvp * world_transform * vec4(position, 1);
-    
+    mat3 normal_transform = inverse(mat3(world_transform));
     fragPosition = (world_transform * vec4(position, 1)).xyz;
     fragNormal = normal_transform * normal;
     fragTexCoord = texCoord;
