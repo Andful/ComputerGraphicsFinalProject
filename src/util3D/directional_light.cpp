@@ -56,5 +56,6 @@ void DirectionalLight::postrender() {
 }
 
 void DirectionalLight::bind() {
+    Light::bind();
     texture.bind(1);
 }
