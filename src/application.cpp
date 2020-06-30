@@ -74,12 +74,12 @@ public:
         );
 
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
-        auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
-        scene.add(new_dragon);
+        //auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
+        //scene.add(new_dragon);
         camera = std::make_shared<ProspectiveCamera>();
         group = std::make_shared<Group>();
-       // auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(1024, 1024));
-        auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(1.0, 1.0, 1.0), glm::ivec2(500, 500));
+        auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(1024, 1024));
+        auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(500, 500));
        // light->rotate(glm::vec3(1.5, 0,0));
        // light->translate(glm::vec3(1, 1, 0));
         //auto light2 = std::make_shared<SpotLight>(glm::vec3(.3, .1, 0));
@@ -87,8 +87,11 @@ public:
         camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
+        light2->translate(glm::vec3(-1, 10, 1));
+        light2->rotate(glm::vec3(-1.5,0, 0));
+        scene.add(light2);
        // subgroup -> add(light);
-        camera->add(light);
+       // camera->add(light);
         //subgroup -> add(light2);
         //light2->rotate(glm::vec3(0, 0, 1.5));
         subgroup -> translate(glm::vec3(2, 0, 0));
