@@ -40,6 +40,14 @@ private:
     std::shared_ptr<ProspectiveCamera> camera;
     std::shared_ptr<Transformable> group;
     std::shared_ptr<AnimatedGeometry> skin_arachnid;
+    std::shared_ptr<AnimatedGeometry> sea;
+
+
+    std::shared_ptr<Transformable> temple_group;
+    std::shared_ptr<Transformable> gymbal_outer;
+    std::shared_ptr<Transformable> gymbal_mid;
+    std::shared_ptr<Transformable> gymbal_inner;
+
 public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
@@ -68,11 +76,15 @@ public:
         std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));
         std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, 
                                                                                      glm::vec3(0.8, 0.8, 0.8), checkerboardtex, toontex);
-        std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
+
+        auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
+
+
+        /*std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
             dragon_geometry,
             blinn_phong_material
         );
-        auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
+        
         
         std::shared_ptr<Mesh> platform = std::make_shared<Mesh>(
         	std::make_shared<BasicGeometry>("resources/platform.obj"),
@@ -88,7 +100,7 @@ public:
       //  octopus -> translate(glm::vec3(0,3,1));
         //scene.add(octopus);
 
-        platform -> translate(glm::vec3(0.0, -1.5, 0.0));
+       // platform -> translate(glm::vec3(0.0, -1.5, 0.0));
         auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
         scene.add(new_dragon);
         camera = std::make_shared<ProspectiveCamera>();
@@ -97,7 +109,7 @@ public:
         auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
         camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
-        subgroup -> add(dragon);
+        //subgroup -> add(dragon);
         light2->translate(glm::vec3(-1, 5, 1));
         light2->rotate(glm::vec3(-1.5,0, 0));
         scene.add(light2);
@@ -106,7 +118,7 @@ public:
         group -> add(subgroup);
 	    scene.add(group);
         scene.add(camera);
-        scene.add(platform);
+        //scene.add(platform);
         camera->addPostShader(post_dof);
         scene.update();
     }
