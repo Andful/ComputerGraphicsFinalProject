@@ -13,7 +13,7 @@ CubeTexture::CubeTexture(std::filesystem::path filePath)
     // this gives path for folder
 
     // Load images from disk to CPU memory.
-    std::string face[6] = { "right.jpg","left.jpg", "top.jpg","bottom.jpg","back.jpg", "front.jpg" };
+    std::string face[6] = { "right.png","left.png", "top.png","bottom.png","back.png", "front.png" };
 
 
 
@@ -50,5 +50,5 @@ CubeTexture::CubeTexture(std::filesystem::path filePath)
 void CubeTexture::bind(GLint textureSlot) const 
 {
     glActiveTexture(GL_TEXTURE0 + GLenum(textureSlot));
-    glBindTexture(GL_TEXTURE_2D, *m_texture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, *m_texture);
 }
