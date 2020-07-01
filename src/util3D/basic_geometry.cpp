@@ -19,7 +19,8 @@ DISABLE_WARNINGS_POP()
 static glm::mat4 assimpMatrix(const aiMatrix4x4& m);
 static glm::vec3 assimpVec(const aiVector3D& v);
 
-BasicGeometry::BasicGeometry(std::filesystem::path filePath) {    
+
+BasicGeometry::BasicGeometry(std::filesystem::path filePath) {
     vertex_shader = VertexShader("shaders/default.vert.glsl");
     if (!std::filesystem::exists(filePath))
         throw GeometryLoadingException(fmt::format("File {} does not exist", filePath.string().c_str()));
@@ -137,6 +138,11 @@ const void* BasicGeometry::getUniformData() const {
 
 GLsizeiptr BasicGeometry::getUniformDataSize() const {
     return 0;
+}
+
+void BasicGeometry::setVertexShader(std::filesystem::path filePath)
+{
+ vertex_shader = VertexShader(filePath);
 }
 
 static glm::mat4 assimpMatrix(const aiMatrix4x4& m)

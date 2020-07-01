@@ -15,6 +15,7 @@
 #include "util3D/directional_light.h"
 #include "materials/solid_color_material.h"
 #include "materials/blinn_phong_material.h"
+#include "materials/skybox_material.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -73,7 +74,6 @@ public:
         std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
         auto checkerboardtex = std::make_shared<Texture>("resources/textures/checkerboard.png");
         auto toontex = std::make_shared<Texture>("resources/textures/toon_map.png");
-        auto cube_tex = std::make_shared<CubeTexture>("resources/textures/skyboxes/skybox/");
 
         std::shared_ptr<Geometry> dragon_geometry = std::make_shared<BasicGeometry>("resources/dragon.obj");
 
@@ -105,20 +105,12 @@ public:
                                                                                         toontex
         );
 
-        std::shared_ptr<Material> skybox_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.976190, 0.976190, 0.976190),
-                                                                                         900.0f,
-                                                                                         glm::vec3(0.106332, 0.555170, 0.800000),
-                                                                                         cube_tex,
-                                                                                         cube_tex
-        );
-
-
         auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
 
 
         //Load skinned meshes 
 
-        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+      /*  skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
 
         std::shared_ptr<Mesh> spidery_bub = std::make_shared<Mesh>(
             skin_arachnid,
@@ -130,11 +122,11 @@ public:
         std::shared_ptr<Mesh> sea_mesh = std::make_shared<Mesh>(
             sea,
             water_material
-        );
+        );*/
 
 
         // load terrain 
-        std::shared_ptr<Mesh> milford_sound = std::make_shared<Mesh>(
+      /*  std::shared_ptr<Mesh> milford_sound = std::make_shared<Mesh>(
             std::make_shared<BasicGeometry>("resources/terrain/milford_sound_mesh.obj"),
             blinn_phong_material
         );
@@ -170,7 +162,7 @@ public:
             std::make_shared<BasicGeometry>("resources/eve/eve_body.obj"),
             blinn_phong_material
         );
-
+*/
 
         // load temple construction
 
@@ -220,10 +212,10 @@ public:
             );
 
         // load cube for skybox 
-        std::shared_ptr<Mesh> sky_box = std::make_shared<Mesh>(
+       /* std::shared_ptr<Mesh> sky_box = std::make_shared<Mesh>(
             std::make_shared<BasicGeometry>("resources/cube.obj"),
             blinn_phong_material
-        );
+        );*/
 
 
         /*std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
@@ -253,7 +245,7 @@ public:
 
         // add terrain depending on toggle // this does not currently update (need to have scene remove or make insisible?
         
-        switch (terrain_toggle) 
+       /* switch (terrain_toggle)
         {
             case 0:
                 scene.add(milford_sound);
@@ -267,9 +259,9 @@ public:
             case 3:
                 scene.add(fitz_roy);
                 break;
-        }
+        }*/
 
-        scene.add(sea_mesh);
+        //scene.add(sea_mesh);
 
         // Cameras and Lights 
 
@@ -280,6 +272,7 @@ public:
         auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(4096, 4096));
         auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
         camera -> add(light);
+	    //group->add(skybox);
 	    auto subgroup = std::make_shared<Group>();
         //subgroup -> add(dragon);
         
@@ -293,6 +286,7 @@ public:
 
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
+        //camera->add(skybox);
 	    scene.add(group);
         scene.add(camera);
         //scene.add(platform);
@@ -309,8 +303,8 @@ public:
             group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
             camera -> render();
-            skin_arachnid -> updateFrame();
-            sea->updateFrame();
+           // skin_arachnid -> updateFrame();
+            //sea->updateFrame();
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
