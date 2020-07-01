@@ -43,7 +43,7 @@ private:
     std::shared_ptr<Transformable> group;
     std::shared_ptr<AnimatedGeometry> skin_arachnid;
     std::shared_ptr<AnimatedGeometry> sea;
-
+    std::shared_ptr<AnimatedGeometry> terrain;
 
     std::shared_ptr<Transformable> temple_group;
     std::shared_ptr<Transformable> gymbal_outer_group;
@@ -132,27 +132,15 @@ public:
             water_material
         );
 
+        // load terrain
 
-        // load terrain 
-        std::shared_ptr<Mesh> milford_sound = std::make_shared<Mesh>(
-            std::make_shared<BasicGeometry>("resources/terrain/milford_sound_mesh.obj"),
-            blinn_phong_material
-        );
+        terrain = std::make_shared<AnimatedGeometry>("resources/terrain");
 
-        std::shared_ptr<Mesh> fitz_roy = std::make_shared<Mesh>(
-            std::make_shared<BasicGeometry>("resources/terrain/fitz_roy_mesh.obj"),
+        std::shared_ptr<Mesh> terrain_meshes = std::make_shared<Mesh>(
+            terrain,
             blinn_phong_material
-        );
+            );
 
-        std::shared_ptr<Mesh> lofoten = std::make_shared<Mesh>(
-            std::make_shared<BasicGeometry>("resources/terrain/norway_mesh.obj"),
-            blinn_phong_material
-        );
-
-        std::shared_ptr<Mesh> fayetteville = std::make_shared<Mesh>(
-            std::make_shared<BasicGeometry>("resources/terrain/fayeteville_mesh.obj"),
-            blinn_phong_material
-        );
 
         // load eve 
 
@@ -253,21 +241,7 @@ public:
 
         // add terrain depending on toggle // this does not currently update (need to have scene remove or make insisible?
         
-        switch (terrain_toggle) 
-        {
-            case 0:
-                scene.add(milford_sound);
-                break;
-            case 1:
-                scene.add(fitz_roy);
-                break;
-            case 2:
-                scene.add(fitz_roy);
-                break;
-            case 3:
-                scene.add(fitz_roy);
-                break;
-        }
+        scene.add(terrain_meshes);
 
         scene.add(sea_mesh);
 
@@ -352,7 +326,7 @@ public:
                 camera->toggleXRay();
                 break;
             case GLFW_KEY_T:
-                terrain_toggle = (terrain_toggle + 1)%4 ;
+                terrain->updateFrame();
                 break;
     	}
         //std::cout << "Key pressed: " << key << std::endl;
