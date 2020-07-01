@@ -6,7 +6,8 @@
 #include "gl/shader.h"
 #include "gl/texture.h"
 #include "prospective_camera.h"
-#include "util3D/geometry.h"
+#include "util3D/basic_geometry.h"
+#include "util3D/animated_geometry.h"
 #include "util3D/scene.h"
 #include "util3D/mesh.h"
 #include "util3D/group.h"
@@ -38,6 +39,7 @@ private:
     Scene scene;
     std::shared_ptr<ProspectiveCamera> camera;
     std::shared_ptr<Transformable> group;
+    std::shared_ptr<AnimatedGeometry> skin_arachnid;
 public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
@@ -60,7 +62,7 @@ public:
         std::cout << "size:" << sizeof(LightUniformData) << std::endl;
         std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
 
-        std::shared_ptr<Geometry> dragon_geometry = std::make_shared<Geometry>("resources/dragon.obj");
+        std::shared_ptr<Geometry> dragon_geometry = std::make_shared<BasicGeometry>("resources/dragon.obj");
         std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));
         std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, glm::vec3(0.4, 0.4, 0.4));
         std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
@@ -69,9 +71,18 @@ public:
         );
         
         std::shared_ptr<Mesh> platform = std::make_shared<Mesh>(
-        	std::make_shared<Geometry>("resources/platform.obj"),
+        	std::make_shared<BasicGeometry>("resources/platform.obj"),
             blinn_phong_material
         );
+
+        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+        std::shared_ptr<Mesh> octopus = std::make_shared<Mesh>(
+            skin_arachnid,
+            blinn_phong_material
+        );
+
+        octopus -> translate(glm::vec3(0,3,1));
+        scene.add(octopus);
 
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
         //auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
@@ -113,6 +124,7 @@ public:
             group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
             camera -> render();
+            skin_arachnid -> updateFrame();
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();

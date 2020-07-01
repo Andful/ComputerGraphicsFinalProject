@@ -28,26 +28,16 @@ struct Vertex {
 };
 class Geometry {
 private:
-    GLsizei m_numIndices { 0 };
     std::shared_ptr<GLuint> ubo;
-    bool m_hasTextureCoords { false };
-    std::shared_ptr<GLuint> m_ibo = nullptr;
-    std::shared_ptr<GLuint> m_vbo = nullptr;
-    std::shared_ptr<GLuint> m_vao = nullptr;
-    VertexShader vertex_shader;
 public:
-    Geometry() = default;
-    Geometry(const Geometry&) = default;
-    Geometry(std::filesystem::path filePath);
-    bool hasTextureCoords() const;
-    const VertexShader& getVertexShader();
+    Geometry();
+    virtual const VertexShader& getVertexShader() const = 0;
     // Bind VAO and call glDrawElements.
-    void draw() const;
-    virtual const void* getUniformData() const;
-    virtual GLsizeiptr getUniformDataSize() const;
+    virtual void draw() const = 0;
+    virtual const void* getUniformData() const = 0;
+    virtual GLsizeiptr getUniformDataSize() const = 0;
     void initUniformBuffer() const;
     void updateUniformData() const;
-    void updateUniformData();
     void bind() const;
     virtual ~Geometry() = default;
 };
