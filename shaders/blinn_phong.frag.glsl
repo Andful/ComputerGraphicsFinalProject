@@ -56,7 +56,7 @@ void main()
     //if(abs(fragLightDepth - shadowMapDepth) > .0001) outColor = vec4(0,0,0, 1);
 
     // compute lambertian surface color N.L* C* kd
-    lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
+    lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * texture(tex, fragTexCoord).xyz;
 
     // Clamping values so negative ones do not appear
     lamb_comp = max(lamb_comp, 0);
