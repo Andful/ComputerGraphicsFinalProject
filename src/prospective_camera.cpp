@@ -17,12 +17,6 @@
 
 ProspectiveCamera::ProspectiveCamera() : quad("resources/quad.obj")
 {
-
-	auto cube_tex = std::make_shared<CubeTexture>("resources/textures/skyboxes/skybox/");
-	auto skybox_material = std::make_shared<SkyboxMaterial>(cube_tex, cube_tex);
-	auto skybox_geometry = std::make_shared<BasicGeometry>("resources/skybox.obj");
-	skybox_geometry->setVertexShader("shaders/skybox.vert.glsl");
-	skybox = std::make_shared<Mesh>(skybox_geometry, skybox_material);
 	prospectiveMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 300.0f);
 	//generate depthmap for framebuffer
 	for (int i = 0; i < 2; i++)
@@ -88,9 +82,8 @@ void ProspectiveCamera::prerender() {
 		   mesh->getGeometry().draw();
 	   }
    }
-
-   this->renderMesh(_scene, *skybox);
-   glViewport(0, 0, 1024, 1024);
+	//this->renderMesh(_scene, *skybox);
+    glViewport(0, 0, 1024, 1024);
 }
 
 void ProspectiveCamera::renderMesh(const Scene& _scene, const Mesh& mesh) const

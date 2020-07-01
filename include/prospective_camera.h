@@ -26,7 +26,6 @@ private:
 	unsigned short targetBuffer = 0, sourceBuffer = 1;
 	void flipBuffers();
 	bool useXRay = false;
-	std::shared_ptr<Mesh> skybox;
 public:
 	ProspectiveCamera();
 	void updateViewMatrix();

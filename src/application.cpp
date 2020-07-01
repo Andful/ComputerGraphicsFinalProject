@@ -110,7 +110,7 @@ public:
 
         //Load skinned meshes 
 
-      /*  skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+       skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
 
         std::shared_ptr<Mesh> spidery_bub = std::make_shared<Mesh>(
             skin_arachnid,
@@ -122,11 +122,11 @@ public:
         std::shared_ptr<Mesh> sea_mesh = std::make_shared<Mesh>(
             sea,
             water_material
-        );*/
+        );
 
 
         // load terrain 
-      /*  std::shared_ptr<Mesh> milford_sound = std::make_shared<Mesh>(
+       std::shared_ptr<Mesh> milford_sound = std::make_shared<Mesh>(
             std::make_shared<BasicGeometry>("resources/terrain/milford_sound_mesh.obj"),
             blinn_phong_material
         );
@@ -162,7 +162,7 @@ public:
             std::make_shared<BasicGeometry>("resources/eve/eve_body.obj"),
             blinn_phong_material
         );
-*/
+
 
         // load temple construction
 
@@ -245,7 +245,7 @@ public:
 
         // add terrain depending on toggle // this does not currently update (need to have scene remove or make insisible?
         
-       /* switch (terrain_toggle)
+        switch (terrain_toggle)
         {
             case 0:
                 scene.add(milford_sound);
@@ -259,7 +259,7 @@ public:
             case 3:
                 scene.add(fitz_roy);
                 break;
-        }*/
+        }
 
         //scene.add(sea_mesh);
 
@@ -284,9 +284,15 @@ public:
         light2->rotate(glm::vec3(-1.5,0, 0));
         scene.add(light2);
 
+	    auto cube_tex = std::make_shared<CubeTexture>("resources/textures/skyboxes/skybox/");
+	    auto skybox_material = std::make_shared<SkyboxMaterial>(cube_tex, cube_tex);
+	    auto skybox_geometry = std::make_shared<BasicGeometry>("resources/skybox.obj");
+	    skybox_geometry->setVertexShader("shaders/skybox.vert.glsl");
+	    auto skybox = std::make_shared<Mesh>(skybox_geometry, skybox_material);
+
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
-        //camera->add(skybox);
+        camera->add(skybox);
 	    scene.add(group);
         scene.add(camera);
         //scene.add(platform);
