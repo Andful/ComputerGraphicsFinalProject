@@ -61,8 +61,8 @@ public:
 
         std::cout << "size:" << sizeof(LightUniformData) << std::endl;
         std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
-        auto checkerboardtex = std::make_shared<Texture>("resources/checkerboard.png");
-        auto toontex = std::make_shared<Texture>("resources/toon_map.png");
+        auto checkerboardtex = std::make_shared<Texture>("resources/textures/checkerboard.png");
+        auto toontex = std::make_shared<Texture>("resources/textures/toon_map.png");
 
         std::shared_ptr<Geometry> dragon_geometry = std::make_shared<BasicGeometry>("resources/dragon.obj");
         std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));

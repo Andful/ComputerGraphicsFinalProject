@@ -25,6 +25,5 @@ public:
     virtual void bind(GLint textureSlot) const;
     virtual void set(GLenum parameter, GLint setting);
     friend Framebuffer;
+    virtual ~Texture() = default;
 };
-
-#include "framebuffer.h"

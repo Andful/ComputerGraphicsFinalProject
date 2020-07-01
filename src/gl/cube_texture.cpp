@@ -34,7 +34,7 @@ CubeTexture::CubeTexture(std::filesystem::path filePath)
         assert(width > 0 && height > 0);
 
         glTexImage2D(
-            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+            GL_TEXTURE_CUBE_MAP_POSITIVE_X + GLenum(i),
             0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels
         );
 
