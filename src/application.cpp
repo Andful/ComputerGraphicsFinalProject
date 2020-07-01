@@ -61,10 +61,13 @@ public:
 
         std::cout << "size:" << sizeof(LightUniformData) << std::endl;
         std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
+        auto checkerboardtex = std::make_shared<Texture>("resources/checkerboard.png");
+        auto toontex = std::make_shared<Texture>("resources/toon_map.png");
 
         std::shared_ptr<Geometry> dragon_geometry = std::make_shared<BasicGeometry>("resources/dragon.obj");
         std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));
-        std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, glm::vec3(0.8, 0.8, 0.8));
+        std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, 
+                                                                                     glm::vec3(0.8, 0.8, 0.8), checkerboardtex, toontex);
         std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
             dragon_geometry,
             blinn_phong_material

@@ -25,6 +25,8 @@ layout(std140, binding = 4) uniform MaterialParameters {
 };
 
 layout(location = 1) uniform sampler2DShadow texShadow;
+layout(location = 2) uniform sampler2D tex;
+layout(location = 3) uniform sampler2D toonTexture;
 
 
 

@@ -29,6 +29,7 @@ public:
     const Shader& getShader() const;
     const Shader& getDepthShader() const;
     const Shader& getXrayCullShader() const;
+    const Shader& getXrayShader() const;
     void addedToScene(Scene& _scene, std::shared_ptr<Transformable>& self) override;
     void update(const glm::mat4& transform) override;
     void bind() const;

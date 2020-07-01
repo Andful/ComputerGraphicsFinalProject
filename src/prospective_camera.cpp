@@ -73,23 +73,29 @@ void ProspectiveCamera::prerender() {
 		   mesh->getXrayCullShader().bind();
 		   mesh->bind();
 		   mesh->getGeometry().bind();
+
+		   //somewhere along the way this was getting dropped so this has to be down here for now
 		   depthTexture[sourceBuffer].bind(1);
 		   glUniform1i(3, 1);
+		   
 		   mesh->getGeometry().draw();
 	   }
    }
 
 
    glViewport(0, 0, 1024, 1024);
-	//call parent function to start the render chain
 }
 
 void ProspectiveCamera::renderMesh(const Scene& _scene, const Mesh& mesh) const
 {
-   mesh.getShader().bind();
+	if (useXRay)
+	{
+		mesh.getXrayShader().bind();
+	}
+	else mesh.getShader().bind();
    mesh.bind();
-   mesh.getMaterial().bind();
    mesh.getGeometry().bind();
+   mesh.getMaterial().bind();
    mesh.getMaterial().draw(_scene, mesh.getGeometry());
 }
 

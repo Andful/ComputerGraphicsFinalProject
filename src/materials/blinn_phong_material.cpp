@@ -1,9 +1,10 @@
 #include "materials/blinn_phong_material.h"
 #include "util3D/geometry.h"
 
-BlinnPhongMaterial::BlinnPhongMaterial(glm::vec3 ks, float shininess, glm::vec3 kd) {
+BlinnPhongMaterial::BlinnPhongMaterial(glm::vec3 ks, float shininess, glm::vec3 kd, std::shared_ptr<Texture> tex, std::shared_ptr<Texture> toonTex)
+{
     fragment_shader = FragmentShader("shaders/blinn_phong.frag.glsl");
-    xray_fragment_shader = FragmentShader("shaders/xtoon.frag.glsl");
+    xray_shader = FragmentShader("shaders/xtoon.frag.glsl");
     xray_cull_shader = FragmentShader("shaders/xray.frag.glsl");
     blinn_phong_material_uniform.ks = ks;
     blinn_phong_material_uniform.shininess = shininess;
@@ -17,6 +18,10 @@ const FragmentShader& BlinnPhongMaterial::getFragmentShader() {
 
 const FragmentShader& BlinnPhongMaterial::getXrayCullShader() {
     return xray_cull_shader;
+}
+
+const FragmentShader& BlinnPhongMaterial::getXrayShader() {
+    return xray_shader;
 }
 
 const void* BlinnPhongMaterial::getUniformData() const {
@@ -43,4 +48,12 @@ void BlinnPhongMaterial::draw(const Scene& scene, const Geometry& geometry) cons
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
+}
+
+void BlinnPhongMaterial::bind() const {
+    Material::bind();
+    texture->bind(4);
+    glUniform1i(4, 4);
+    toonTexture->bind(5);
+    glUniform1i(5, 5);
 }
