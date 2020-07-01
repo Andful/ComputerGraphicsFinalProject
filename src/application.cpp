@@ -73,9 +73,35 @@ public:
         auto toontex = std::make_shared<Texture>("resources/textures/toon_map.png");
 
         std::shared_ptr<Geometry> dragon_geometry = std::make_shared<BasicGeometry>("resources/dragon.obj");
+
+
+        // MATERIALS 
+
         std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));
-        std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, 
-                                                                                     glm::vec3(0.8, 0.8, 0.8), checkerboardtex, toontex);
+
+        std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 
+                                                                                              10.0f, 
+                                                                                              glm::vec3(0.8, 0.8, 0.8),
+                                                                                              checkerboardtex,
+                                                                                              toontex
+        );
+
+
+        std::shared_ptr<Material> arachnid_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(1.0, 1.0, 1.0),
+                                                                                           479.818576f,
+                                                                                           glm::vec3(0.870858, 1.0, 0.988407),
+                                                                                           checkerboardtex,
+                                                                                           toontex
+        );
+
+
+        std::shared_ptr<Material> water_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.976190, 0.976190, 0.976190),
+                                                                                        900.0f,
+                                                                                        glm::vec3(0.106332, 0.555170, 0.800000),
+                                                                                        checkerboardtex,
+                                                                                        toontex
+        );
+
 
         auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
 
