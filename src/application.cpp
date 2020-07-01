@@ -222,14 +222,14 @@ public:
             blinn_phong_material
         );
 
-        /*skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
         std::shared_ptr<Mesh> octopus = std::make_shared<Mesh>(
             skin_arachnid,
             blinn_phong_material
-        );*/
+        );
 
-      //  octopus -> translate(glm::vec3(0,3,1));
-        //scene.add(octopus);
+        octopus -> translate(glm::vec3(0,3,1));
+        scene.add(octopus);*/
 
        // platform -> translate(glm::vec3(0.0, -1.5, 0.0));
 

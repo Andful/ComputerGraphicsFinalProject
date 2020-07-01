@@ -61,4 +61,5 @@ void DirectionalLight::postrender() {
 void DirectionalLight::bind() {
     Light::bind();
     texture.bind(1);
+    glUniform1i(1, 1);
 }
