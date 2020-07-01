@@ -236,15 +236,29 @@ public:
 
         // SCENE SETUP 
 
-        // p
+        // add terrain depending on toggle // this does not currently update (need to have scene remove or make insisible?
         
+        switch (terrain_toggle) 
+        {
+            case 0:
+                scene.add(milford_sound);
+                break;
+            case 1:
+                scene.add(fitz_roy);
+                break;
+            case 2:
+                scene.add(fitz_roy);
+                break;
+            case 3:
+                scene.add(fitz_roy);
+                break;
+        }
 
 
+        // Cameras and Lights 
 
-
-
-        auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
-        scene.add(new_dragon);
+       // auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
+        //scene.add(new_dragon);
         camera = std::make_shared<ProspectiveCamera>();
         group = std::make_shared<Group>();
         auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(4096, 4096));
@@ -252,6 +266,10 @@ public:
         camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
         //subgroup -> add(dragon);
+        
+        subgroup->add(temple);
+
+
         light2->translate(glm::vec3(-1, 5, 1));
         light2->rotate(glm::vec3(-1.5,0, 0));
         scene.add(light2);
