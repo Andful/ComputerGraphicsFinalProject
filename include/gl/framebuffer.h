@@ -28,6 +28,7 @@ class Framebuffer
     public:
         Framebuffer() = default;
         Framebuffer(const Texture& texture, GLenum attachment);
+        void addAttachment(const Texture&, GLenum);
         void bind() const;
         void unbind() const;
         FramebufferBindGuard bindGuard() const;

@@ -9,17 +9,20 @@
 #include "util3D/camera.h"
 #include "gl/framebuffer.h"
 #include "gl/texture.h"
+#include "util3D/basic_geometry.h"
 
 class Camera;
 
 class ProspectiveCamera : public Camera
 {
 private:
+	BasicGeometry quad;
+	std::vector<std::shared_ptr<Shader>> postFxShaders = {};
 	double sensitivity = 0.005;
 	float movementMul = 0.1f;
 	glm::mat4 prospectiveMatrix;
 	Framebuffer framebuffer;
-	Texture texture;
+	Texture texture, colorTexture;
 public:
 	ProspectiveCamera();
 	void updateViewMatrix();
@@ -28,4 +31,5 @@ public:
 	void prerender();
 	void renderMesh(const Scene& scene, const Mesh& mesh) const override;
 	void postrender() override;
+	void addPostShader(std::shared_ptr<Shader> shader);
 };

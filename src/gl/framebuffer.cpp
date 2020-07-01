@@ -25,6 +25,11 @@ Framebuffer::Framebuffer(const Texture& texture, GLenum attachment)
     glNamedFramebufferTexture(*m_framebuffer, attachment, *(texture.m_texture), 0);
 }
 
+void Framebuffer::addAttachment(const Texture& texture, GLenum attachment)
+{
+    glNamedFramebufferTexture(*m_framebuffer, attachment, *(texture.m_texture), 0);
+}
+
 void Framebuffer::bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, *m_framebuffer);
