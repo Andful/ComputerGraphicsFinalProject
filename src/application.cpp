@@ -254,6 +254,7 @@ public:
                 break;
         }
 
+        scene.add(sea_mesh);
 
         // Cameras and Lights 
 
@@ -267,6 +268,7 @@ public:
 	    auto subgroup = std::make_shared<Group>();
         //subgroup -> add(dragon);
         
+        temple->translate(glm::vec3(0, 0, 50));
         subgroup->add(temple);
 
 
@@ -292,7 +294,8 @@ public:
             group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
             camera -> render();
-           // skin_arachnid -> updateFrame();
+            skin_arachnid -> updateFrame();
+            sea->updateFrame();
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
