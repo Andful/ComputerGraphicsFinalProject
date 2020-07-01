@@ -112,7 +112,7 @@ public:
         skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
 
         std::shared_ptr<Mesh> spidery_bub = std::make_shared<Mesh>(
-            std::make_shared<AnimatedGeometry>("resources/skin_arachnid"),
+            skin_arachnid,
             arachnid_material
         );
 
