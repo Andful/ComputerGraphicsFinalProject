@@ -20,7 +20,7 @@ private:
     std::shared_ptr<GLuint> m_ibo = nullptr;
     std::shared_ptr<GLuint> m_vbo = nullptr;
     std::shared_ptr<GLuint> m_vao = nullptr;
-    VertexShader vertex_shader;
+    VertexShader vertex_shader, xray_vertex_shader;
 public:
     BasicGeometry() = default;
     BasicGeometry(const BasicGeometry&) = default;

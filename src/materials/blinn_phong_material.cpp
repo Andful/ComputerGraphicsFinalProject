@@ -3,6 +3,8 @@
 
 BlinnPhongMaterial::BlinnPhongMaterial(glm::vec3 ks, float shininess, glm::vec3 kd) {
     fragment_shader = FragmentShader("shaders/blinn_phong.frag.glsl");
+    xray_fragment_shader = FragmentShader("shaders/xtoon.frag.glsl");
+    xray_cull_shader = FragmentShader("shaders/xray.frag.glsl");
     blinn_phong_material_uniform.ks = ks;
     blinn_phong_material_uniform.shininess = shininess;
     blinn_phong_material_uniform.kd = kd;
@@ -11,6 +13,10 @@ BlinnPhongMaterial::BlinnPhongMaterial(glm::vec3 ks, float shininess, glm::vec3 
 
 const FragmentShader& BlinnPhongMaterial::getFragmentShader() {
     return fragment_shader;
+}
+
+const FragmentShader& BlinnPhongMaterial::getXrayCullShader() {
+    return xray_cull_shader;
 }
 
 const void* BlinnPhongMaterial::getUniformData() const {
