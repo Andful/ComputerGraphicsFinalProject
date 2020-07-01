@@ -352,7 +352,7 @@ public:
                 camera->toggleXRay();
                 break;
             case GLFW_KEY_T:
-                terrain_toggle = (terrain_toggle++)%4 ;
+                terrain_toggle = (terrain_toggle + 1)%4 ;
                 break;
     	}
         //std::cout << "Key pressed: " << key << std::endl;

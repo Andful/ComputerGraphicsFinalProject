@@ -2,7 +2,7 @@
 #include "texture.h"
 
 
-class CubeTexture : Texture
+class CubeTexture : public Texture
 {
 
 public:
