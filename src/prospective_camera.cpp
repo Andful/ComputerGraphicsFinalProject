@@ -16,7 +16,7 @@
 
 ProspectiveCamera::ProspectiveCamera() : quad("resources/quad.obj")
 {
-	prospectiveMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 200.0f);
+	prospectiveMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 300.0f);
 	//generate depthmap for framebuffer
 	for (int i = 0; i < 2; i++)
 	{
