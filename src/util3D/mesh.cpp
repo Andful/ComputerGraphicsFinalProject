@@ -35,6 +35,8 @@ Mesh::Mesh(const std::shared_ptr<Geometry>& _geometry,const std::shared_ptr<Mate
 	material = _material;
 	shader = Shader(geometry->getVertexShader(), material -> getFragmentShader());
 	depthShader = Shader(geometry->getVertexShader());
+	xray_cull_shader = Shader(geometry->getVertexShader(), material->getXrayCullShader());
+	xray_shader = Shader(geometry->getVertexShader(), material->getXrayShader());
 }
 
 const Geometry& Mesh::getGeometry() const {
@@ -51,6 +53,14 @@ const Shader& Mesh::getShader() const {
 
 const Shader& Mesh::getDepthShader() const {
 	return depthShader;
+}
+
+const Shader& Mesh::getXrayCullShader() const {
+	return xray_cull_shader;
+}
+
+const Shader& Mesh::getXrayShader() const {
+	return xray_shader;
 }
 
 void Mesh::addedToScene(Scene& _scene, std::shared_ptr<Transformable>& self) {

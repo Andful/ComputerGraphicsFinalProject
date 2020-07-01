@@ -64,7 +64,8 @@ add_executable(FinalProject
 	"src/util3D/light.cpp"
 	"src/util3D/point_light.cpp"
 	"src/util3D/directional_light.cpp"
-	"src/util3D/scene.cpp")
+	"src/util3D/scene.cpp"
+	"src/gl/cube_texture.cpp")
 target_compile_features(FinalProject PRIVATE cxx_std_17)
 target_link_libraries(FinalProject PRIVATE
 	OpenGL::GL GLEW::GLEW

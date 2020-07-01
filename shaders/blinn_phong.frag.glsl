@@ -25,6 +25,8 @@ layout(std140, binding = 4) uniform MaterialParameters {
 };
 
 layout(location = 1) uniform sampler2DShadow texShadow;
+layout(location = 2) uniform sampler2D tex;
+layout(location = 3) uniform sampler2D toonTexture;
 
 
 
@@ -57,7 +59,7 @@ void main()
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
 
     // Clamping values so negative ones do not appear
-    clamp(lamb_comp, 0, 1);
+    lamb_comp = max(lamb_comp, 0);
 
     // calculate specular component ( reflection vector, incident light vec points to surface)
     //vec3 R = reflect( normalize(fragPosition - light_pos) , normalize(fragNormal) );
@@ -66,7 +68,7 @@ void main()
     vec3 H = normalize((normalize(light_position - fragPosition)) + (surf_to_camera));
     // fix for light behind surf
     float dot_p = pow(dot(H, normalize(fragNormal)), shininess);
-    max(dot_p, 0);
+    dot_p = max(dot_p, 0);
 
     vec3 spec_comp = dot_p * ks;
 

@@ -19,8 +19,8 @@ private:
     std::unique_ptr<GLuint, std::function<void(GLuint*)>> ubo;
     std::shared_ptr<Geometry> geometry;
     std::shared_ptr<Material> material;
-    Shader shader;
-    Shader depthShader;
+    Shader shader, xray_shader;
+    Shader depthShader, xray_cull_shader;
 public:
     Mesh(const Mesh& mesh);
     Mesh(const std::shared_ptr<Geometry>& _geometry,const std::shared_ptr<Material>& material);
@@ -28,6 +28,8 @@ public:
     const Material& getMaterial() const;
     const Shader& getShader() const;
     const Shader& getDepthShader() const;
+    const Shader& getXrayCullShader() const;
+    const Shader& getXrayShader() const;
     void addedToScene(Scene& _scene, std::shared_ptr<Transformable>& self) override;
     void update(const glm::mat4& transform) override;
     void bind() const;

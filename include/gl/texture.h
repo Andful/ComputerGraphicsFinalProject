@@ -15,16 +15,15 @@ struct ImageLoadingException : public std::runtime_error {
 class Framebuffer;
 
 class Texture {
-private:
+protected:
     std::shared_ptr<GLuint> m_texture = nullptr;
 public:
     Texture() = default;
     Texture(const Texture&) = default;
     Texture(GLsizei width, GLsizei height, GLenum internalFormat);
     Texture(std::filesystem::path filePath);
-    void bind(GLint textureSlot) const;
-    void set(GLenum parameter, GLint setting);
+    virtual void bind(GLint textureSlot) const;
+    virtual void set(GLenum parameter, GLint setting);
     friend Framebuffer;
+    virtual ~Texture() = default;
 };
-
-#include "framebuffer.h"

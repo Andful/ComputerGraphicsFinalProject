@@ -61,57 +61,53 @@ public:
 
         std::cout << "size:" << sizeof(LightUniformData) << std::endl;
         std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
+        auto checkerboardtex = std::make_shared<Texture>("resources/textures/checkerboard.png");
+        auto toontex = std::make_shared<Texture>("resources/textures/toon_map.png");
 
         std::shared_ptr<Geometry> dragon_geometry = std::make_shared<BasicGeometry>("resources/dragon.obj");
         std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));
-        std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, glm::vec3(0.4, 0.4, 0.4));
+        std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, 
+                                                                                     glm::vec3(0.8, 0.8, 0.8), checkerboardtex, toontex);
         std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
             dragon_geometry,
             blinn_phong_material
         );
+        auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
         
         std::shared_ptr<Mesh> platform = std::make_shared<Mesh>(
         	std::make_shared<BasicGeometry>("resources/platform.obj"),
             blinn_phong_material
         );
 
-        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+        /*skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
         std::shared_ptr<Mesh> octopus = std::make_shared<Mesh>(
             skin_arachnid,
             blinn_phong_material
-        );
+        );*/
 
-        octopus -> translate(glm::vec3(0,3,1));
-        scene.add(octopus);
+      //  octopus -> translate(glm::vec3(0,3,1));
+        //scene.add(octopus);
 
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
-        //auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
-        //scene.add(new_dragon);
+        auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
+        scene.add(new_dragon);
         camera = std::make_shared<ProspectiveCamera>();
         group = std::make_shared<Group>();
-        auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(1024, 1024));
-        auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(500, 500));
-       // light->rotate(glm::vec3(1.5, 0,0));
-       // light->translate(glm::vec3(1, 1, 0));
-        //auto light2 = std::make_shared<SpotLight>(glm::vec3(.3, .1, 0));
-       // camera -> add(light2);
+        auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(4096, 4096));
+        auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
         camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
-        light2->translate(glm::vec3(-1, 10, 1));
+        light2->translate(glm::vec3(-1, 5, 1));
         light2->rotate(glm::vec3(-1.5,0, 0));
         scene.add(light2);
-       // subgroup -> add(light);
-       // camera->add(light);
-        //subgroup -> add(light2);
-        //light2->rotate(glm::vec3(0, 0, 1.5));
+
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
 	    scene.add(group);
-		//camera->add(light);
         scene.add(camera);
         scene.add(platform);
-
+        camera->addPostShader(post_dof);
         scene.update();
     }
 
@@ -124,7 +120,7 @@ public:
             group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
             camera -> render();
-            skin_arachnid -> updateFrame();
+           // skin_arachnid -> updateFrame();
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
@@ -162,6 +158,9 @@ public:
             case GLFW_KEY_Z:
     			camera -> translate(glm::vec3(0,-1,0));
     			break;
+            case GLFW_KEY_X: 
+                camera->toggleXRay();
+                break;
     	}
         //std::cout << "Key pressed: " << key << std::endl;
     }
