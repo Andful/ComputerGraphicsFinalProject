@@ -31,6 +31,7 @@ DISABLE_WARNINGS_POP()
 
 class Application {
 private:
+    int terrain_toggle = 0;
     Window m_window;
     // Shader for default rendering and for depth rendering
 	enum mouse_status {MOUSE_DISABLED, MOUSE_REENABLED, MOUSE_ACTIVE};
@@ -106,6 +107,110 @@ public:
         auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
 
 
+        //Load skinned meshes 
+
+        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+
+        std::shared_ptr<Mesh> spidery_bub = std::make_shared<Mesh>(
+            std::make_shared<AnimatedGeometry>("resources/skin_arachnid"),
+            arachnid_material
+        );
+
+        sea = std::make_shared<AnimatedGeometry>("resources/skin_sea");
+
+        std::shared_ptr<Mesh> sea_mesh = std::make_shared<Mesh>(
+            sea,
+            water_material
+        );
+
+
+        // load terrain 
+        std::shared_ptr<Mesh> milford_sound = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/terrain/milford_sound_mesh.obj"),
+            blinn_phong_material
+        );
+
+        std::shared_ptr<Mesh> fitz_roy = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/terrain/fitz_roy_mesh.obj"),
+            blinn_phong_material
+        );
+
+        std::shared_ptr<Mesh> lofoten = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/terrain/norway_mesh.obj"),
+            blinn_phong_material
+        );
+
+        std::shared_ptr<Mesh> fayetteville = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/terrain/fayeteville_mesh.obj"),
+            blinn_phong_material
+        );
+
+        // load eve 
+
+        std::shared_ptr<Mesh> eve_head = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/eve/eve_head.obj"),
+            blinn_phong_material
+        );
+
+        std::shared_ptr<Mesh> eve_arms = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/eve/eve_arms.obj"),
+            blinn_phong_material
+        );
+
+        std::shared_ptr<Mesh> eve_body = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/eve/eve_body.obj"),
+            blinn_phong_material
+        );
+
+
+        // load temple construction
+
+
+
+        // load floaters 
+
+        std::shared_ptr<Mesh> floater_top = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/floaters/floater_top.obj"),
+            blinn_phong_material
+            );
+
+        std::shared_ptr<Mesh> floater_mid = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/floaters/floater_mid.obj"),
+            blinn_phong_material
+            );
+
+        std::shared_ptr<Mesh> floater_bottom = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/floaters/floater_bottom.obj"),
+            blinn_phong_material
+            );
+
+
+        // load temple 
+
+        std::shared_ptr<Mesh> temple = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/temple/temple.obj"),
+            blinn_phong_material
+            );
+
+
+        // load gymbal
+
+        std::shared_ptr<Mesh> gymbal_inner = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/gymbal/gymbal_inner.obj"),
+            blinn_phong_material
+            );
+
+        std::shared_ptr<Mesh> gymbal_mid = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/gymbal/gymbal_mid.obj"),
+            blinn_phong_material
+            );
+
+        std::shared_ptr<Mesh> gymbal_outer = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/gymbal/gymbal_outer.obj"),
+            blinn_phong_material
+            );
+
+
         /*std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
             dragon_geometry,
             blinn_phong_material
@@ -127,6 +232,17 @@ public:
         //scene.add(octopus);
 
        // platform -> translate(glm::vec3(0.0, -1.5, 0.0));
+
+
+        // SCENE SETUP 
+
+        // p
+        
+
+
+
+
+
         auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
         scene.add(new_dragon);
         camera = std::make_shared<ProspectiveCamera>();
@@ -198,6 +314,9 @@ public:
     			break;
             case GLFW_KEY_X: 
                 camera->toggleXRay();
+                break;
+            case GLFW_KEY_T:
+                terrain_toggle = (terrain_toggle++)%4 ;
                 break;
     	}
         //std::cout << "Key pressed: " << key << std::endl;
