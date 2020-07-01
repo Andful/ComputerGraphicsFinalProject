@@ -43,7 +43,7 @@ private:
 public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
-        oldCPos(0), scene(1024, 1024)
+        oldCPos(0)
     {
         m_window.registerKeyCallback([this](int key, int scancode, int action, int mods) {
             if (action == GLFW_PRESS || action == GLFW_REPEAT)
@@ -58,8 +58,6 @@ public:
             else if (action == GLFW_RELEASE)
                 onMouseReleased(button, mods);
         });
-      //  scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxinverse.frag.glsl"));
-        scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxtest.frag.glsl"));
 
         std::cout << "size:" << sizeof(LightUniformData) << std::endl;
         std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
@@ -71,15 +69,6 @@ public:
             dragon_geometry,
             blinn_phong_material
         );
-	    std::shared_ptr<DrawableMesh> dragon2 =  std::make_shared<DrawableMesh>(
-			    Mesh("resources/dragon.obj"),
-			    Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
-			    Shader("shaders/shader.vert.glsl"),
-			    Texture("resources/textures/checkerboard.png"),
-			    Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
-			    Texture("resources/textures/toon_map.png"),
-			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
-	    );
         
         std::shared_ptr<Mesh> platform = std::make_shared<Mesh>(
         	std::make_shared<BasicGeometry>("resources/platform.obj"),
@@ -173,16 +162,6 @@ public:
             case GLFW_KEY_Z:
     			camera -> translate(glm::vec3(0,-1,0));
     			break;
-    		case GLFW_KEY_X:
-    			scene.toggleXRay();
-    			break;
-    		case GLFW_KEY_M:
-    			scene.samples++;
-    			break;
-    		case GLFW_KEY_N:
-    			if(scene.samples >0) scene.samples--;
-    			break;
-
     	}
         //std::cout << "Key pressed: " << key << std::endl;
     }
