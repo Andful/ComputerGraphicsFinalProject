@@ -25,15 +25,18 @@ struct ShaderLoadingException : public std::runtime_error {
     using std::runtime_error::runtime_error;
 };
 
+class VertexShader;
+class FragmentShader;
+
 class Shader {
 private:
-    friend class ShaderBuilder;
     Shader(std::shared_ptr<GLuint> program);
-
-private:
-    std::shared_ptr<GLuint> program;
 public:
+    std::shared_ptr<GLuint> program;
     Shader();
+    Shader(const VertexShader& vs, const FragmentShader& fs);
+    Shader(const VertexShader& vs);
+    void loadSource(const std::string& source, GLenum shaderType) const;
     void load() const {}
     template<class ...Args>
     void load(std::filesystem::path shaderFile, Args... args) const {
@@ -55,15 +58,7 @@ public:
         }
 
         const std::string shaderSource = readFile(shaderFile);
-        GLuint shader = glCreateShader(shaderStage);
-        const char* shaderSourcePtr = shaderSource.c_str();
-        glShaderSource(shader, 1, &shaderSourcePtr, nullptr);
-        glCompileShader(shader);
-        if (!checkShaderErrors(shader)) {
-            throw ShaderLoadingException(fmt::format("Failed to compile shader {}", shaderFile.string().c_str()));
-        }
-        glAttachShader(*program, shader);
-        glDeleteShader(shader);
+        loadSource(shaderSource, shaderStage);
         load(args...);
     }
 
@@ -77,13 +72,6 @@ public:
         }
     }
     void bind() const;
-};
-
-class ShaderBuilder {
-public:
-    ShaderBuilder& addStage(GLuint shaderStage, std::filesystem::path shaderFile);
-    Shader build();
-
-private:
-    std::vector<std::shared_ptr<GLuint>> m_shaders = {};
+    template<class T>
+    void loadUniform(GLint, T data) const;
 };

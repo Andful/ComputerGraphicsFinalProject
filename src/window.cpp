@@ -17,6 +17,9 @@ void glfwErrorCallback(int error, const char* description)
 // OpenGL debug callback
 void APIENTRY glDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
+    if (type == GL_DEBUG_TYPE_ERROR) {
+        throw std::runtime_error(message);
+    }
     if (severity != GL_DEBUG_SEVERITY_NOTIFICATION) {
         std::cerr << "OpenGL: " << message << std::endl;
     }

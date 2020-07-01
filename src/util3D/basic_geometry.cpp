@@ -1,4 +1,7 @@
-#include "mesh.h"
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <filesystem>
 #include "disable_all_warnings.h"
 DISABLE_WARNINGS_PUSH()
 #include <assimp/Importer.hpp>
@@ -11,23 +14,21 @@ DISABLE_WARNINGS_PUSH()
 #include <glm/vec4.hpp>
 #include <gsl/span>
 DISABLE_WARNINGS_POP()
-#include <iostream>
-#include <stack>
-#include <vector>
+#include "util3D/basic_geometry.h"
 
 static glm::mat4 assimpMatrix(const aiMatrix4x4& m);
 static glm::vec3 assimpVec(const aiVector3D& v);
 
-Mesh::Mesh(std::filesystem::path filePath)
-{
+BasicGeometry::BasicGeometry(std::filesystem::path filePath) {    
+    vertex_shader = VertexShader("shaders/default.vert.glsl");
     if (!std::filesystem::exists(filePath))
-        throw MeshLoadingException(fmt::format("File {} does not exist", filePath.string().c_str()));
+        throw GeometryLoadingException(fmt::format("File {} does not exist", filePath.string().c_str()));
 
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(filePath.string().data(), aiProcess_GenSmoothNormals | aiProcess_Triangulate);
 
     if (scene == nullptr || scene->mRootNode == nullptr || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE) {
-        throw MeshLoadingException(fmt::format("Assimp failed to load mesh file {}", filePath.string().c_str()));
+        throw GeometryLoadingException(fmt::format("Assimp failed to load mesh file {}", filePath.string().c_str()));
     }
 
     std::vector<Vertex> vertices;
@@ -120,15 +121,22 @@ Mesh::Mesh(std::filesystem::path filePath)
     m_numIndices = static_cast<GLsizei>(indices.size());
 }
 
-bool Mesh::hasTextureCoords() const
-{
-    return m_hasTextureCoords;
+const VertexShader& BasicGeometry::getVertexShader() const {
+    return vertex_shader;
 }
 
-void Mesh::draw() const
+void BasicGeometry::draw() const
 {
     glBindVertexArray(*m_vao);
     glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, nullptr);
+}
+
+const void* BasicGeometry::getUniformData() const {
+    return nullptr;
+}
+
+GLsizeiptr BasicGeometry::getUniformDataSize() const {
+    return 0;
 }
 
 static glm::mat4 assimpMatrix(const aiMatrix4x4& m)

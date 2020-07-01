@@ -3,13 +3,17 @@
 // Always include window first (because it includes glfw, which includes GL which needs to be included AFTER glew).
 // Can't wait for modules to fix this stuff...
 #include "disable_all_warnings.h"
-#include "mesh.h"
-#include "shader.h"
-#include "texture.h"
-#include "camera.h"
-#include "drawable.h"
-#include "scene.h"
-#include "drawable_mesh.h"
+#include "gl/shader.h"
+#include "gl/texture.h"
+#include "prospective_camera.h"
+#include "util3D/basic_geometry.h"
+#include "util3D/animated_geometry.h"
+#include "util3D/scene.h"
+#include "util3D/mesh.h"
+#include "util3D/group.h"
+#include "util3D/directional_light.h"
+#include "materials/solid_color_material.h"
+#include "materials/blinn_phong_material.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -33,8 +37,9 @@ private:
 	mouse_status mouse_movement = MOUSE_DISABLED;
     glm::dvec2 oldCPos;
     Scene scene;
-    std::shared_ptr<Camera> camera;
-    std::shared_ptr<Drawable> group;
+    std::shared_ptr<ProspectiveCamera> camera;
+    std::shared_ptr<Transformable> group;
+    std::shared_ptr<AnimatedGeometry> skin_arachnid;
 public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
@@ -56,14 +61,15 @@ public:
       //  scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxinverse.frag.glsl"));
         scene.addPostShader(std::make_shared<Shader>("shaders/postfxquad.vert.glsl", "shaders/postfxtest.frag.glsl"));
 
-        std::shared_ptr<DrawableMesh> dragon =  std::make_shared<DrawableMesh>(
-            Mesh("resources/dragon.obj"),
-            Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
-            Shader("shaders/shader.vert.glsl"),
-            Texture("resources/textures/checkerboard.png"),
-            Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
-            Texture("resources/textures/toon_map.png"),
-            Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
+        std::cout << "size:" << sizeof(LightUniformData) << std::endl;
+        std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
+
+        std::shared_ptr<Geometry> dragon_geometry = std::make_shared<BasicGeometry>("resources/dragon.obj");
+        std::shared_ptr<Material> solid_material = std::make_shared<SolidColorMaterial>(glm::vec3(1.0f,0.0f,0.0f));
+        std::shared_ptr<Material> blinn_phong_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5), 10.0f, glm::vec3(0.4, 0.4, 0.4));
+        std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
+            dragon_geometry,
+            blinn_phong_material
         );
 	    std::shared_ptr<DrawableMesh> dragon2 =  std::make_shared<DrawableMesh>(
 			    Mesh("resources/dragon.obj"),
@@ -75,48 +81,45 @@ public:
 			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
 	    );
         
-        std::shared_ptr<DrawableMesh> platform = std::make_shared<DrawableMesh>(
-        		Mesh("resources/platform.obj"),
-        		Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
-        		Shader("shaders/shader.vert.glsl"),
-        		Texture("resources/textures/checkerboard.png"),
-		        Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
-		        Texture("resources/textures/toon_map.png"),
-		        Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
-        		);
-	    std::shared_ptr<DrawableMesh> platformSideways = std::make_shared<DrawableMesh>(
-			    Mesh("resources/platform.obj"),
-			    Shader("shaders/shader.vert.glsl", "shaders/blinn_phong.frag.glsl"),
-			    Shader("shaders/shader.vert.glsl"),
-			    Texture("resources/textures/checkerboard.png"),
-			    Shader("shaders/shader.vert.glsl", "shaders/xtoon.frag.glsl"),
-			    Texture("resources/textures/toon_map.png"),
-			    Shader("shaders/shader.vert.glsl", "shaders/xraycull.frag.glsl")
-	    );
+        std::shared_ptr<Mesh> platform = std::make_shared<Mesh>(
+        	std::make_shared<BasicGeometry>("resources/platform.obj"),
+            blinn_phong_material
+        );
+
+        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+        std::shared_ptr<Mesh> octopus = std::make_shared<Mesh>(
+            skin_arachnid,
+            blinn_phong_material
+        );
+
+        octopus -> translate(glm::vec3(0,3,1));
+        scene.add(octopus);
+
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
-        platformSideways->translate(glm::vec3(0, 0, 0));
-        platformSideways->rotate(glm::vec3(1.5, 0, 0));
-        platformSideways->scaling(glm::vec3(0.7, .7, .7));
-        scene.add(dragon2);
-        camera = std::make_shared<Camera>(1024,1024);
+        //auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
+        //scene.add(new_dragon);
+        camera = std::make_shared<ProspectiveCamera>();
         group = std::make_shared<Group>();
-        auto light = std::make_shared<DrawableLight>(glm::vec3(0, .2, .3), glm::vec3(0, 0, 0));
-        auto light2 = std::make_shared<DrawableLight>(glm::vec3(.3, .1, 0), glm::vec3(0, 0, 0));
-        auto light3 = std::make_shared<DrawableLight>(glm::vec3(.8, .8,.8), glm::vec3(-1, 10, 1));
+        auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(1024, 1024));
+        auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(500, 500));
+       // light->rotate(glm::vec3(1.5, 0,0));
+       // light->translate(glm::vec3(1, 1, 0));
+        //auto light2 = std::make_shared<SpotLight>(glm::vec3(.3, .1, 0));
+       // camera -> add(light2);
+        camera -> add(light);
 	    auto subgroup = std::make_shared<Group>();
         subgroup -> add(dragon);
-        subgroup -> add(light2);
-        light2->rotate(glm::vec3(0, 0, 1.5));
-        light3->rotate(glm::vec3(-1.5, 0, 0));
+        light2->translate(glm::vec3(-1, 10, 1));
+        light2->rotate(glm::vec3(-1.5,0, 0));
+        scene.add(light2);
+       // subgroup -> add(light);
+       // camera->add(light);
+        //subgroup -> add(light2);
+        //light2->rotate(glm::vec3(0, 0, 1.5));
         subgroup -> translate(glm::vec3(2, 0, 0));
         group -> add(subgroup);
-        scene.addLight(light);
-	    scene.addLight(light2);
 	    scene.add(group);
-        scene.add(light3);
-        scene.addLight(light3);
-		camera->add(light);
-		scene.add(platformSideways);
+		//camera->add(light);
         scene.add(camera);
         scene.add(platform);
 
@@ -131,7 +134,8 @@ public:
             m_window.updateInput();
             group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
-            scene.render(*camera);
+            camera -> render();
+            skin_arachnid -> updateFrame();
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();

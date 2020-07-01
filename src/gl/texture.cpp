@@ -1,4 +1,4 @@
-#include "texture.h"
+#include "gl/texture.h"
 #include "disable_all_warnings.h"
 DISABLE_WARNINGS_PUSH()
 #include <fmt/format.h>
@@ -36,6 +36,30 @@ Texture::Texture(std::filesystem::path filePath)
     // Set interpolation for texture sampling (GL_NEAREST for no interpolation).
     glTextureParameteri(*m_texture, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTextureParameteri(*m_texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+Texture::Texture(GLsizei width, GLsizei height, GLenum internalFormat)
+{
+    // Create a texture on the GPU with 3 channels with 8 bits each.
+    m_texture = std::shared_ptr<GLuint>(new GLuint(),[](GLuint *p){
+        glDeleteTextures(1, p);
+        delete p;
+    });
+    glCreateTextures(GL_TEXTURE_2D, 1, m_texture.get());
+    glTextureStorage2D(*m_texture, 1, internalFormat, width, height);
+
+    // Set behaviour for when texture coordinates are outside the [0, 1] range.
+    glTextureParameteri(*m_texture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(*m_texture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    // Set interpolation for texture sampling (GL_NEAREST for no interpolation).
+    glTextureParameteri(*m_texture, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(*m_texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+void Texture::set(GLenum parameter, GLint setting)
+{
+    glTextureParameteri(*m_texture, parameter, setting);
 }
 
 void Texture::bind(GLint textureSlot) const

@@ -1,12 +1,10 @@
 #pragma once
-#include "icamera.h"
+#include "prospective_camera.h"
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <cstdio>
 
-class ICamera;
-
-class LightCamera : public ICamera
+class LightCamera : public ProspectiveCamera
 {
 	friend DrawableLight;
 protected:
