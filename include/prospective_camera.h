@@ -36,4 +36,5 @@ public:
 	void postrender() override;
 	void addPostShader(std::shared_ptr<Shader> shader);
 	void clearAllBuffers();
+	void toggleXRay();
 };

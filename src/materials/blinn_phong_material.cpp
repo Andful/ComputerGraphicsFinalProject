@@ -1,7 +1,7 @@
 #include "materials/blinn_phong_material.h"
 #include "util3D/geometry.h"
 
-BlinnPhongMaterial::BlinnPhongMaterial(glm::vec3 ks, float shininess, glm::vec3 kd, std::shared_ptr<Texture> tex, std::shared_ptr<Texture> toonTex)
+BlinnPhongMaterial::BlinnPhongMaterial(glm::vec3 ks, float shininess, glm::vec3 kd, std::shared_ptr<Texture> _tex, std::shared_ptr<Texture> _toonTex)
 {
     fragment_shader = FragmentShader("shaders/blinn_phong.frag.glsl");
     xray_shader = FragmentShader("shaders/xtoon.frag.glsl");
@@ -10,6 +10,8 @@ BlinnPhongMaterial::BlinnPhongMaterial(glm::vec3 ks, float shininess, glm::vec3 
     blinn_phong_material_uniform.shininess = shininess;
     blinn_phong_material_uniform.kd = kd;
     initUniformBuffer();
+    texture = _tex;
+    toonTexture = _toonTex;
 }
 
 const FragmentShader& BlinnPhongMaterial::getFragmentShader() {
@@ -35,7 +37,7 @@ GLsizeiptr BlinnPhongMaterial::getUniformDataSize() const {
 void BlinnPhongMaterial::draw(const Scene& scene, const Geometry& geometry) const {
     //glViewport(0, 0, 1024, 500);
 	//call parent function to start the render chain
-    //glUniform1i(1, 1);
+    glUniform1i(1, 1);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Enable color writes.
     glDepthMask(GL_FALSE); // Disable depth writes.
     glDepthFunc(GL_EQUAL); // Only draw a pixel if it's depth matches the value stored in the depth buffer.
@@ -52,8 +54,8 @@ void BlinnPhongMaterial::draw(const Scene& scene, const Geometry& geometry) cons
 
 void BlinnPhongMaterial::bind() const {
     Material::bind();
-    texture->bind(2);
-    //glUniform1i(4, 4);
-    toonTexture->bind(3);
-    //glUniform1i(5, 5);
+    texture->bind(4);
+    glUniform1i(4, 4);
+    toonTexture->bind(5);
+    glUniform1i(5, 5);
 }

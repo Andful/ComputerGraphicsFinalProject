@@ -158,6 +158,9 @@ public:
             case GLFW_KEY_Z:
     			camera -> translate(glm::vec3(0,-1,0));
     			break;
+            case GLFW_KEY_X: 
+                camera->toggleXRay();
+                break;
     	}
         //std::cout << "Key pressed: " << key << std::endl;
     }
