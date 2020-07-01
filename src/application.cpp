@@ -79,14 +79,14 @@ public:
             blinn_phong_material
         );
 
-        /*skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
         std::shared_ptr<Mesh> octopus = std::make_shared<Mesh>(
             skin_arachnid,
             blinn_phong_material
-        );*/
+        );
 
-      //  octopus -> translate(glm::vec3(0,3,1));
-        //scene.add(octopus);
+        octopus -> translate(glm::vec3(0,3,1));
+        scene.add(octopus);
 
         platform -> translate(glm::vec3(0.0, -1.5, 0.0));
         auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
@@ -120,7 +120,7 @@ public:
             group -> rotate(glm::vec3(0,0,0.01));
             scene.update();
             camera -> render();
-           // skin_arachnid -> updateFrame();
+            skin_arachnid -> updateFrame();
    
             // Processes input and swaps the window buffer
             m_window.swapBuffers();
