@@ -24,7 +24,7 @@ layout(std140, binding = 4) uniform MaterialParameters {
     vec3 kd;
 };
 
-layout(location = 1) uniform sampler2DShadow texShadow;
+layout(location = 3) uniform sampler2DShadow texShadow;
 layout(location = 4) uniform sampler2D tex;
 layout(location = 5) uniform sampler2D toonTexture;
 
