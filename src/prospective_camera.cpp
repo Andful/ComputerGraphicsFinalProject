@@ -76,7 +76,9 @@ const glm::mat4& ProspectiveCamera::getProjectionMatrix() const
 }
 
 void ProspectiveCamera::postrender() {
-	glDepthFunc(GL_LEQUAL);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
 	framebuffer.unbind();
