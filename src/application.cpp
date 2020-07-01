@@ -5,6 +5,7 @@
 #include "disable_all_warnings.h"
 #include "gl/shader.h"
 #include "gl/texture.h"
+#include "gl/cube_texture.h"
 #include "prospective_camera.h"
 #include "util3D/basic_geometry.h"
 #include "util3D/animated_geometry.h"
@@ -72,6 +73,7 @@ public:
         std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
         auto checkerboardtex = std::make_shared<Texture>("resources/textures/checkerboard.png");
         auto toontex = std::make_shared<Texture>("resources/textures/toon_map.png");
+        auto cube_tex = std::make_shared<CubeTexture>("resources/textures/skyboxes/skybox/");
 
         std::shared_ptr<Geometry> dragon_geometry = std::make_shared<BasicGeometry>("resources/dragon.obj");
 
@@ -101,6 +103,13 @@ public:
                                                                                         glm::vec3(0.106332, 0.555170, 0.800000),
                                                                                         checkerboardtex,
                                                                                         toontex
+        );
+
+        std::shared_ptr<Material> skybox_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.976190, 0.976190, 0.976190),
+                                                                                         900.0f,
+                                                                                         glm::vec3(0.106332, 0.555170, 0.800000),
+                                                                                         cube_tex,
+                                                                                         cube_tex
         );
 
 
@@ -209,6 +218,12 @@ public:
             std::make_shared<BasicGeometry>("resources/gymbal/gymbal_outer.obj"),
             blinn_phong_material
             );
+
+        // load cube for skybox 
+        std::shared_ptr<Mesh> sky_box = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/cube.obj"),
+            blinn_phong_material
+        );
 
 
         /*std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
