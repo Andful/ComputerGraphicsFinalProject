@@ -25,5 +25,5 @@ public:
     const void* getUniformData() const override;
     GLsizeiptr getUniformDataSize() const override;
     void draw(const Scene& scene, const Geometry& geometry) const override;
-    void bind() const;
+    void bind() const override;
 };

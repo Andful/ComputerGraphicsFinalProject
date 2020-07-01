@@ -35,7 +35,7 @@ GLsizeiptr BlinnPhongMaterial::getUniformDataSize() const {
 void BlinnPhongMaterial::draw(const Scene& scene, const Geometry& geometry) const {
     //glViewport(0, 0, 1024, 500);
 	//call parent function to start the render chain
-    glUniform1i(1, 1);
+    //glUniform1i(1, 1);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Enable color writes.
     glDepthMask(GL_FALSE); // Disable depth writes.
     glDepthFunc(GL_EQUAL); // Only draw a pixel if it's depth matches the value stored in the depth buffer.
@@ -52,8 +52,8 @@ void BlinnPhongMaterial::draw(const Scene& scene, const Geometry& geometry) cons
 
 void BlinnPhongMaterial::bind() const {
     Material::bind();
-    texture->bind(4);
-    glUniform1i(4, 4);
-    toonTexture->bind(5);
-    glUniform1i(5, 5);
+    texture->bind(2);
+    //glUniform1i(4, 4);
+    toonTexture->bind(3);
+    //glUniform1i(5, 5);
 }

@@ -23,7 +23,7 @@ public:
     virtual GLsizeiptr getUniformDataSize() const = 0;
     void initUniformBuffer() const;
     void updateUniformData() const;
-    void bind() const;
+    virtual void bind() const;
     virtual void draw(const Scene& scene, const Geometry& geometry) const;
     virtual ~Material() = default;
 };
