@@ -45,9 +45,9 @@ private:
 
 
     std::shared_ptr<Transformable> temple_group;
-    std::shared_ptr<Transformable> gymbal_outer;
-    std::shared_ptr<Transformable> gymbal_mid;
-    std::shared_ptr<Transformable> gymbal_inner;
+    std::shared_ptr<Transformable> gymbal_outer_group;
+    std::shared_ptr<Transformable> gymbal_mid_group;
+    std::shared_ptr<Transformable> gymbal_inner_group;
 
 public:
     Application()
