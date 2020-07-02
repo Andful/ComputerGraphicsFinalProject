@@ -53,11 +53,10 @@ private:
 	std::shared_ptr<AnimatedGeometry> sea;
 	std::shared_ptr<AnimatedGeometry> terrain;
 
-	std::shared_ptr<Transformable> temple_group;
 
-	std::shared_ptr<Transformable> gymbal_outer_group= std::make_shared<Group>();
-	std::shared_ptr<Transformable> gymbal_mid_group= std::make_shared<Group>();
-	std::shared_ptr<Transformable> gymbal_inner_group = std::make_shared<Group>();
+	std::shared_ptr<Transformable> gymbal_outer;
+	std::shared_ptr<Transformable> gymbal_mid;
+	std::shared_ptr<Transformable> gymbal_inner;
 
 	std::shared_ptr<Transformable> eve_group;
 
@@ -131,7 +130,7 @@ public:
 		auto chrome_material = std::make_shared<ChromeMaterial>(cube_tex, toontex);
 
 		auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
-		/*
+		
 
 		// load eve
 
@@ -161,22 +160,23 @@ public:
 
 		// load gymbal
 
-		std::shared_ptr<Mesh> gymbal_inner = std::make_shared<Mesh>(
+		gymbal_inner = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_inner.obj"),
 				blinn_phong_material
 		);
 
-		std::shared_ptr<Mesh> gymbal_mid = std::make_shared<Mesh>(
+		gymbal_mid = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_mid.obj"),
 				blinn_phong_material
 		);
 
-		std::shared_ptr<Mesh> gymbal_outer = std::make_shared<Mesh>(
+		gymbal_outer = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_outer.obj"),
 				blinn_phong_material
 		);
 
 
+		/* 
 		//Load skinned meshes
 
 		skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
@@ -205,7 +205,7 @@ public:
 
 
 
-
+		*/ 
 
 		// load temple construction
 
@@ -230,44 +230,25 @@ public:
 
 		*/
 
-		// load cube for skybox
-		/* std::shared_ptr<Mesh> sky_box = std::make_shared<Mesh>(
-			 std::make_shared<BasicGeometry>("resources/cube.obj"),
-			 blinn_phong_material
-		 );*/
 
 
 		//everything is chrome in the future squidward!
-		std::shared_ptr<Mesh> squidward =  std::make_shared<Mesh>(
+		/*std::shared_ptr<Mesh> squidward =  std::make_shared<Mesh>(
 			dragon_geometry,
 			blinn_phong_material
 		);
 		squidward->translate(glm::vec3(0, 2, 0));
 		scene.add(squidward);
 
-
+		*/
 
 
 		// SCENE SETUP
 
 		// add terrain depending on toggle // this does not currently update (need to have scene remove or make insisible?
 
-/*
-        switch (terrain_toggle)
-        {
-            case 0:
-                scene.add(milford_sound);
-                break;
-            case 1:
-                scene.add(fitz_roy);
-                break;
-            case 2:
-                scene.add(fitz_roy);
-                break;
-            case 3:
-                scene.add(fitz_roy);
-                break;
-        }*/
+
+       
 		//scene.add(terrain_meshes);
 
 		//scene.add(sea_mesh);
@@ -279,9 +260,9 @@ public:
 
 
 		//DEBUG
-		auto platmesh = std::make_shared<BasicGeometry>("resources/platform.obj");
-		auto platform = std::make_shared<Mesh>(platmesh, blinn_phong_material);
-		scene.add(platform);
+		//auto platmesh = std::make_shared<BasicGeometry>("resources/platform.obj");
+		//auto platform = std::make_shared<Mesh>(platmesh, blinn_phong_material);
+		//scene.add(platform);
 
 
 		camera = std::make_shared<ProspectiveCamera>();
@@ -290,34 +271,38 @@ public:
 		auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
 		camera -> add(light);
 
-		auto temple_subgroup = std::make_shared<Group>();
+		auto _subgroup = std::make_shared<Group>();
 		//subgroup -> add(dragon);
 
-		/*temple->translate(glm::vec3(0, 0, 0));
+		temple->translate(glm::vec3(0, 0, 100));
+
+		gymbal_outer->add(gymbal_mid);
+		gymbal_mid->add(gymbal_inner);
+
+		gymbal_outer->translate(glm::vec3(0, 0,175));
+
+		//light2->translate(glm::vec3(-1, 5, 1));
+		//light2->rotate(glm::vec3(-1.5,0, 0));
+
+		group->add(temple);
+		group->add(gymbal_outer);
+		scene.add(group);
+		//scene.add(light2);
 
 
-		temple_subgroup->add(temple);
+		// eve loading 
+		eve_group->add(eve_head);
+		eve_group->add(eve_body);
+		eve_group->add(eve_arms);
 
-		gymbal_inner_group->add(gymbal_inner);
-		gymbal_mid_group->add(gymbal_mid);
-		gymbal_outer_group->add(gymbal_outer);
-	*/
+		eve_group->translate(glm::vec3(75, 0, 120));
 
-		/*
-		temple_subgroup->add(floater_top);
-		temple_subgroup->add(floater_mid);
-		temple_subgroup->add(floater_bottom);
-		*/
-
-		light2->translate(glm::vec3(-1, 5, 1));
-		light2->rotate(glm::vec3(-1.5,0, 0));
-		scene.add(light2);
+		scene.add(eve_group);
 
 
 		camera->add(skybox);
 		// temple_subgroup -> translate(glm::vec3(2, 0, 0));
-		group -> add(temple_subgroup);
-		scene.add(group);
+	
 		scene.add(camera);
 		//scene.add(platform);
 		camera->addPostShader(post_dof);
@@ -335,9 +320,9 @@ public:
 
 			// animations
 			group->rotate(glm::vec3(0, 0, 0.01));
-			/*gymbal_inner_group->rotate(glm::vec3(0, 0, 0.01));
-			gymbal_mid_group->rotate(glm::vec3(0, 0.01, 0));
-			gymbal_outer_group->rotate(glm::vec3(0.01, 0, 0));*/
+			gymbal_inner->rotate(glm::vec3(0, 0, 0.01));
+			gymbal_mid->rotate(glm::vec3(0, 0.01, 0));
+			gymbal_outer->rotate(glm::vec3(0.01, 0, 0));
 
 
 			scene.update();
