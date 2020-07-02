@@ -74,7 +74,20 @@ void main() {
     //currently will use specular + the environment map because we probably still want specularity
     //will also be shady
    // outColor = vec4(clamp(spec_comp + surfaceColor, 0, 1) * dist, 1.0) * texture(texShadow, shadowMapCoord);
+    const int samples = 1;
+    int count = 0;
+    float shadowWeight = 0;
+    ivec2 imageSize = textureSize(texShadow, 0);
+    for(int i = -samples; i <= samples; i++)
+    {
+        for(int j = -samples; j <= samples; j++)
+        {
+            count++;
+            vec3 offset = vec3(float(i)/float(imageSize.x), float(j)/float(imageSize.y), 0);
+            shadowWeight += texture(texShadow, shadowMapCoord + offset);
+        }
+    }
+    shadowWeight /= float(count);
 
-
-    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1), 1.0) * texture(texShadow, shadowMapCoord);
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1), 1.0) * shadowWeight* .6;
 }
