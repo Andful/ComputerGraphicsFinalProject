@@ -89,6 +89,7 @@ public:
 		auto ground_tex = std::make_shared<Texture>("resources/textures/toon_map_grass.png");
 
 		auto skybox_material = std::make_shared<SkyboxMaterial>(cube_tex, cube_tex);
+		auto box_geometry = std::make_shared<BasicGeometry>("resources/skybox.obj");
 		auto skybox_geometry = std::make_shared<BasicGeometry>("resources/skybox.obj");
 		skybox_geometry->setVertexShader("shaders/skybox.vert.glsl");
 		auto skybox = std::make_shared<Mesh>(skybox_geometry, skybox_material);
@@ -160,7 +161,7 @@ public:
 
 		// load gymbal
 
-		gymbal_inner = std::make_shared<Mesh>(
+		/*gymbal_inner = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_inner.obj"),
 				blinn_phong_material
 		);
@@ -173,7 +174,7 @@ public:
 		gymbal_outer = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_outer.obj"),
 				blinn_phong_material
-		);
+		);*/
 
 
 		/* 
@@ -274,62 +275,62 @@ public:
 		auto _subgroup = std::make_shared<Group>();
 		//subgroup -> add(dragon);
 
-		temple->translate(glm::vec3(0, 0, 100));
+		//temple->translate(glm::vec3(0, 0, 100));
 
-		gymbal_outer->add(gymbal_mid);
-		gymbal_mid->add(gymbal_inner);
+	//	gymbal_outer->add(gymbal_mid);
+	//	gymbal_mid->add(gymbal_inner);
 
-		gymbal_outer->translate(glm::vec3(0, 0,175));
+	//	gymbal_outer->translate(glm::vec3(0, 0,175));
 
 		//light2->translate(glm::vec3(-1, 5, 1));
 		//light2->rotate(glm::vec3(-1.5,0, 0));
 
-		group->add(temple);
-		group->add(gymbal_outer);
+	//	group->add(temple);
+	//	group->add(gymbal_outer);
 		scene.add(group);
 		//scene.add(light2);
 
 
 		// eve loading 
-		eve_group->add(eve_head);
+		/*eve_group->add(eve_head);
 		eve_group->add(eve_body);
 		eve_group->add(eve_arms);
 
 		eve_group->translate(glm::vec3(75, 0, 120));
 
-		scene.add(eve_group);
+		scene.add(eve_group);*/
 
 		// make cube color swatches 
 
-		auto cube_1 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_2 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_3 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_4 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_5 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_6 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_7 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_8 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_9 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_10 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_11 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_12 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
-		auto cube_13 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_1 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_2 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_3 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_4 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_5 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_6 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_7 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_8 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_9 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_10 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_11 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_12 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_13 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
 
-		std::shared_ptr<Transformable> cube_group;
+		auto cube_group = std::make_shared<Group>();
 		
-		cube_1->translate(glm::vec3(0, 75, 10));
-		cube_2->translate(glm::vec3(0, 75, 20));
-		cube_3->translate(glm::vec3(0, 75, 30));
-		cube_4->translate(glm::vec3(0, 75, 40));
-		cube_5->translate(glm::vec3(0, 75, 50));
-		cube_6->translate(glm::vec3(0, 75, 60));
-		cube_7->translate(glm::vec3(0, 75, 70));
-		cube_8->translate(glm::vec3(0, 75, 80));
-		cube_9->translate(glm::vec3(0, 75, 90));
-		cube_10->translate(glm::vec3(0, 75, 100));
-		cube_11->translate(glm::vec3(0, 75, 110));
-		cube_12->translate(glm::vec3(0, 75, 120));
-		cube_13->translate(glm::vec3(0, 75, 130));
+		cube_1->translate(glm::vec3(0, 10, 10));
+		cube_2->translate(glm::vec3(0, 10, 20));
+		cube_3->translate(glm::vec3(0, 10, 30));
+		cube_4->translate(glm::vec3(0, 10, 40));
+		cube_5->translate(glm::vec3(0, 10, 50));
+		cube_6->translate(glm::vec3(0, 10, 60));
+		cube_7->translate(glm::vec3(0, 10, 70));
+		cube_8->translate(glm::vec3(0, 10, 80));
+		cube_9->translate(glm::vec3(0, 10, 90));
+		cube_10->translate(glm::vec3(0, 10, 100));
+		cube_11->translate(glm::vec3(0, 10, 110));
+		cube_12->translate(glm::vec3(0, 10, 120));
+		cube_13->translate(glm::vec3(0, 10, 130));
 
 		cube_group->add(cube_1);
 		cube_group->add(cube_2);
@@ -367,10 +368,10 @@ public:
 			m_window.updateInput();
 
 			// animations
-			group->rotate(glm::vec3(0, 0, 0.01));
+			/*group->rotate(glm::vec3(0, 0, 0.01));
 			gymbal_inner->rotate(glm::vec3(0, 0, 0.01));
 			gymbal_mid->rotate(glm::vec3(0, 0.01, 0));
-			gymbal_outer->rotate(glm::vec3(0.01, 0, 0));
+			gymbal_outer->rotate(glm::vec3(0.01, 0, 0));*/
 
 
 			scene.update();

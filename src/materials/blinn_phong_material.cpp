@@ -3,7 +3,7 @@
 
 BlinnPhongMaterial::BlinnPhongMaterial(glm::vec3 ks, float shininess, glm::vec3 kd, std::shared_ptr<Texture> _tex, std::shared_ptr<Texture> _toonTex)
 {
-    fragment_shader = FragmentShader("shaders/blinn_phong.frag.glsl");
+    fragment_shader = FragmentShader("shaders/xtoon.frag.glsl");
     xray_shader = FragmentShader("shaders/xtoon.frag.glsl");
     xray_cull_shader = FragmentShader("shaders/xray.frag.glsl");
     blinn_phong_material_uniform.ks = ks;
