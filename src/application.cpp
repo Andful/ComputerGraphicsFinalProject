@@ -18,6 +18,7 @@
 #include "materials/skybox_material.h"
 #include "materials/chrome_material.h"
 #include "materials/water_material.h"
+#include "materials/ground_material.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -86,6 +87,7 @@ public:
 		auto checkerboardtex = std::make_shared<Texture>("resources/textures/checkerboard.png");
 		auto toontex = std::make_shared<Texture>("resources/textures/toon_map.png");
 		auto cube_tex = std::make_shared<CubeTexture>("resources/textures/skyboxes/skybox/");
+		auto ground_tex = std::make_shared<Texture>("resources/textures/toon_map_grass.png");
 
 		auto skybox_material = std::make_shared<SkyboxMaterial>(cube_tex, cube_tex);
 		auto skybox_geometry = std::make_shared<BasicGeometry>("resources/skybox.obj");
@@ -121,8 +123,13 @@ public:
 		                                                                                checkerboardtex,
 		                                                                                toontex
 		);
+		auto ground_material = std::make_shared<GroundMaterial>(glm::vec3(0.05, 0.2, 0.0),
+		                                                        1.0f,
+		                                                        glm::vec3(0.106332, 0.555170, 0.020000),
+		                                                        ground_tex, toontex);
 
 		auto chrome_material = std::make_shared<ChromeMaterial>(cube_tex, toontex);
+
 		auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
 
 
@@ -193,7 +200,7 @@ public:
 
 		std::shared_ptr<Mesh> terrain_meshes = std::make_shared<Mesh>(
 				terrain,
-				blinn_phong_material
+				ground_material
 		);
 
 
