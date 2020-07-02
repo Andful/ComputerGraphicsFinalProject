@@ -293,13 +293,13 @@ public:
 
 		//Load skinned meshes
 
-		skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+	/*	skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
 
 		std::shared_ptr<Mesh> spidery_bub = std::make_shared<Mesh>(
 				skin_arachnid,
 				arachnid_material
 		);
-
+*/
 /*
 		sea = std::make_shared<AnimatedGeometry>("resources/skin_sea");
 
@@ -375,19 +375,45 @@ public:
 
 
 		//DEBUG
-		//auto platmesh = std::make_shared<BasicGeometry>("resources/platform.obj");
-		//auto platform = std::make_shared<Mesh>(platmesh, blinn_phong_material);
-		//scene.add(platform);
+		auto platmesh = std::make_shared<BasicGeometry>("resources/platform.obj");
+		auto platform = std::make_shared<Mesh>(platmesh, blinn_phong_material);
+		platform->scaling(glm::vec3(500, 0.2, 500));
+		scene.add(platform);
 
 
 		camera = std::make_shared<ProspectiveCamera>();
 		group = std::make_shared<Group>();
-		auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(4096, 4096));
-		auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
-		camera -> add(light);
-		spidery_bub->rotate(glm::vec3(0, 0, 1.5));
+		auto campers = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 3000.0f);
+		auto sun = std::make_shared<DirectionalLight>(campers, glm::vec3(1, 1, .8), glm::ivec2(4096, 4096));
+
+		auto light2 = std::make_shared<DirectionalLight>(campers, glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
+		auto light = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
+		auto light3 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
+		auto light4 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
+		auto light5 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
+
+		sun->translate(glm::vec3( 782.599548, 394.078827, 180.064880));
+		sun->rotate(glm::vec3(-0.445000, 0.000000, -4.965050));
+		scene.add(sun);
+		light->translate(glm::vec3( -2.088730, 113.248100 ,2.967190));
+		light->rotate(glm::vec3(-1.675000, 0.000000 ,-10.060158));
+		scene.add(light);
+		light2->translate(glm::vec3( -9.525551, 143.769882, 42.835293));
+		light2->rotate(glm::vec3(-0.725001, 0.000000, -9.725164));
+		scene.add(light2);
+		light3->translate(glm::vec3(  34.916309, 136.132141, 6.175010));
+		light3->rotate(glm::vec3(-0.605001, 0.000000, -7.895120));
+		scene.add(light3);
+		light4->translate(glm::vec3(  -9.821439, 133.884598, -35.387333));
+		light4->rotate(glm::vec3(-0.530001, 0.000000, -6.095026));
+		scene.add(light4);
+		light5->translate(glm::vec3(   -42.900272, 135.240005, -0.399847));
+		light5->rotate(glm::vec3(-0.690001, 0.000000 ,-4.745024));
+		scene.add(light5);
+		//camera -> add(light);
+		/*spidery_bub->rotate(glm::vec3(0, 0, 1.5));
 		spidery_bub->translate(glm::vec3(-1, -4, -4));
-		camera ->add(spidery_bub);
+		camera ->add(spidery_bub);*/
 
 		auto _subgroup = std::make_shared<Group>();
 		//subgroup -> add(dragon);
@@ -435,7 +461,6 @@ public:
 		//temple_subgroup -> translate(glm::vec3(2, 0, 0));
 	
 		scene.add(camera);
-		//scene.add(platform);
 		camera->addPostShader(post_dof);
 		scene.update();
 	}
@@ -461,7 +486,7 @@ public:
 
 			scene.update();
 			camera -> render();
-			skin_arachnid -> updateFrame();
+			//skin_arachnid -> updateFrame();
 
 
 			//sea->updateFrame();
@@ -515,6 +540,11 @@ public:
 			case GLFW_KEY_T:
 				terrain->updateFrame();
 				break;
+			case GLFW_KEY_P:
+				glm::vec3 pos = camera->getWorldPosition();
+				printf("%f %f %f\n", pos.x, pos.y, pos.z);
+				glm::vec3 rotation = camera->getRotation();
+				printf("%f %f %f\n", rotation.x, rotation.y, rotation.z);
 		}
 		//std::cout << "Key pressed: " << key << std::endl;
 	}

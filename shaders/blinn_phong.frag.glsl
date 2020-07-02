@@ -52,7 +52,7 @@ void main()
     fragLightCoord.xyz = fragLightCoord.xyz *0.5 + 0.5;
     float fragLightDepth = fragLightCoord.z;
     vec3 shadowMapCoord = fragLightCoord.xyz;
-    shadowMapCoord.z -=.0007;
+    shadowMapCoord.z -=.0002;
 
     // compute lambertian surface color N.L* C* kd
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
