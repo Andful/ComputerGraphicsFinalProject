@@ -54,8 +54,6 @@ void main()
     vec3 shadowMapCoord = fragLightCoord.xyz;
     shadowMapCoord.z -=.0007;
 
-    //if(abs(fragLightDepth - shadowMapDepth) > .0001) outColor = vec4(0,0,0, 1);
-
     // compute lambertian surface color N.L* C* kd
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
 
@@ -63,7 +61,6 @@ void main()
     lamb_comp = max(lamb_comp, 0);
 
     // calculate specular component ( reflection vector, incident light vec points to surface)
-    //vec3 R = reflect( normalize(fragPosition - light_pos) , normalize(fragNormal) );
     vec3 surf_to_camera = normalize(camera_position - fragPosition);
     // calculate halfway vector between viewer and light pos
     vec3 H = normalize((normalize(light_position - fragPosition)) + (surf_to_camera));
@@ -84,11 +81,8 @@ void main()
             shadowWeight += texture(texShadow, shadowMapCoord + offset);
         }
     }
-    float shadow =  float(shadowWeight) / float(count);
+    shadowWeight /= float(count);
 
     float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
-    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1) * dist * shadow, 1.0) ;
-    //outColor = vec4(1.0, 1.0, 1.0, 1.0);
-
-
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1) * dist * shadowWeight, 1.0) ;
 }
