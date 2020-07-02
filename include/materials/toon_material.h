@@ -19,7 +19,7 @@ private:
 	FragmentShader fragment_shader, xray_shader, xray_cull_shader;
 	std::shared_ptr<Texture> texture, toonTexture;
 public:
-	ToonMaterial(std::shared_ptr<Texture> tex, std::shared_ptr<Texture> toonTex);
+	ToonMaterial(glm::vec3 ks, float shininess, glm::vec3 kd,std::shared_ptr<Texture> tex, std::shared_ptr<Texture> toonTex);
 	const FragmentShader& getFragmentShader() override;
 	const FragmentShader& getXrayCullShader() override;
 	const FragmentShader& getXrayShader() override;

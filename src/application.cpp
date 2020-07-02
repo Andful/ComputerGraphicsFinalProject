@@ -236,7 +236,10 @@ public:
 
 		auto chrome_material = std::make_shared<ChromeMaterial>(cube_tex, toontex);
 
-		auto eve_material = std::make_shared<ToonMaterial>(toontex_5, toontex);
+		auto eve_material = std::make_shared<ToonMaterial>(glm::vec3(0.5, 0.5, 0.5),
+		                                                   10.0f,
+		glm::vec3(0.8, 0.8, 0.8)
+		,toontex_5, toontex);
 
 		auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
 		
@@ -263,7 +266,7 @@ public:
 
 		std::shared_ptr<Mesh> temple = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/temple/temple.obj"),
-				eve_material
+				blinn_phong_material
 		);
 
 

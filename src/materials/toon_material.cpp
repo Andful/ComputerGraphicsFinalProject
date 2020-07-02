@@ -5,14 +5,14 @@
 #include "materials/water_material.h"
 #include "util3D/geometry.h"
 
-ToonMaterial::ToonMaterial(std::shared_ptr<Texture> _tex, std::shared_ptr<Texture> _toonTex)
+ToonMaterial::ToonMaterial(glm::vec3 ks, float shininess, glm::vec3 kd, std::shared_ptr<Texture> _tex, std::shared_ptr<Texture> _toonTex)
 {
 	fragment_shader = FragmentShader("shaders/xtoon-primary.frag.glsl");
 	xray_shader = FragmentShader("shaders/xtoon.frag.glsl");
 	xray_cull_shader = FragmentShader("shaders/xraycull.frag.glsl");
-	toon_material_uniform.ks = glm::vec3(0,0,0);
-	toon_material_uniform.shininess = 0;
-	toon_material_uniform.kd = glm::vec3(0,0,0);
+	toon_material_uniform.ks = ks;
+	toon_material_uniform.shininess = shininess;
+	toon_material_uniform.kd = kd;
 	initUniformBuffer();
 	texture = _tex;
 	toonTexture = _toonTex;
@@ -39,18 +39,17 @@ GLsizeiptr ToonMaterial::getUniformDataSize() const {
 }
 
 void ToonMaterial::draw(const Scene& scene, const Geometry& geometry) const {
-	//glViewport(0, 0, 1024, 500);
-	//call parent function to start the render chain
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Enable color writes.
 	glDepthMask(GL_FALSE); // Disable depth writes.
 	glDepthFunc(GL_EQUAL); // Only draw a pixel if it's depth matches the value stored in the depth buffer.
-	glDisable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE); // Additive blending.
-	/*for(std::shared_ptr<Light> light : scene.getLights()) {
+	glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE); // Additive blending.
+	glBlendEquation(GL_MAX);
+	for(std::shared_ptr<Light> light : scene.getLights()) {
 		light -> bind();
 		geometry.draw();
-	}*/
-	geometry.draw();
+	}
+	glBlendEquation(GL_FUNC_ADD);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
