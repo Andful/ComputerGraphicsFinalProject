@@ -65,7 +65,7 @@ add_executable(FinalProject
 	"src/util3D/point_light.cpp"
 	"src/util3D/directional_light.cpp"
 	"src/util3D/scene.cpp"
-	"src/gl/cube_texture.cpp" src/materials/skybox_material.cpp src/materials/chrome_material.cpp src/materials/water_material.cpp src/materials/ground_material.cpp)
+	"src/gl/cube_texture.cpp" src/materials/skybox_material.cpp src/materials/chrome_material.cpp src/materials/water_material.cpp src/materials/ground_material.cpp src/materials/toon_material.cpp)
 target_compile_features(FinalProject PRIVATE cxx_std_17)
 target_link_libraries(FinalProject PRIVATE
 	OpenGL::GL GLEW::GLEW
