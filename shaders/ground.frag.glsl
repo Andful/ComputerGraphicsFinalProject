@@ -76,10 +76,25 @@ void main()
     vec3 final_brightness = abs(spec_comp); //+ abs(lamb_comp);
     float scale_factor = distance(camera_position, light_position );
     float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
-    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1)* texture(texShadow, shadowMapCoord) * .3, 1);
+    const int samples = 1;
+    int count = 0;
+    float shadowWeight = 0;
+    ivec2 imageSize = textureSize(texShadow, 0);
+    for(int i = -samples; i <= samples; i++)
+    {
+        for(int j = -samples; j <= samples; j++)
+        {
+            count++;
+            vec3 offset = vec3(float(i)/float(imageSize.x), float(j)/float(imageSize.y), 0);
+            shadowWeight += texture(texShadow, shadowMapCoord + offset);
+        }
+    }
+    shadowWeight /= float(count);
+
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1)* shadowWeight * .3, 1);
 
 
-   // outColor = vec4(texture( tex , vec2(clamp(fragPosition.y / 1, 0, 1), max(abs(dist_to_frag - 100), 0) )).xyz, 1);
+    // outColor = vec4(texture( tex , vec2(clamp(fragPosition.y / 1, 0, 1), max(abs(dist_to_frag - 100), 0) )).xyz, 1);
     //float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
     //float shadowMul = texture(texShadow, shadowMapCoord) * dist;
     //   outColor = texture( tex_toon , vec2(final_brightness.x * shadowMul, abs(dist_to_frag - 0.2) ));

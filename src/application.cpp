@@ -99,7 +99,7 @@ public:
 		auto toontex_11 = std::make_shared<Texture>("resources/textures/toon_map_sandy_b.png");
 		auto toontex_12 = std::make_shared<Texture>("resources/textures/toon_map_sun.png");
 		auto cube_tex = std::make_shared<CubeTexture>("resources/textures/skyboxes/skybox/");
-		auto ground_tex = std::make_shared<Texture>("resources/textures/toon_map_grass.png");
+		auto ground_tex = std::make_shared<Texture>("resources/textures/terrain_grad_g.png");
 
 		auto skybox_material = std::make_shared<SkyboxMaterial>(cube_tex, cube_tex);
 		auto box_geometry = std::make_shared<BasicGeometry>("resources/skybox.obj");
@@ -383,14 +383,14 @@ public:
 
 		camera = std::make_shared<ProspectiveCamera>();
 		group = std::make_shared<Group>();
-		auto campers = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 3000.0f);
-		auto sun = std::make_shared<DirectionalLight>(campers, glm::vec3(1, 1, .8), glm::ivec2(1024, 1024));
+		auto campers = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 500.0f);
 
+		auto sun = std::make_shared<DirectionalLight>(campers, glm::vec3(1, 1, .8), glm::ivec2(1024, 1024));
 		auto light2 = std::make_shared<DirectionalLight>(campers, glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
 		auto light = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
-		auto light3 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
+		//auto light3 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
 		auto light4 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
-		auto light5 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
+		//auto light5 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
 
 		sun->translate(glm::vec3( 782.599548, 394.078827, 180.064880));
 		sun->rotate(glm::vec3(-0.445000, 0.000000, -4.965050));
@@ -401,15 +401,15 @@ public:
 		light2->translate(glm::vec3( -9.525551, 143.769882, 42.835293));
 		light2->rotate(glm::vec3(-0.725001, 0.000000, -9.725164));
 		scene.add(light2);
-		light3->translate(glm::vec3(  34.916309, 136.132141, 6.175010));
-		light3->rotate(glm::vec3(-0.605001, 0.000000, -7.895120));
-		scene.add(light3);
+		//light3->translate(glm::vec3(  34.916309, 136.132141, 6.175010));
+		//light3->rotate(glm::vec3(-0.605001, 0.000000, -7.895120));
+		//scene.add(light3);
 		light4->translate(glm::vec3(  -9.821439, 133.884598, -35.387333));
 		light4->rotate(glm::vec3(-0.530001, 0.000000, -6.095026));
 		scene.add(light4);
-		light5->translate(glm::vec3(   -42.900272, 135.240005, -0.399847));
-		light5->rotate(glm::vec3(-0.690001, 0.000000 ,-4.745024));
-		scene.add(light5);
+		//light5->translate(glm::vec3(   -42.900272, 135.240005, -0.399847));
+		//light5->rotate(glm::vec3(-0.690001, 0.000000 ,-4.745024));
+		//scene.add(light5);
 		//camera -> add(light);
 		spidery_bub->rotate(glm::vec3(0, 0, 1.5));
 		spidery_bub->translate(glm::vec3(-1, -4, -4));
