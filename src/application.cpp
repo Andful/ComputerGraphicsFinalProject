@@ -30,6 +30,8 @@ DISABLE_WARNINGS_POP()
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <thread>
+#include <chrono>
 
 
 class Application {
@@ -310,6 +312,8 @@ public:
 	{
 		// This is your game loop
 		// Put your real-time logic and rendering in here
+		std::chrono::time_point expected_next_frame = std::chrono::system_clock::now();
+		std::chrono::milliseconds update_interval(int(round(1000.0f/60.0f)));
 		while (!m_window.shouldClose()) {
 			m_window.updateInput();
 
@@ -327,6 +331,13 @@ public:
 
 			// Processes input and swaps the window buffer
 			m_window.swapBuffers();
+			std::chrono::milliseconds delta = std::chrono::duration_cast<std::chrono::milliseconds>(expected_next_frame - std::chrono::system_clock::now());
+			if (delta > std::chrono::milliseconds(0)) {
+				std::this_thread::sleep_for(delta);
+				expected_next_frame += update_interval;
+			} else {
+				expected_next_frame = std::chrono::system_clock::now() + update_interval;
+			}
 		}
 	}
 
