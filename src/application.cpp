@@ -124,7 +124,7 @@ public:
 		                                                                                toontex
 		);
 		auto ground_material = std::make_shared<GroundMaterial>(glm::vec3(0.05, 0.2, 0.0),
-		                                                        1.0f,
+		                                                        5.0f,
 		                                                        glm::vec3(0.106332, 0.555170, 0.020000),
 		                                                        ground_tex, toontex);
 
