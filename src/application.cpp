@@ -85,6 +85,18 @@ public:
 		std::cout << "offset:" << offsetof(LightUniformData, light_color) << std::endl;
 		auto checkerboardtex = std::make_shared<Texture>("resources/textures/checkerboard.png");
 		auto toontex = std::make_shared<Texture>("resources/textures/toon_map.png");
+		auto toontex_1 = std::make_shared<Texture>("resources/textures/toon_map_blue.png");
+		auto toontex_2 = std::make_shared<Texture>("resources/textures/toon_map_bw.png");
+		auto toontex_3 = std::make_shared<Texture>("resources/textures/toon_map_carmine.png");
+		auto toontex_4 = std::make_shared<Texture>("resources/textures/toon_map_db.png");
+		auto toontex_5 = std::make_shared<Texture>("resources/textures/toon_map_grass.png");
+		auto toontex_6 = std::make_shared<Texture>("resources/textures/toon_map_green.png");
+		auto toontex_7 = std::make_shared<Texture>("resources/textures/toon_map_grun.png");
+		auto toontex_8 = std::make_shared<Texture>("resources/textures/toon_map_lblue.png");
+		auto toontex_9 = std::make_shared<Texture>("resources/textures/toon_map_red.png");
+		auto toontex_10 = std::make_shared<Texture>("resources/textures/toon_map_sandy.png");
+		auto toontex_11 = std::make_shared<Texture>("resources/textures/toon_map_sandy_b.png");
+		auto toontex_12 = std::make_shared<Texture>("resources/textures/toon_map_sun.png");
 		auto cube_tex = std::make_shared<CubeTexture>("resources/textures/skyboxes/skybox/");
 		auto ground_tex = std::make_shared<Texture>("resources/textures/toon_map_grass.png");
 
@@ -107,6 +119,99 @@ public:
 		                                                                                      checkerboardtex,
 		                                                                                      toontex
 		);
+
+
+		std::shared_ptr<Material> blinn_phong_material_1 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_1
+			);
+
+		std::shared_ptr<Material> blinn_phong_material_2 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_2
+			);
+
+		std::shared_ptr<Material> blinn_phong_material_3 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_3
+			);
+
+
+		std::shared_ptr<Material> blinn_phong_material_4 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_4
+			);
+
+		std::shared_ptr<Material> blinn_phong_material_5 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_5
+			);
+
+		std::shared_ptr<Material> blinn_phong_material_6 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_6
+			);
+
+		std::shared_ptr<Material> blinn_phong_material_7 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_7
+			);
+
+
+
+		std::shared_ptr<Material> blinn_phong_material_8 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_8
+			);
+
+		std::shared_ptr<Material> blinn_phong_material_9 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_9
+			);
+
+		std::shared_ptr<Material> blinn_phong_material_10 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_10
+			);
+
+		std::shared_ptr<Material> blinn_phong_material_11 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_11
+			);
+
+
+
+		std::shared_ptr<Material> blinn_phong_material_12 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+			10.0f,
+			glm::vec3(0.8, 0.8, 0.8),
+			checkerboardtex,
+			toontex_12
+			);
+
+
+
 
 
 		std::shared_ptr<Material> arachnid_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(1.0, 1.0, 1.0),
@@ -303,34 +408,34 @@ public:
 		// make cube color swatches 
 
 		auto cube_1 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_2 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_3 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_4 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_5 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_6 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_7 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_8 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_9 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_10 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_11 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_12 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_13 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
+		auto cube_2 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_1);
+		auto cube_3 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_2);
+		auto cube_4 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_3);
+		auto cube_5 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_4);
+		auto cube_6 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_5);
+		auto cube_7 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_6);
+		auto cube_8 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_7);
+		auto cube_9 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_8);
+		auto cube_10 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_9);
+		auto cube_11 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_10);
+		auto cube_12 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_11);
+		auto cube_13 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_12);
 
 		auto cube_group = std::make_shared<Group>();
 		
-		cube_1->translate(glm::vec3(0, 10, 10));
-		cube_2->translate(glm::vec3(0, 10, 20));
-		cube_3->translate(glm::vec3(0, 10, 30));
-		cube_4->translate(glm::vec3(0, 10, 40));
-		cube_5->translate(glm::vec3(0, 10, 50));
-		cube_6->translate(glm::vec3(0, 10, 60));
-		cube_7->translate(glm::vec3(0, 10, 70));
-		cube_8->translate(glm::vec3(0, 10, 80));
-		cube_9->translate(glm::vec3(0, 10, 90));
-		cube_10->translate(glm::vec3(0, 10, 100));
-		cube_11->translate(glm::vec3(0, 10, 110));
-		cube_12->translate(glm::vec3(0, 10, 120));
-		cube_13->translate(glm::vec3(0, 10, 130));
+		cube_1->translate(glm::vec3(0, 10, 1));
+		cube_2->translate(glm::vec3(0, 10, 2));
+		cube_3->translate(glm::vec3(0, 10, 3));
+		cube_4->translate(glm::vec3(0, 10, 4));
+		cube_5->translate(glm::vec3(0, 10, 5));
+		cube_6->translate(glm::vec3(0, 10, 6));
+		cube_7->translate(glm::vec3(0, 10, 7));
+		cube_8->translate(glm::vec3(0, 10, 8));
+		cube_9->translate(glm::vec3(0, 10, 9));
+		cube_10->translate(glm::vec3(0, 10, 10));
+		cube_11->translate(glm::vec3(0, 10, 11));
+		cube_12->translate(glm::vec3(0, 10, 12));
+		cube_13->translate(glm::vec3(0, 10, 13));
 
 		cube_group->add(cube_1);
 		cube_group->add(cube_2);
@@ -363,15 +468,15 @@ public:
 		// This is your game loop
 		// Put your real-time logic and rendering in here
 		std::chrono::time_point expected_next_frame = std::chrono::system_clock::now();
-		std::chrono::milliseconds update_interval(int(round(1000.0f/60.0f)));
+		std::chrono::milliseconds update_interval(int(round(1000.0f/30.0f)));
 		while (!m_window.shouldClose()) {
 			m_window.updateInput();
 
 			// animations
-			/*group->rotate(glm::vec3(0, 0, 0.01));
+			//group->rotate(glm::vec3(0, 0, 0.01));
 			gymbal_inner->rotate(glm::vec3(0, 0, 0.01));
 			gymbal_mid->rotate(glm::vec3(0, 0.01, 0));
-			gymbal_outer->rotate(glm::vec3(0.01, 0, 0));*/
+			gymbal_outer->rotate(glm::vec3(0.01, 0, 0));
 
 
 			scene.update();
