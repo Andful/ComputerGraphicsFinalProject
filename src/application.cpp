@@ -19,6 +19,7 @@
 #include "materials/chrome_material.h"
 #include "materials/water_material.h"
 #include "materials/ground_material.h"
+#include "materials/toon_material.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -235,6 +236,11 @@ public:
 
 		auto chrome_material = std::make_shared<ChromeMaterial>(cube_tex, toontex);
 
+		auto eve_material = std::make_shared<ToonMaterial>(glm::vec3(0.5, 0.5, 0.5),
+		                                                   10.0f,
+		glm::vec3(0.8, 0.8, 0.8)
+		,toontex_5, toontex);
+
 		auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
 		
 
@@ -242,17 +248,17 @@ public:
 
 		std::shared_ptr<Mesh> eve_head = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/eve/eve_head.obj"),
-				blinn_phong_material
+				eve_material
 		);
 
 		std::shared_ptr<Mesh> eve_arms = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/eve/eve_arms.obj"),
-				blinn_phong_material
+				eve_material
 		);
 
 		std::shared_ptr<Mesh> eve_body = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/eve/eve_body.obj"),
-				blinn_phong_material
+				eve_material
 		);
 
 
@@ -266,7 +272,7 @@ public:
 
 		// load gymbal
 
-		/*gymbal_inner = std::make_shared<Mesh>(
+		gymbal_inner = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_inner.obj"),
 				blinn_phong_material
 		);
@@ -279,7 +285,7 @@ public:
 		gymbal_outer = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_outer.obj"),
 				blinn_phong_material
-		);*/
+		);
 
 
 		/* 
@@ -318,7 +324,7 @@ public:
 
 
 		// load floaters
-		/*
+
 		std::shared_ptr<Mesh> floater_top = std::make_shared<Mesh>(
 			std::make_shared<BasicGeometry>("resources/floaters/floater_top.obj"),
 			blinn_phong_material
@@ -334,7 +340,7 @@ public:
 			blinn_phong_material
 			);
 
-		*/
+
 
 
 
@@ -385,6 +391,7 @@ public:
 		gymbal_outer->add(gymbal_mid);
 		gymbal_mid->add(gymbal_inner);
 
+
      	gymbal_outer->translate(glm::vec3(0, 0,225));
 
 		//light2->translate(glm::vec3(-1, 5, 1));
@@ -396,14 +403,15 @@ public:
 		//scene.add(light2);
 
 
-		// eve loading 
-		/*eve_group->add(eve_head);
+		// eve loading
+		eve_group = std::make_shared<Group>();
+		eve_group->add(eve_head);
 		eve_group->add(eve_body);
 		eve_group->add(eve_arms);
 
 		eve_group->translate(glm::vec3(75, 0, 120));
 
-		scene.add(eve_group);*/
+		scene.add(eve_group);
 
 		// make cube color swatches 
 
@@ -423,19 +431,19 @@ public:
 
 		auto cube_group = std::make_shared<Group>();
 		
-		cube_1->translate(glm::vec3(0, 10, 1));
-		cube_2->translate(glm::vec3(0, 10, 2));
-		cube_3->translate(glm::vec3(0, 10, 3));
-		cube_4->translate(glm::vec3(0, 10, 4));
-		cube_5->translate(glm::vec3(0, 10, 5));
-		cube_6->translate(glm::vec3(0, 10, 6));
-		cube_7->translate(glm::vec3(0, 10, 7));
-		cube_8->translate(glm::vec3(0, 10, 8));
-		cube_9->translate(glm::vec3(0, 10, 9));
-		cube_10->translate(glm::vec3(0, 10, 10));
-		cube_11->translate(glm::vec3(0, 10, 11));
-		cube_12->translate(glm::vec3(0, 10, 12));
-		cube_13->translate(glm::vec3(0, 10, 13));
+		cube_1->translate(glm::vec3(0, 10, 10));
+		cube_2->translate(glm::vec3(0, 10, 20));
+		cube_3->translate(glm::vec3(0, 10, 30));
+		cube_4->translate(glm::vec3(0, 10, 40));
+		cube_5->translate(glm::vec3(0, 10, 50));
+		cube_6->translate(glm::vec3(0, 10, 60));
+		cube_7->translate(glm::vec3(0, 10, 70));
+		cube_8->translate(glm::vec3(0, 10, 80));
+		cube_9->translate(glm::vec3(0, 10, 90));
+		cube_10->translate(glm::vec3(0, 10, 100));
+		cube_11->translate(glm::vec3(0, 10, 110));
+		cube_12->translate(glm::vec3(0, 10, 120));
+		cube_13->translate(glm::vec3(0, 10, 130));
 
 		cube_group->add(cube_1);
 		cube_group->add(cube_2);
@@ -451,11 +459,11 @@ public:
 		cube_group->add(cube_12);
 		cube_group->add(cube_13);
 
-		cube_group->scaling(glm::vec3(5, 5, 5));
+		cube_group->scaling(glm::vec3(2, 2, 2));
 		
 		scene.add(cube_group);
 		camera->add(skybox);
-		// temple_subgroup -> translate(glm::vec3(2, 0, 0));
+		//temple_subgroup -> translate(glm::vec3(2, 0, 0));
 	
 		scene.add(camera);
 		//scene.add(platform);
