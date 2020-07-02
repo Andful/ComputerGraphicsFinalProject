@@ -45,7 +45,7 @@ void main()
 
     float dist_to_frag =  distance(camera_position , fragPosition)  / length(1.25 * camera_position);
     // Output the color from texture
-    vec3 diffuse = texture( tex , vec2(clamp(fragPosition.y / 5, 0, 1), max(abs(dist_to_frag - 100), 0) )).xyz;
+    vec3 diffuse = texture( tex , vec2(clamp(fragPosition.y / 40, 0, 1), max(abs(dist_to_frag - 100), 0) )).xyz;
 
 
     vec4 fragLightCoord = light_mvp * vec4(fragPosition, 1.0);
@@ -91,7 +91,7 @@ void main()
     }
     shadowWeight /= float(count);
 
-    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1)* shadowWeight * .3, 1);
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1)* dist *shadowWeight, 1);
 
 
     // outColor = vec4(texture( tex , vec2(clamp(fragPosition.y / 1, 0, 1), max(abs(dist_to_frag - 100), 0) )).xyz, 1);

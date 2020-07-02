@@ -88,6 +88,6 @@ void main() {
         }
     }
     shadowWeight /= float(count);
-
-    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1), 1.0) * shadowWeight* .6;
+    float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1), 1.0) * dist *shadowWeight;
 }
