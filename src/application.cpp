@@ -55,14 +55,14 @@ private:
 	std::shared_ptr<AnimatedGeometry> terrain;
 
 
-	std::shared_ptr<Transformable> gymbal_outer;
-	std::shared_ptr<Transformable> gymbal_mid;
-	std::shared_ptr<Transformable> gymbal_inner;
+	std::shared_ptr<Transformable> gymbal_outer[4];
+	std::shared_ptr<Transformable> gymbal_mid[4];
+	std::shared_ptr<Transformable> gymbal_inner[4];
 
 	std::shared_ptr<Transformable> eve_group;
 
 
-	std::shared_ptr<Transformable> _group;
+	std::shared_ptr<Transformable> _group, rotategroup;
 public:
 	Application()
 			: m_window(glm::ivec2(1024, 1024), "Final Project", false),
@@ -195,11 +195,11 @@ public:
 			toontex_10
 			);
 
-		std::shared_ptr<Material> blinn_phong_material_11 = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.5, 0.5, 0.5),
+		std::shared_ptr<Material> toon_material_11 = std::make_shared<ToonMaterial>(glm::vec3(0.5, 0.5, 0.5),
 			10.0f,
 			glm::vec3(0.8, 0.8, 0.8),
-			checkerboardtex,
-			toontex_11
+			toontex_11,
+			toontex
 			);
 
 
@@ -239,7 +239,7 @@ public:
 		auto eve_material = std::make_shared<ToonMaterial>(glm::vec3(0.5, 0.5, 0.5),
 		                                                   10.0f,
 		glm::vec3(0.8, 0.8, 0.8)
-		,toontex_5, toontex);
+		,toontex_4, toontex);
 
 		auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
 		
@@ -266,29 +266,31 @@ public:
 
 		std::shared_ptr<Mesh> temple = std::make_shared<Mesh>(
 				std::make_shared<BasicGeometry>("resources/temple/temple.obj"),
-				blinn_phong_material
+				chrome_material
 		);
 
 
 		// load gymbal
+		for(int i = 0; i < 4; i++)
+		{
+			gymbal_inner[i] = std::make_shared<Mesh>(
+					std::make_shared<BasicGeometry>("resources/gymbal/gymbal_inner.obj"),
+					chrome_material
+			);
 
-		gymbal_inner = std::make_shared<Mesh>(
-				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_inner.obj"),
-				blinn_phong_material
-		);
+			gymbal_mid[i] = std::make_shared<Mesh>(
+					std::make_shared<BasicGeometry>("resources/gymbal/gymbal_mid.obj"),
+					chrome_material
+			);
 
-		gymbal_mid = std::make_shared<Mesh>(
-				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_mid.obj"),
-				blinn_phong_material
-		);
-
-		gymbal_outer = std::make_shared<Mesh>(
-				std::make_shared<BasicGeometry>("resources/gymbal/gymbal_outer.obj"),
-				blinn_phong_material
-		);
+			gymbal_outer[i] = std::make_shared<Mesh>(
+					std::make_shared<BasicGeometry>("resources/gymbal/gymbal_outer.obj"),
+					chrome_material
+			);
+		}
 
 
-		/* 
+
 		//Load skinned meshes
 
 		skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
@@ -298,6 +300,7 @@ public:
 				arachnid_material
 		);
 
+/*
 		sea = std::make_shared<AnimatedGeometry>("resources/skin_sea");
 
 		std::shared_ptr<Mesh> sea_mesh = std::make_shared<Mesh>(
@@ -382,23 +385,32 @@ public:
 		auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(4096, 4096));
 		auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
 		camera -> add(light);
+		spidery_bub->rotate(glm::vec3(0, 0, 1.5));
+		spidery_bub->translate(glm::vec3(-1, -4, -4));
+		camera ->add(spidery_bub);
 
 		auto _subgroup = std::make_shared<Group>();
 		//subgroup -> add(dragon);
 
-		temple->translate(glm::vec3(0, 0, 100));
+		temple->translate(glm::vec3(0, 100, 0));
 
-		gymbal_outer->add(gymbal_mid);
-		gymbal_mid->add(gymbal_inner);
+		gymbal_outer[0]->add(gymbal_mid[0]);
+		gymbal_mid[0]->add(gymbal_inner[0]);
+		gymbal_outer[0]->scaling(glm::vec3(1.f));
+		gymbal_outer[0]->translate(glm::vec3(0, 190,0));
 
+		gymbal_outer[1]->add(gymbal_mid[1]);
+		gymbal_mid[1]->add(gymbal_inner[1]);
+		gymbal_outer[1]->scaling(glm::vec3(2.f));
+		gymbal_outer[1]->translate(glm::vec3(0, 70,0));
+		group->add(gymbal_outer[1]);
 
-     	gymbal_outer->translate(glm::vec3(0, 0,225));
 
 		//light2->translate(glm::vec3(-1, 5, 1));
 		//light2->rotate(glm::vec3(-1.5,0, 0));
 
 		group->add(temple);
-		group->add(gymbal_outer);
+		group->add(gymbal_outer[0]);
 		scene.add(group);
 		//scene.add(light2);
 
@@ -409,59 +421,16 @@ public:
 		eve_group->add(eve_body);
 		eve_group->add(eve_arms);
 
-		eve_group->translate(glm::vec3(75, 0, 120));
+		eve_group->scaling(glm::vec3(4));
+		eve_group->rotate(glm::vec3(0, -1.5, 1.5));
+		eve_group->translate(glm::vec3(50, 0, 50));
 
-		scene.add(eve_group);
+		rotategroup = std::make_shared<Group>();
+		rotategroup->add(eve_group);
+		rotategroup->translate(glm::vec3(0, 20, 0));
+		temple->add(rotategroup);
 
-		// make cube color swatches 
 
-		auto cube_1 = std::make_shared<Mesh>(box_geometry, blinn_phong_material);
-		auto cube_2 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_1);
-		auto cube_3 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_2);
-		auto cube_4 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_3);
-		auto cube_5 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_4);
-		auto cube_6 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_5);
-		auto cube_7 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_6);
-		auto cube_8 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_7);
-		auto cube_9 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_8);
-		auto cube_10 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_9);
-		auto cube_11 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_10);
-		auto cube_12 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_11);
-		auto cube_13 = std::make_shared<Mesh>(box_geometry, blinn_phong_material_12);
-
-		auto cube_group = std::make_shared<Group>();
-		
-		cube_1->translate(glm::vec3(0, 10, 10));
-		cube_2->translate(glm::vec3(0, 10, 20));
-		cube_3->translate(glm::vec3(0, 10, 30));
-		cube_4->translate(glm::vec3(0, 10, 40));
-		cube_5->translate(glm::vec3(0, 10, 50));
-		cube_6->translate(glm::vec3(0, 10, 60));
-		cube_7->translate(glm::vec3(0, 10, 70));
-		cube_8->translate(glm::vec3(0, 10, 80));
-		cube_9->translate(glm::vec3(0, 10, 90));
-		cube_10->translate(glm::vec3(0, 10, 100));
-		cube_11->translate(glm::vec3(0, 10, 110));
-		cube_12->translate(glm::vec3(0, 10, 120));
-		cube_13->translate(glm::vec3(0, 10, 130));
-
-		cube_group->add(cube_1);
-		cube_group->add(cube_2);
-		cube_group->add(cube_3);
-		cube_group->add(cube_4);
-		cube_group->add(cube_5);
-		cube_group->add(cube_6);
-		cube_group->add(cube_7);
-		cube_group->add(cube_8);
-		cube_group->add(cube_9);
-		cube_group->add(cube_10);
-		cube_group->add(cube_11);
-		cube_group->add(cube_12);
-		cube_group->add(cube_13);
-
-		cube_group->scaling(glm::vec3(2, 2, 2));
-		
-		scene.add(cube_group);
 		camera->add(skybox);
 		//temple_subgroup -> translate(glm::vec3(2, 0, 0));
 	
@@ -481,15 +450,20 @@ public:
 			m_window.updateInput();
 
 			// animations
-			//group->rotate(glm::vec3(0, 0, 0.01));
-			gymbal_inner->rotate(glm::vec3(0.04, 0, 0));
-			gymbal_mid->rotate(glm::vec3(0, 0.01, 0));
-			gymbal_outer->rotate(glm::vec3(0.01, 0, 0));
-
+		//	group->rotate(glm::vec3(0, 0,0.01));
+		for(int i = 0; i < 4; i++)
+		{
+			gymbal_inner[i]->rotate(glm::vec3(0.04, 0, 0));
+			gymbal_mid[i]->rotate(glm::vec3(0, 0.01, 0));
+			gymbal_outer[i]->rotate(glm::vec3(0.01, 0, 0));
+		}
+			rotategroup->rotate(glm::vec3(0, 0,0.1));
 
 			scene.update();
 			camera -> render();
-			// skin_arachnid -> updateFrame();
+			skin_arachnid -> updateFrame();
+
+
 			//sea->updateFrame();
 
 			// Processes input and swaps the window buffer
@@ -518,16 +492,16 @@ public:
 				}
 				break;
 			case GLFW_KEY_W:
-				camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(0,0,-1));
+				camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(0,0,-2));
 				break;
 			case GLFW_KEY_D:
-				camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(1,0,0));
+				camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(2,0,0));
 				break;
 			case GLFW_KEY_A:
-				camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(-1,0,0));
+				camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(-2,0,0));
 				break;
 			case GLFW_KEY_S:
-				camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(0,0,1));
+				camera -> translate(glm::orientate3(camera -> getRotation())*glm::vec3(0,0,2));
 				break;
 			case GLFW_KEY_Q:
 				camera -> translate(glm::vec3(0,1,0));

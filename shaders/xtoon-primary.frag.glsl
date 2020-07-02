@@ -47,6 +47,7 @@ void main()
     vec3 shadowMapCoord = fragLightCoord.xyz;
     shadowMapCoord.z -=.001;
 
+
     // compute lambertian surface color N.L* C* kd
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
 
@@ -69,7 +70,7 @@ void main()
 
     float dist_to_frag =  distance(camera_position , fragPosition)  / length(1.25 * camera_position);
     // Output the color from texture
-    outColor = texture( tex , vec2(final_brightness.x, abs(dist_to_frag - 0.2) ));
+    outColor = vec4(texture( tex , vec2(final_brightness.x, abs(dist_to_frag - 0.2) )).xyz, 1);
     //float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
     //float shadowMul = texture(texShadow, shadowMapCoord) * dist;
     //   outColor = texture( tex_toon , vec2(final_brightness.x * shadowMul, abs(dist_to_frag - 0.2) ));
