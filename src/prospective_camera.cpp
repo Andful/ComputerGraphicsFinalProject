@@ -112,12 +112,26 @@ void ProspectiveCamera::postrender() {
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
 
-	//this is temporary until I implement the full postfx path
+	unsigned int i = 0;
+	for(; i < postFxShaders.size()-1; i++)
+	{
+		flipBuffers();
+		framebuffer[targetBuffer].bind();
+		colorTexture[sourceBuffer].bind(1);
+		depthTexture[sourceBuffer].bind(2);
+		postFxShaders[i]->bind();
+		quad.bind();
+		glUniform1i(0, 1);
+		glUniform1i(2, 2);
+		glUniform2fv(1, 1, glm::value_ptr(glm::vec2(1024, 1024)));
+		quad.draw();
+	}
+	//special case to draw directly to framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	flipBuffers();
 	colorTexture[sourceBuffer].bind(1);
 	depthTexture[sourceBuffer].bind(2);
-	postFxShaders[0]->bind();
+	postFxShaders[i]->bind();
 	quad.bind();
 	glUniform1i(0, 1);
 	glUniform1i(2, 2);
