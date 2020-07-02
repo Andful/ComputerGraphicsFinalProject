@@ -76,7 +76,7 @@ void main()
     vec3 final_brightness = abs(spec_comp); //+ abs(lamb_comp);
     float scale_factor = distance(camera_position, light_position );
     float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
-    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1), 1.0) * texture(texShadow, shadowMapCoord);
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1)* texture(texShadow, shadowMapCoord) * .3, 1);
 
 
    // outColor = vec4(texture( tex , vec2(clamp(fragPosition.y / 1, 0, 1), max(abs(dist_to_frag - 100), 0) )).xyz, 1);

@@ -293,14 +293,14 @@ public:
 
 		//Load skinned meshes
 
-	/*	skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+		skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
 
 		std::shared_ptr<Mesh> spidery_bub = std::make_shared<Mesh>(
 				skin_arachnid,
 				arachnid_material
 		);
-*/
-/*
+
+
 		sea = std::make_shared<AnimatedGeometry>("resources/skin_sea");
 
 		std::shared_ptr<Mesh> sea_mesh = std::make_shared<Mesh>(
@@ -320,7 +320,7 @@ public:
 
 
 
-		*/ 
+
 
 		// load temple construction
 
@@ -364,9 +364,9 @@ public:
 
 
        
-		//scene.add(terrain_meshes);
+		scene.add(terrain_meshes);
 
-		//scene.add(sea_mesh);
+		scene.add(sea_mesh);
 
 		// Cameras and Lights
 
@@ -375,22 +375,22 @@ public:
 
 
 		//DEBUG
-		auto platmesh = std::make_shared<BasicGeometry>("resources/platform.obj");
+		/*auto platmesh = std::make_shared<BasicGeometry>("resources/platform.obj");
 		auto platform = std::make_shared<Mesh>(platmesh, blinn_phong_material);
 		platform->scaling(glm::vec3(500, 0.2, 500));
-		scene.add(platform);
+		scene.add(platform);*/
 
 
 		camera = std::make_shared<ProspectiveCamera>();
 		group = std::make_shared<Group>();
 		auto campers = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 3000.0f);
-		auto sun = std::make_shared<DirectionalLight>(campers, glm::vec3(1, 1, .8), glm::ivec2(4096, 4096));
+		auto sun = std::make_shared<DirectionalLight>(campers, glm::vec3(1, 1, .8), glm::ivec2(1024, 1024));
 
-		auto light2 = std::make_shared<DirectionalLight>(campers, glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
-		auto light = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
-		auto light3 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
-		auto light4 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
-		auto light5 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
+		auto light2 = std::make_shared<DirectionalLight>(campers, glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
+		auto light = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
+		auto light3 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
+		auto light4 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
+		auto light5 = std::make_shared<DirectionalLight>(campers,glm::vec3(.5, .5, .5), glm::ivec2(1024, 1024));
 
 		sun->translate(glm::vec3( 782.599548, 394.078827, 180.064880));
 		sun->rotate(glm::vec3(-0.445000, 0.000000, -4.965050));
@@ -411,9 +411,9 @@ public:
 		light5->rotate(glm::vec3(-0.690001, 0.000000 ,-4.745024));
 		scene.add(light5);
 		//camera -> add(light);
-		/*spidery_bub->rotate(glm::vec3(0, 0, 1.5));
+		spidery_bub->rotate(glm::vec3(0, 0, 1.5));
 		spidery_bub->translate(glm::vec3(-1, -4, -4));
-		camera ->add(spidery_bub);*/
+		camera ->add(spidery_bub);
 
 		auto _subgroup = std::make_shared<Group>();
 		//subgroup -> add(dragon);
@@ -486,10 +486,10 @@ public:
 
 			scene.update();
 			camera -> render();
-			//skin_arachnid -> updateFrame();
+			skin_arachnid -> updateFrame();
 
 
-			//sea->updateFrame();
+			sea->updateFrame();
 
 			// Processes input and swaps the window buffer
 			m_window.swapBuffers();

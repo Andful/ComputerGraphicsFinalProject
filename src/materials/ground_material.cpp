@@ -42,13 +42,12 @@ void GroundMaterial::draw(const Scene& scene, const Geometry& geometry) const {
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Enable color writes.
 	glDepthMask(GL_FALSE); // Disable depth writes.
 	glDepthFunc(GL_EQUAL); // Only draw a pixel if it's depth matches the value stored in the depth buffer.
-	glDisable(GL_BLEND);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE); // Additive blending.
 	for(std::shared_ptr<Light> light : scene.getLights()) {
 		light -> bind();
 		geometry.draw();
 	}
-	geometry.draw();
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
