@@ -17,6 +17,7 @@
 #include "materials/blinn_phong_material.h"
 #include "materials/skybox_material.h"
 #include "materials/chrome_material.h"
+#include "materials/water_material.h"
 DISABLE_WARNINGS_PUSH()
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -112,7 +113,7 @@ public:
 		);
 
 
-		std::shared_ptr<Material> water_material = std::make_shared<BlinnPhongMaterial>(glm::vec3(0.976190, 0.976190, 0.976190),
+		std::shared_ptr<Material> water_material = std::make_shared<WaterMaterial>(glm::vec3(0.976190, 0.976190, 0.976190),
 		                                                                                900.0f,
 		                                                                                glm::vec3(0.106332, 0.555170, 0.800000),
 		                                                                                checkerboardtex,
@@ -260,7 +261,7 @@ public:
         }*/
 		scene.add(terrain_meshes);
 
-		//scene.add(sea_mesh);
+		scene.add(sea_mesh);
 
 		// Cameras and Lights
 
