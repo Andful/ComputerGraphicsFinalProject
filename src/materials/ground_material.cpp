@@ -7,7 +7,7 @@ GroundMaterial::GroundMaterial(glm::vec3 ks, float shininess, glm::vec3 kd, std:
 {
 	fragment_shader = FragmentShader("shaders/ground.frag.glsl");
 	xray_shader = FragmentShader("shaders/xtoon.frag.glsl");
-	xray_cull_shader = FragmentShader("shaders/groundg.frag.glsl");
+	xray_cull_shader = FragmentShader("shaders/ground.frag.glsl");
 	ground_material_uniform.ks = ks;
 	ground_material_uniform.shininess = shininess;
 	ground_material_uniform.kd = kd;

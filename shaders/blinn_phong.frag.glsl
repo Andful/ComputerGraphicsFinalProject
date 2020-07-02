@@ -43,6 +43,7 @@ in vec2 fragTexCoord; // text coord
 
 void main()
 {
+    const int samples = 2;
     // get normalized light vector
     vec3 lamb_comp = normalize( light_position - fragPosition );
 
@@ -51,9 +52,7 @@ void main()
     fragLightCoord.xyz = fragLightCoord.xyz *0.5 + 0.5;
     float fragLightDepth = fragLightCoord.z;
     vec3 shadowMapCoord = fragLightCoord.xyz;
-    shadowMapCoord.z -=.0002;
-
-    //if(abs(fragLightDepth - shadowMapDepth) > .0001) outColor = vec4(0,0,0, 1);
+    shadowMapCoord.z -=.0007;
 
     // compute lambertian surface color N.L* C* kd
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
@@ -62,7 +61,6 @@ void main()
     lamb_comp = max(lamb_comp, 0);
 
     // calculate specular component ( reflection vector, incident light vec points to surface)
-    //vec3 R = reflect( normalize(fragPosition - light_pos) , normalize(fragNormal) );
     vec3 surf_to_camera = normalize(camera_position - fragPosition);
     // calculate halfway vector between viewer and light pos
     vec3 H = normalize((normalize(light_position - fragPosition)) + (surf_to_camera));
@@ -71,8 +69,20 @@ void main()
     dot_p = max(dot_p, 0);
 
     vec3 spec_comp = dot_p * ks;
+    int count = 0;
+    float shadowWeight = 0;
+    ivec2 imageSize = textureSize(texShadow, 0);
+    for(int i = -samples; i <= samples; i++)
+    {
+        for(int j = -samples; j <= samples; j++)
+        {
+            count++;
+            vec3 offset = vec3(float(i)/float(imageSize.x), float(j)/float(imageSize.y), 0);
+            shadowWeight += texture(texShadow, shadowMapCoord + offset);
+        }
+    }
+    shadowWeight /= float(count);
 
     float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
-    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1) * dist, 1.0) * texture(texShadow, shadowMapCoord);
-    //outColor = vec4(1.0, 1.0, 1.0, 1.0);
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1) * dist * shadowWeight, 1.0) ;
 }

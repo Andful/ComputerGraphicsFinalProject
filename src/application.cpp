@@ -131,7 +131,7 @@ public:
 		auto chrome_material = std::make_shared<ChromeMaterial>(cube_tex, toontex);
 
 		auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
-
+/*
 
 		// load eve
 
@@ -240,7 +240,7 @@ public:
 		//everything is chrome in the future squidward!
 		std::shared_ptr<Mesh> squidward =  std::make_shared<Mesh>(
 			dragon_geometry,
-			chrome_material
+			blinn_phong_material
 		);
 		squidward->translate(glm::vec3(0, 2, 0));
 		scene.add(squidward);
@@ -268,14 +268,22 @@ public:
                 scene.add(fitz_roy);
                 break;
         }*/
-		scene.add(terrain_meshes);
+		//scene.add(terrain_meshes);
 
-		scene.add(sea_mesh);
+		//scene.add(sea_mesh);
 
 		// Cameras and Lights
 
 		// auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
 		//scene.add(new_dragon);
+
+
+		//DEBUG
+		auto platmesh = std::make_shared<BasicGeometry>("resources/platform.obj");
+		auto platform = std::make_shared<Mesh>(platmesh, blinn_phong_material);
+		scene.add(platform);
+
+
 		camera = std::make_shared<ProspectiveCamera>();
 		group = std::make_shared<Group>();
 		auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(4096, 4096));
@@ -285,7 +293,7 @@ public:
 		auto temple_subgroup = std::make_shared<Group>();
 		//subgroup -> add(dragon);
 
-		temple->translate(glm::vec3(0, 0, 0));
+		/*temple->translate(glm::vec3(0, 0, 0));
 
 
 		temple_subgroup->add(temple);
@@ -293,7 +301,7 @@ public:
 		gymbal_inner_group->add(gymbal_inner);
 		gymbal_mid_group->add(gymbal_mid);
 		gymbal_outer_group->add(gymbal_outer);
-
+	*/
 
 		/*
 		temple_subgroup->add(floater_top);
@@ -301,7 +309,7 @@ public:
 		temple_subgroup->add(floater_bottom);
 		*/
 
-		// light2->translate(glm::vec3(-1, 5, 1));
+		light2->translate(glm::vec3(-1, 5, 1));
 		light2->rotate(glm::vec3(-1.5,0, 0));
 		scene.add(light2);
 
@@ -327,15 +335,15 @@ public:
 
 			// animations
 			group->rotate(glm::vec3(0, 0, 0.01));
-			gymbal_inner_group->rotate(glm::vec3(0, 0, 0.01));
+			/*gymbal_inner_group->rotate(glm::vec3(0, 0, 0.01));
 			gymbal_mid_group->rotate(glm::vec3(0, 0.01, 0));
-			gymbal_outer_group->rotate(glm::vec3(0.01, 0, 0));
+			gymbal_outer_group->rotate(glm::vec3(0.01, 0, 0));*/
 
 
 			scene.update();
 			camera -> render();
 			// skin_arachnid -> updateFrame();
-			sea->updateFrame();
+			//sea->updateFrame();
 
 			// Processes input and swaps the window buffer
 			m_window.swapBuffers();
