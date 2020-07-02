@@ -61,7 +61,6 @@ void main() {
 
     // calculate specular component ( reflection vector, incident light vec points to surface)
     vec3 surf_to_camera = normalize(camera_position - fragPosition);
-    //vec3 reflection = reflect(surf_to_camera, normalize(fragNormal));
     // calculate halfway vector between viewer and light pos
     vec3 H = normalize((normalize(light_position - fragPosition)) + (surf_to_camera));
     // fix for light behind surf
@@ -70,10 +69,8 @@ void main() {
 
     vec3 spec_comp = dot_p * ks;
 
-   // float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
     //currently will use specular + the environment map because we probably still want specularity
     //will also be shady
-   // outColor = vec4(clamp(spec_comp + surfaceColor, 0, 1) * dist, 1.0) * texture(texShadow, shadowMapCoord);
     const int samples = 1;
     int count = 0;
     float shadowWeight = 0;

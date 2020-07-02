@@ -26,5 +26,4 @@ void main() {
 
     outColor= vec4(color, 1);
     gl_FragDepth = thisDepth;
-  //  outColor = vec4(abs(refDepth-thisDepth), 0, 0, 1);
 }

@@ -41,12 +41,9 @@ void main()
     // get normalized light vector
     vec3 lamb_comp = normalize( light_position - fragPosition);
 
-
-
     float dist_to_frag =  distance(camera_position , fragPosition)  / length(1.25 * camera_position);
     // Output the color from texture
     vec3 diffuse = texture( tex , vec2(clamp(fragPosition.y / 40, 0, 1), max(abs(dist_to_frag - 100), 0) )).xyz;
-
 
     vec4 fragLightCoord = light_mvp * vec4(fragPosition, 1.0);
     fragLightCoord.xyz /= fragLightCoord.w;
@@ -61,7 +58,6 @@ void main()
     lamb_comp = max((lamb_comp), 0);
 
     // calculate specular component ( reflection vector, incident light vec points to surface)
-    //vec3 R = reflect( normalize(fragPosition - light_position) , normalize(fragNormal) );
     vec3 surf_to_camera = normalize(camera_position - fragPosition);
     // calculate halfway vector between viewer and light pos
     vec3 H = normalize( (normalize(light_position - fragPosition)) + (surf_to_camera) );
@@ -73,7 +69,7 @@ void main()
     vec3 spec_comp = dot_p * ks;
 
 
-    vec3 final_brightness = abs(spec_comp); //+ abs(lamb_comp);
+    vec3 final_brightness = abs(spec_comp);
     float scale_factor = distance(camera_position, light_position );
     float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
     const int samples = 1;
@@ -92,11 +88,4 @@ void main()
     shadowWeight /= float(count);
 
     outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1)* dist *shadowWeight, 1);
-
-
-    // outColor = vec4(texture( tex , vec2(clamp(fragPosition.y / 1, 0, 1), max(abs(dist_to_frag - 100), 0) )).xyz, 1);
-    //float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
-    //float shadowMul = texture(texShadow, shadowMapCoord) * dist;
-    //   outColor = texture( tex_toon , vec2(final_brightness.x * shadowMul, abs(dist_to_frag - 0.2) ));
-    //    outColor = vec4(abs(vec3(dist_to_frag - 0.2)), 1.0);
 }

@@ -26,5 +26,4 @@ void main() {
     color /= total;
 
     outColor= vec4(color, 1);
-  //  outColor = vec4(abs(refDepth-thisDepth), 0, 0, 1);
 }

@@ -69,20 +69,17 @@ void ProspectiveCamera::prerender() {
    {
 	   flipBuffers();
 	   framebuffer[targetBuffer].bind();
-	  // printf("%u\n", sourceBuffer);
 	   for (const std::shared_ptr<Mesh> mesh : _scene.getMeshes()) {
 		   mesh->getXrayCullShader().bind();
 		   mesh->bind();
 		   mesh->getGeometry().bind();
 
-		   //somewhere along the way this was getting dropped so this has to be down here for now
 		   depthTexture[sourceBuffer].bind(1);
 		   glUniform1i(3, 1);
 		   
 		   mesh->getGeometry().draw();
 	   }
    }
-	//this->renderMesh(_scene, *skybox);
     glViewport(0, 0, 1024, 1024);
 }
 

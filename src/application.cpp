@@ -344,21 +344,6 @@ public:
 			blinn_phong_material
 			);
 
-
-
-
-
-		//everything is chrome in the future squidward!
-		/*std::shared_ptr<Mesh> squidward =  std::make_shared<Mesh>(
-			dragon_geometry,
-			blinn_phong_material
-		);
-		squidward->translate(glm::vec3(0, 2, 0));
-		scene.add(squidward);
-
-		*/
-
-
 		// SCENE SETUP
 
 		// add terrain depending on toggle // this does not currently update (need to have scene remove or make insisible?
@@ -370,17 +355,6 @@ public:
 		scene.add(sea_mesh);
 
 		// Cameras and Lights
-
-		// auto new_dragon = std::make_shared<Mesh>(dragon_geometry, blinn_phong_material);
-		//scene.add(new_dragon);
-
-
-		//DEBUG
-		/*auto platmesh = std::make_shared<BasicGeometry>("resources/platform.obj");
-		auto platform = std::make_shared<Mesh>(platmesh, blinn_phong_material);
-		platform->scaling(glm::vec3(500, 0.2, 500));
-		scene.add(platform);*/
-
 
 		camera = std::make_shared<ProspectiveCamera>();
 		group = std::make_shared<Group>();
@@ -433,13 +407,9 @@ public:
 		group->add(gymbal_outer[1]);
 
 
-		//light2->translate(glm::vec3(-1, 5, 1));
-		//light2->rotate(glm::vec3(-1.5,0, 0));
-
 		group->add(temple);
 		group->add(gymbal_outer[0]);
 		scene.add(group);
-		//scene.add(light2);
 
 
 		// eve loading
@@ -459,8 +429,7 @@ public:
 
 
 		camera->add(skybox);
-		//temple_subgroup -> translate(glm::vec3(2, 0, 0));
-	
+
 		scene.add(camera);
 		camera->addPostShader(post_dof);
 		scene.update();
@@ -476,7 +445,6 @@ public:
 			m_window.updateInput();
 
 			// animations
-		//	group->rotate(glm::vec3(0, 0,0.01));
 		for(int i = 0; i < 4; i++)
 		{
 			gymbal_inner[i]->rotate(glm::vec3(0.04, 0, 0));

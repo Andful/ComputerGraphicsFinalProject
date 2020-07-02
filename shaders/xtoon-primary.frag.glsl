@@ -52,7 +52,6 @@ void main()
     lamb_comp = (dot(normalize(fragNormal), lamb_comp)) * light_color * kd;
 
     // calculate specular component ( reflection vector, incident light vec points to surface)
-    //vec3 R = reflect( normalize(fragPosition - light_position) , normalize(fragNormal) );
     vec3 surf_to_camera = normalize(camera_position - fragPosition);
     // calculate halfway vector between viewer and light pos
     vec3 H = normalize( (normalize(light_position - fragPosition)) + (surf_to_camera) );
@@ -71,8 +70,4 @@ void main()
     float dist_to_frag =  distance(camera_position , fragPosition)  / length(1.25 * camera_position);
     // Output the color from texture
     outColor = vec4(texture( tex , vec2(final_brightness.x, abs(dist_to_frag - 0.2) )).xyz, 1);
-    //float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
-    //float shadowMul = texture(texShadow, shadowMapCoord) * dist;
-    //   outColor = texture( tex_toon , vec2(final_brightness.x * shadowMul, abs(dist_to_frag - 0.2) ));
-    //    outColor = vec4(abs(vec3(dist_to_frag - 0.2)), 1.0);
 }

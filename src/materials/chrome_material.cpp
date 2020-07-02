@@ -36,10 +36,8 @@ void ChromeMaterial::draw(const Scene& scene, const Geometry& geometry) const {
 	glDepthFunc(GL_EQUAL); // Only draw a pixel if it's depth matches the value stored in the depth buffer.
 	glDisable(GL_BLEND); // Blending temporarily disabled
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE); // Additive blending.
-	/*for(const std::shared_ptr<Light> &light : scene.getLights()) {
-		light -> bind();
-		geometry.draw();
-	}*/
+
+	//for chrome we're going to ignore lights.
 	geometry.draw();
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);
