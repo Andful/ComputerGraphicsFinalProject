@@ -475,7 +475,7 @@ public:
 			// animations
 			//group->rotate(glm::vec3(0, 0, 0.01));
 			gymbal_inner->rotate(glm::vec3(0.04, 0, 0));
-			gymbal_mid->rotate(glm::vec3(0, 0, 0.01));
+			gymbal_mid->rotate(glm::vec3(0, 0.01, 0));
 			gymbal_outer->rotate(glm::vec3(0.01, 0, 0));
 
 
