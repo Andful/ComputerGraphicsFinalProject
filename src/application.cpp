@@ -299,7 +299,55 @@ public:
 
 		scene.add(eve_group);
 
+		// make cube color swatches 
 
+		auto cube_1 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_2 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_3 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_4 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_5 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_6 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_7 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_8 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_9 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_10 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_11 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_12 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+		auto cube_13 = std::make_shared<Mesh>(skybox_geometry, blinn_phong_material);
+
+		std::shared_ptr<Transformable> cube_group;
+		
+		cube_1->translate(glm::vec3(0, 75, 10));
+		cube_2->translate(glm::vec3(0, 75, 20));
+		cube_3->translate(glm::vec3(0, 75, 30));
+		cube_4->translate(glm::vec3(0, 75, 40));
+		cube_5->translate(glm::vec3(0, 75, 50));
+		cube_6->translate(glm::vec3(0, 75, 60));
+		cube_7->translate(glm::vec3(0, 75, 70));
+		cube_8->translate(glm::vec3(0, 75, 80));
+		cube_9->translate(glm::vec3(0, 75, 90));
+		cube_10->translate(glm::vec3(0, 75, 100));
+		cube_11->translate(glm::vec3(0, 75, 110));
+		cube_12->translate(glm::vec3(0, 75, 120));
+		cube_13->translate(glm::vec3(0, 75, 130));
+
+		cube_group->add(cube_1);
+		cube_group->add(cube_2);
+		cube_group->add(cube_3);
+		cube_group->add(cube_4);
+		cube_group->add(cube_5);
+		cube_group->add(cube_6);
+		cube_group->add(cube_7);
+		cube_group->add(cube_8);
+		cube_group->add(cube_9);
+		cube_group->add(cube_10);
+		cube_group->add(cube_11);
+		cube_group->add(cube_12);
+		cube_group->add(cube_13);
+
+		cube_group->scaling(glm::vec3(5, 5, 5));
+		
+		scene.add(cube_group);
 		camera->add(skybox);
 		// temple_subgroup -> translate(glm::vec3(2, 0, 0));
 	
