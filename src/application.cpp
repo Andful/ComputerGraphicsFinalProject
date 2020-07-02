@@ -391,7 +391,8 @@ public:
 		gymbal_outer->add(gymbal_mid);
 		gymbal_mid->add(gymbal_inner);
 
-		gymbal_outer->translate(glm::vec3(0, 0,175));
+
+     	gymbal_outer->translate(glm::vec3(0, 0,225));
 
 		//light2->translate(glm::vec3(-1, 5, 1));
 		//light2->rotate(glm::vec3(-1.5,0, 0));
@@ -480,9 +481,9 @@ public:
 			m_window.updateInput();
 
 			// animations
-			group->rotate(glm::vec3(0, 0, 0.01));
-			gymbal_inner->rotate(glm::vec3(0, 0, 0.01));
-			gymbal_mid->rotate(glm::vec3(0, 0.01, 0));
+			//group->rotate(glm::vec3(0, 0, 0.01));
+			gymbal_inner->rotate(glm::vec3(0, 0.04, 0));
+			gymbal_mid->rotate(glm::vec3(0, 0.02, 0));
 			gymbal_outer->rotate(glm::vec3(0.01, 0, 0));
 
 
