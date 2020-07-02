@@ -41,15 +41,22 @@ private:
     Scene scene;
     std::shared_ptr<ProspectiveCamera> camera;
     std::shared_ptr<Transformable> group;
+
+
     std::shared_ptr<AnimatedGeometry> skin_arachnid;
     std::shared_ptr<AnimatedGeometry> sea;
     std::shared_ptr<AnimatedGeometry> terrain;
 
     std::shared_ptr<Transformable> temple_group;
+
     std::shared_ptr<Transformable> gymbal_outer_group;
     std::shared_ptr<Transformable> gymbal_mid_group;
     std::shared_ptr<Transformable> gymbal_inner_group;
 
+    std::shared_ptr<Transformable> eve_group;
+
+
+    std::shared_ptr<Transformable> _group;
 public:
     Application()
         : m_window(glm::ivec2(1024, 1024), "Final Project", false),
@@ -116,68 +123,20 @@ public:
         auto post_dof = std::make_shared<Shader>(VertexShader("shaders/postfx.vert.glsl"), FragmentShader("shaders/postfxDOF.frag.glsl"));
 
 
-        //Load skinned meshes 
-
-        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
-
-        std::shared_ptr<Mesh> spidery_bub = std::make_shared<Mesh>(
-            skin_arachnid,
-            arachnid_material
-        );
-
-        sea = std::make_shared<AnimatedGeometry>("resources/skin_sea");
-
-        std::shared_ptr<Mesh> sea_mesh = std::make_shared<Mesh>(
-            sea,
-            water_material
-        );
-
-        // load terrain
-
-        terrain = std::make_shared<AnimatedGeometry>("resources/terrain");
-
-        std::shared_ptr<Mesh> terrain_meshes = std::make_shared<Mesh>(
-            terrain,
-            blinn_phong_material
-            );
-
-
         // load eve 
 
         std::shared_ptr<Mesh> eve_head = std::make_shared<Mesh>(
             std::make_shared<BasicGeometry>("resources/eve/eve_head.obj"),
             blinn_phong_material
-        );
+            );
 
         std::shared_ptr<Mesh> eve_arms = std::make_shared<Mesh>(
             std::make_shared<BasicGeometry>("resources/eve/eve_arms.obj"),
             blinn_phong_material
-        );
+            );
 
         std::shared_ptr<Mesh> eve_body = std::make_shared<Mesh>(
             std::make_shared<BasicGeometry>("resources/eve/eve_body.obj"),
-            blinn_phong_material
-        );
-
-
-        // load temple construction
-
-
-
-        // load floaters 
-
-        std::shared_ptr<Mesh> floater_top = std::make_shared<Mesh>(
-            std::make_shared<BasicGeometry>("resources/floaters/floater_top.obj"),
-            blinn_phong_material
-            );
-
-        std::shared_ptr<Mesh> floater_mid = std::make_shared<Mesh>(
-            std::make_shared<BasicGeometry>("resources/floaters/floater_mid.obj"),
-            blinn_phong_material
-            );
-
-        std::shared_ptr<Mesh> floater_bottom = std::make_shared<Mesh>(
-            std::make_shared<BasicGeometry>("resources/floaters/floater_bottom.obj"),
             blinn_phong_material
             );
 
@@ -207,34 +166,72 @@ public:
             blinn_phong_material
             );
 
+
+        //Load skinned meshes 
+
+        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
+
+        std::shared_ptr<Mesh> spidery_bub = std::make_shared<Mesh>(
+            skin_arachnid,
+            arachnid_material
+        );
+
+        sea = std::make_shared<AnimatedGeometry>("resources/skin_sea");
+
+        std::shared_ptr<Mesh> sea_mesh = std::make_shared<Mesh>(
+            sea,
+            water_material
+        );
+
+        // load terrain
+
+        terrain = std::make_shared<AnimatedGeometry>("resources/terrain");
+
+        std::shared_ptr<Mesh> terrain_meshes = std::make_shared<Mesh>(
+            terrain,
+            blinn_phong_material
+            );
+
+
+
+
+
+        // load temple construction
+
+
+
+        // load floaters 
+        /*
+        std::shared_ptr<Mesh> floater_top = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/floaters/floater_top.obj"),
+            blinn_phong_material
+            );
+
+        std::shared_ptr<Mesh> floater_mid = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/floaters/floater_mid.obj"),
+            blinn_phong_material
+            );
+
+        std::shared_ptr<Mesh> floater_bottom = std::make_shared<Mesh>(
+            std::make_shared<BasicGeometry>("resources/floaters/floater_bottom.obj"),
+            blinn_phong_material
+            );
+
+        */
+
         // load cube for skybox 
-        std::shared_ptr<Mesh> sky_box = std::make_shared<Mesh>(
+       /* std::shared_ptr<Mesh> sky_box = std::make_shared<Mesh>(
             std::make_shared<BasicGeometry>("resources/cube.obj"),
             blinn_phong_material
         );
-
+        */
 
         /*std::shared_ptr<Mesh> dragon =  std::make_shared<Mesh>(
             dragon_geometry,
             blinn_phong_material
         );
         
-        
-        std::shared_ptr<Mesh> platform = std::make_shared<Mesh>(
-        	std::make_shared<BasicGeometry>("resources/platform.obj"),
-            blinn_phong_material
-        );
-
-        skin_arachnid = std::make_shared<AnimatedGeometry>("resources/skin_arachnid");
-        std::shared_ptr<Mesh> octopus = std::make_shared<Mesh>(
-            skin_arachnid,
-            blinn_phong_material
-        );
-
-        octopus -> translate(glm::vec3(0,3,1));
-        scene.add(octopus);*/
-
-       // platform -> translate(glm::vec3(0.0, -1.5, 0.0));
+        */
 
 
         // SCENE SETUP 
@@ -254,21 +251,31 @@ public:
         auto light2 = std::make_shared<DirectionalLight>(camera->getProjectionMatrix(), glm::vec3(1, 0, 0), glm::ivec2(4096, 4096));
         auto light = std::make_shared<DirectionalLight>(camera -> getProjectionMatrix(),glm::vec3(.5, .5, .5), glm::ivec2(4096, 4096));
         camera -> add(light);
-	    auto subgroup = std::make_shared<Group>();
+	    auto temple_subgroup = std::make_shared<Group>();
         //subgroup -> add(dragon);
         
-        temple->translate(glm::vec3(0, 0, 5));
-        subgroup->add(temple);
-        subgroup->add(floater_top);
-        subgroup->add(floater_mid);
-        subgroup->add(floater_bottom);
+        temple->translate(glm::vec3(0, 0, 0));
 
-        light2->translate(glm::vec3(-1, 5, 1));
+
+        temple_subgroup->add(temple);
+
+        gymbal_inner_group->add(gymbal_inner);
+        gymbal_mid_group->add(gymbal_mid);
+        gymbal_outer_group->add(gymbal_outer);
+
+
+        /*
+        temple_subgroup->add(floater_top);
+        temple_subgroup->add(floater_mid);
+        temple_subgroup->add(floater_bottom);
+        */
+
+       // light2->translate(glm::vec3(-1, 5, 1));
         light2->rotate(glm::vec3(-1.5,0, 0));
         scene.add(light2);
 
-        subgroup -> translate(glm::vec3(2, 0, 0));
-        group -> add(subgroup);
+       // temple_subgroup -> translate(glm::vec3(2, 0, 0));
+        group -> add(temple_subgroup);
 	    scene.add(group);
         scene.add(camera);
         //scene.add(platform);
@@ -282,7 +289,14 @@ public:
         // Put your real-time logic and rendering in here
         while (!m_window.shouldClose()) {
             m_window.updateInput();
-            group -> rotate(glm::vec3(0,0,0.01));
+           
+            // animations 
+            group->rotate(glm::vec3(0, 0, 0.01));
+            gymbal_inner_group->rotate(glm::vec3(0, 0, 0.01));
+            gymbal_mid_group->rotate(glm::vec3(0, 0.01, 0));
+            gymbal_outer_group->rotate(glm::vec3(0.01, 0, 0));
+
+
             scene.update();
             camera -> render();
             skin_arachnid -> updateFrame();
