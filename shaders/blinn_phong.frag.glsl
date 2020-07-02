@@ -43,6 +43,7 @@ in vec2 fragTexCoord; // text coord
 
 void main()
 {
+    const int samples = 2;
     // get normalized light vector
     vec3 lamb_comp = normalize( light_position - fragPosition );
 
@@ -51,7 +52,7 @@ void main()
     fragLightCoord.xyz = fragLightCoord.xyz *0.5 + 0.5;
     float fragLightDepth = fragLightCoord.z;
     vec3 shadowMapCoord = fragLightCoord.xyz;
-    shadowMapCoord.z -=.0002;
+    shadowMapCoord.z -=.0007;
 
     //if(abs(fragLightDepth - shadowMapDepth) > .0001) outColor = vec4(0,0,0, 1);
 
@@ -71,8 +72,23 @@ void main()
     dot_p = max(dot_p, 0);
 
     vec3 spec_comp = dot_p * ks;
+    int count = 0;
+    float shadowWeight = 0;
+    ivec2 imageSize = textureSize(texShadow, 0);
+    for(int i = -samples; i <= samples; i++)
+    {
+        for(int j = -samples; j <= samples; j++)
+        {
+            count++;
+            vec3 offset = vec3(float(i)/float(imageSize.x), float(j)/float(imageSize.y), 0);
+            shadowWeight += texture(texShadow, shadowMapCoord + offset);
+        }
+    }
+    float shadow =  float(shadowWeight) / float(count);
 
     float dist = pow(max(1 - 2 * length(fragLightCoord.xy - vec2(0.5)), 0.f), 0.5);
-    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1) * dist, 1.0) * texture(texShadow, shadowMapCoord);
+    outColor = vec4(clamp(spec_comp + lamb_comp, 0, 1) * dist * shadow, 1.0) ;
     //outColor = vec4(1.0, 1.0, 1.0, 1.0);
+
+
 }
