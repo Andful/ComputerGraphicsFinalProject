@@ -328,7 +328,7 @@ public:
 			scene.update();
 			camera -> render();
 			// skin_arachnid -> updateFrame();
-			//sea->updateFrame();
+			sea->updateFrame();
 
 			// Processes input and swaps the window buffer
 			m_window.swapBuffers();
