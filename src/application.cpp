@@ -257,9 +257,11 @@ public:
 	    auto subgroup = std::make_shared<Group>();
         //subgroup -> add(dragon);
         
-        temple->translate(glm::vec3(0, 0, 50));
+        temple->translate(glm::vec3(0, 0, 5));
         subgroup->add(temple);
-
+        subgroup->add(floater_top);
+        subgroup->add(floater_mid);
+        subgroup->add(floater_bottom);
 
         light2->translate(glm::vec3(-1, 5, 1));
         light2->rotate(glm::vec3(-1.5,0, 0));
