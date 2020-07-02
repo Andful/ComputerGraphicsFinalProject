@@ -23,7 +23,8 @@ CubeTexture::CubeTexture(std::filesystem::path filePath)
         delete p;
         });
     glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, m_texture.get());
-
+    glBindTexture(GL_TEXTURE_CUBE_MAP, *m_texture);
+	//glTextureStorage2D(*m_texture, 1, GLRGB8, )
     int width, height, channels;
     for (int i = 0; i < 6; i++)
     {

@@ -25,7 +25,7 @@ private:
 	Texture depthTexture[2], colorTexture[2];
 	unsigned short targetBuffer = 0, sourceBuffer = 1;
 	void flipBuffers();
-	bool useXRay = true;
+	bool useXRay = false;
 public:
 	ProspectiveCamera();
 	void updateViewMatrix();

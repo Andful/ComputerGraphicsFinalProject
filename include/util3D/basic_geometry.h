@@ -27,6 +27,7 @@ public:
     BasicGeometry(std::filesystem::path filePath);
     bool hasTextureCoords() const;
     const VertexShader& getVertexShader() const override;
+    void setVertexShader(std::filesystem::path filePath);
     // Bind VAO and call glDrawElements.
     void draw() const;
     virtual const void* getUniformData() const;

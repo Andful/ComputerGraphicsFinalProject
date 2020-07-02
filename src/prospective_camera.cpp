@@ -12,11 +12,12 @@
 #include "prospective_camera.h"
 #include "util3D/mesh.h"
 #include "util3D/material.h"
+#include "materials/skybox_material.h"
 #include "util3D/geometry.h"
 
 ProspectiveCamera::ProspectiveCamera() : quad("resources/quad.obj")
 {
-	prospectiveMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 200.0f);
+	prospectiveMatrix = glm::perspective(glm::radians(80.0f), 1.0f, 0.1f, 300.0f);
 	//generate depthmap for framebuffer
 	for (int i = 0; i < 2; i++)
 	{
@@ -81,9 +82,8 @@ void ProspectiveCamera::prerender() {
 		   mesh->getGeometry().draw();
 	   }
    }
-
-
-   glViewport(0, 0, 1024, 1024);
+	//this->renderMesh(_scene, *skybox);
+    glViewport(0, 0, 1024, 1024);
 }
 
 void ProspectiveCamera::renderMesh(const Scene& _scene, const Mesh& mesh) const
