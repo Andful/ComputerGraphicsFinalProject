@@ -49,9 +49,9 @@ private:
 
     std::shared_ptr<Transformable> temple_group;
 
-    std::shared_ptr<Transformable> gymbal_outer_group;
-    std::shared_ptr<Transformable> gymbal_mid_group;
-    std::shared_ptr<Transformable> gymbal_inner_group;
+    std::shared_ptr<Transformable> gymbal_outer_group= std::make_shared<Group>();
+    std::shared_ptr<Transformable> gymbal_mid_group= std::make_shared<Group>();
+    std::shared_ptr<Transformable> gymbal_inner_group = std::make_shared<Group>();
 
     std::shared_ptr<Transformable> eve_group;
 
